@@ -128,3 +128,8 @@
 
 - [x] Melhorar logo com Nano Banana (remover telefones completamente)
 - [x] Deixar logo moderna e profissional
+
+- [x] Usar logo EXATA das fotos (MARTINS azul + MV laranja + símbolo)
+
+- [ ] Pesquisar no Google avaliações para descobrir cidades atendidas
+- [ ] Atualizar banner com destinos reais mencionados pelos clientes

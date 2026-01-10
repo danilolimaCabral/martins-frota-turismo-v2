@@ -76,7 +76,7 @@ export default function Home() {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
-            <img src="/images/logo-martins-modern.png" alt="Martins Viagens e Turismo" className="h-12 md:h-16 w-auto" />
+            <img src="/images/logo-martins-real.png" alt="Martins Viagens e Turismo" className="h-10 md:h-14 w-auto" />
             
             {/* Desktop Menu */}
             <nav className="hidden lg:flex items-center gap-8">
@@ -577,7 +577,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12">
             <div>
-              <img src="/images/logo-martins-modern.png" alt="Martins Viagens e Turismo" className="h-12 mb-4" />
+              <img src="/images/logo-martins-real.png" alt="Martins Viagens e Turismo" className="h-10 mb-4" />
               <p className="text-sm text-gray-400">
                 Mais de 19 anos oferecendo soluções em transporte com excelência.
               </p>
