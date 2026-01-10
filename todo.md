@@ -92,3 +92,9 @@
 - [ ] Checkpoint final
 
 - [x] Adicionar carrossel/banner rotativo com fotos da frota
+
+- [x] Buscar logo correta da Martins Viagens e Turismo
+- [x] Redesign completo com visual moderno e contemporâneo
+- [x] Melhorar layout e animações
+
+- [x] Criar seção de parceiros/clientes atendidos
