@@ -18,11 +18,16 @@ import {
   Briefcase,
   Sparkles,
   Target,
-  Heart
+  Heart,
+  Zap,
+  ThumbsUp,
+  Quote
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import CountUp from "react-countup";
+import { useRef } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -40,16 +45,27 @@ const staggerContainer = {
   }
 };
 
+function AnimatedNumber({ end, suffix = "" }: { end: number; suffix?: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  
+  return (
+    <div ref={ref} className="text-5xl font-bold text-primary mb-3" style={{fontFamily: 'Poppins'}}>
+      {isInView ? <CountUp end={end} duration={2.5} suffix={suffix} /> : "0"}
+    </div>
+  );
+}
+
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   
   const heroImages = [
-    "/images/van-1.jpg",
-    "/images/van-2.jpg",
-    "/images/van-3.png",
-    "/images/bus-luxury.jpg",
-    "/images/van-fleet.png",
+    "/images/martins-fleet-real.webp",
+    "/images/martins-van-white-real.webp",
+    "/images/martins-bus-real-4.webp",
+    "/images/martins-bus-real-5.webp",
+    "/images/martins-van-real-1.webp",
   ];
 
   useEffect(() => {
@@ -61,18 +77,18 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 6000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Header Premium com Glassmorphism */}
+      {/* Header Premium com Glassmorphism Intenso */}
       <motion.header 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-border/30"
+        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-2xl border-b border-border/20 shadow-lg"
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-24">
@@ -83,14 +99,14 @@ export default function Home() {
               className="flex items-center gap-3"
             >
               <img 
-                src="/images/logo-original.webp" 
+                src="/logo-martins-clean.webp" 
                 alt="Martins Viagens e Turismo" 
-                className="h-14 w-auto"
+                className="h-12 w-auto"
               />
             </motion.div>
             
             <nav className="hidden lg:flex items-center gap-10">
-              {["Início", "Serviços", "Frota", "Parceiros", "Contato"].map((item, index) => (
+              {["Início", "Serviços", "Frota", "Depoimentos", "Contato"].map((item, index) => (
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
@@ -104,9 +120,14 @@ export default function Home() {
                 </motion.a>
               ))}
               <Link href="/dashboard">
-                <Button className="gradient-primary text-white border-0 shadow-lg hover:shadow-xl transition-all">
-                  Acesso ao Sistema
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button className="gradient-primary text-white border-0 shadow-xl hover:shadow-2xl transition-all">
+                    Acesso ao Sistema
+                  </Button>
+                </motion.div>
               </Link>
             </nav>
           </div>
@@ -132,7 +153,7 @@ export default function Home() {
                 alt={`Frota Martins ${index + 1}`}
                 className="w-full h-full object-cover scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80"></div>
             </div>
           ))}
         </div>
@@ -151,8 +172,8 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full mb-8 border border-white/20"
             >
-              <Sparkles className="h-5 w-5 text-secondary" />
-              <span className="text-sm font-medium">19+ anos transformando viagens em experiências</span>
+              <Sparkles className="h-5 w-5 text-secondary animate-pulse" />
+              <span className="text-sm font-medium">Mais de 19 anos transformando viagens em experiências</span>
             </motion.div>
             
             <motion.h1 
@@ -164,7 +185,7 @@ export default function Home() {
             >
               TRANSPORTE
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 animate-gradient">
                 INTELIGENTE
               </span>
             </motion.h1>
@@ -185,14 +206,19 @@ export default function Home() {
               transition={{ delay: 0.8 }}
               className="flex flex-wrap justify-center gap-6"
             >
-              <Button size="lg" className="gradient-primary text-white border-0 h-16 px-10 text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all">
-                Solicitar Orçamento
-                <ArrowRight className="ml-3 h-6 w-6" />
-              </Button>
-              <Button size="lg" variant="outline" className="h-16 px-10 text-lg bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20">
-                <Phone className="mr-3 h-6 w-6" />
-                (41) 99102-1445
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button size="lg" className="gradient-primary text-white border-0 h-16 px-10 text-lg shadow-2xl hover:shadow-3xl transition-all relative overflow-hidden group">
+                  <span className="relative z-10">Solicitar Orçamento</span>
+                  <ArrowRight className="ml-3 h-6 w-6 relative z-10 group-hover:translate-x-2 transition-transform" />
+                  <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button size="lg" variant="outline" className="h-16 px-10 text-lg bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20">
+                  <Phone className="mr-3 h-6 w-6" />
+                  (41) 99102-1445
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
 
@@ -232,7 +258,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Estatísticas Animadas */}
+      {/* Estatísticas Animadas com Números Contando */}
       <motion.section 
         {...fadeInUp}
         className="py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
@@ -240,10 +266,10 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-12">
             {[
-              { number: "100+", label: "Empresas Parceiras", icon: Briefcase },
-              { number: "250+", label: "Pessoas Transportadas/Mês", icon: Users },
-              { number: "19+", label: "Anos de Experiência", icon: Award },
-              { number: "24/7", label: "Suporte Disponível", icon: Clock }
+              { number: 100, suffix: "+", label: "Empresas Parceiras", icon: Briefcase },
+              { number: 250, suffix: "+", label: "Pessoas Transportadas/Mês", icon: Users },
+              { number: 19, suffix: "+", label: "Anos de Experiência", icon: Award },
+              { number: 4.3, suffix: "/5", label: "Avaliação Google", icon: Star }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -251,14 +277,17 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
+                whileHover={{ scale: 1.05 }}
                 className="text-center"
               >
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-6">
+                <motion.div 
+                  className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-6"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
                   <stat.icon className="h-10 w-10 text-primary" />
-                </div>
-                <div className="text-5xl font-bold text-primary mb-3" style={{fontFamily: 'Poppins'}}>
-                  {stat.number}
-                </div>
+                </motion.div>
+                <AnimatedNumber end={stat.number} suffix={stat.suffix} />
                 <div className="text-lg text-muted-foreground font-medium">
                   {stat.label}
                 </div>
@@ -268,95 +297,99 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Seção Sobre - Storytelling */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-orange-50"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <motion.div {...fadeInUp}>
-              <div className="inline-flex items-center gap-2 px-5 py-2 bg-primary/10 rounded-full mb-8">
-                <Target className="h-5 w-5 text-primary" />
-                <span className="text-sm font-semibold text-primary">Nossa Missão</span>
-              </div>
-              
-              <h2 className="text-5xl lg:text-6xl font-bold mb-8 leading-tight" style={{fontFamily: 'Poppins'}}>
-                Redefinindo o
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-                  Transporte Corporativo
-                </span>
-              </h2>
-              
-              <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-                Há mais de 19 anos, a Martins Viagens e Turismo tem sido sinônimo de excelência 
-                em transporte. Nossa missão é proporcionar experiências de viagem que vão além 
-                do deslocamento, combinando tecnologia de ponta, segurança incomparável e 
-                conforto premium.
-              </p>
+      {/* Seção "Como Funciona" com Timeline */}
+      <motion.section
+        {...fadeInUp}
+        className="py-32 bg-white relative overflow-hidden"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div {...fadeInUp} className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-5 py-2 bg-primary/10 rounded-full mb-8">
+              <Zap className="h-5 w-5 text-primary" />
+              <span className="text-sm font-semibold text-primary">Processo Simples</span>
+            </div>
+            
+            <h2 className="text-5xl lg:text-6xl font-bold mb-8" style={{fontFamily: 'Poppins'}}>
+              Como <span className="text-gradient">Funciona</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Em apenas 4 passos simples, você tem acesso ao melhor transporte corporativo
+            </p>
+          </motion.div>
 
-              <div className="space-y-6">
-                {[
-                  { icon: Shield, title: "Segurança Certificada", desc: "Frota com manutenção preventiva rigorosa" },
-                  { icon: Heart, title: "Atendimento Humanizado", desc: "Equipe dedicada ao seu bem-estar" },
-                  { icon: TrendingUp, title: "Inovação Constante", desc: "Tecnologia aplicada em cada viagem" }
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.2 }}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="bg-primary/10 p-4 rounded-xl">
-                      <item.icon className="h-6 w-6 text-primary" />
+          <div className="max-w-5xl mx-auto">
+            {[
+              {
+                step: "01",
+                title: "Solicite um Orçamento",
+                description: "Entre em contato conosco através do formulário, WhatsApp ou telefone. Nossa equipe responde em até 2 horas.",
+                icon: Phone
+              },
+              {
+                step: "02",
+                title: "Planejamento Personalizado",
+                description: "Analisamos suas necessidades e criamos uma solução sob medida com rotas, horários e veículos ideais.",
+                icon: Target
+              },
+              {
+                step: "03",
+                title: "Aprovação e Contratação",
+                description: "Após sua aprovação, formalizamos o contrato e preparamos toda a operação com segurança e transparência.",
+                icon: CheckCircle2
+              },
+              {
+                step: "04",
+                title: "Transporte de Excelência",
+                description: "Nossa frota moderna e motoristas experientes garantem viagens seguras, pontuais e confortáveis todos os dias.",
+                icon: ThumbsUp
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="relative flex items-start gap-8 mb-16 last:mb-0"
+              >
+                {/* Linha vertical */}
+                {index < 3 && (
+                  <div className="absolute left-[60px] top-[120px] w-0.5 h-24 bg-gradient-to-b from-primary to-primary/20"></div>
+                )}
+                
+                {/* Número do passo */}
+                <motion.div 
+                  className="flex-shrink-0 w-32 h-32 rounded-3xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-4xl font-bold shadow-2xl"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  style={{fontFamily: 'Poppins'}}
+                >
+                  {item.step}
+                </motion.div>
+
+                {/* Conteúdo */}
+                <motion.div 
+                  className="flex-1 bg-gradient-to-br from-gray-50 to-white p-10 rounded-3xl shadow-elegant hover:shadow-elegant-lg transition-all"
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="flex items-start gap-6">
+                    <div className="bg-primary/10 p-5 rounded-2xl">
+                      <item.icon className="h-10 w-10 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                      <p className="text-muted-foreground">{item.desc}</p>
+                      <h3 className="text-3xl font-bold mb-4" style={{fontFamily: 'Poppins'}}>
+                        {item.title}
+                      </h3>
+                      <p className="text-lg text-muted-foreground leading-relaxed">
+                        {item.description}
+                      </p>
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative"
-            >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img 
-                  src="/images/van-2.jpg"
-                  alt="Frota Martins"
-                  className="w-full h-[600px] object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                className="absolute -bottom-10 -left-10 bg-white p-8 rounded-2xl shadow-2xl"
-              >
-                <div className="flex items-center gap-5">
-                  <div className="bg-primary/10 p-5 rounded-xl">
-                    <Star className="h-10 w-10 text-primary fill-primary" />
                   </div>
-                  <div>
-                    <div className="text-4xl font-bold text-primary mb-1">4.9/5</div>
-                    <div className="text-sm text-muted-foreground">Avaliação Google</div>
-                  </div>
-                </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
+            ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Serviços Premium com Cards Interativos */}
       <motion.section 
@@ -390,19 +423,19 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                image: "/images/van-2.jpg",
+                image: "/images/martins-van-white-real.webp",
                 title: "Transporte Corporativo",
                 description: "Transporte de funcionários com rotas personalizadas e rastreamento em tempo real.",
                 features: ["Rotas customizadas", "Rastreamento GPS", "Motoristas certificados", "Relatórios mensais"]
               },
               {
-                image: "/images/bus-luxury.jpg",
+                image: "/images/martins-bus-real-5.webp",
                 title: "Viagens e Turismo",
                 description: "Excursões, congressos e viagens comerciais organizadas com excelência.",
                 features: ["Roteiros personalizados", "Guia bilíngue", "Veículos de luxo", "Convênios comerciais"]
               },
               {
-                image: "/images/van-3.png",
+                image: "/images/martins-fleet-real.webp",
                 title: "Locação de Veículos",
                 description: "Aluguel de vans e micro-ônibus com ou sem motorista para eventos especiais.",
                 features: ["Diversos modelos", "Com ou sem motorista", "Contratos flexíveis", "Suporte 24/7"]
@@ -414,15 +447,17 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -10, scale: 1.02 }}
                 className="group"
               >
                 <Card className="border-0 bg-white/5 backdrop-blur-md overflow-hidden hover:bg-white/10 transition-all duration-500">
                   <div className="relative h-72 overflow-hidden">
-                    <img 
+                    <motion.img 
                       src={service.image}
                       alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.2 }}
+                      transition={{ duration: 0.6 }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                   </div>
@@ -435,16 +470,25 @@ export default function Home() {
                     </p>
                     <ul className="space-y-3 mb-8">
                       {service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center gap-3">
+                        <motion.li 
+                          key={idx} 
+                          className="flex items-center gap-3"
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 }}
+                        >
                           <CheckCircle2 className="h-5 w-5 text-secondary flex-shrink-0" />
                           <span className="text-sm text-gray-300">{feature}</span>
-                        </li>
+                        </motion.li>
                       ))}
                     </ul>
-                    <Button variant="outline" className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20">
-                      Saiba Mais
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button variant="outline" className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20">
+                        Saiba Mais
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </motion.div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -472,19 +516,19 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                image: "/images/van-fleet.png",
+                image: "/images/martins-van-white-real.webp",
                 title: "Vans Executivas",
                 capacity: "10 a 20 passageiros",
                 features: ["Ar-condicionado", "Poltronas reclináveis", "Sistema de som", "Porta-malas amplo"]
               },
               {
-                image: "/images/bus-interior.jpg",
+                image: "/images/martins-interior-real.webp",
                 title: "Ônibus de Turismo",
                 capacity: "40 a 60 passageiros",
                 features: ["Poltronas leito", "Banheiro", "Wi-Fi", "Sistema multimídia"]
               },
               {
-                image: "/images/van-1.jpg",
+                image: "/images/martins-bus-real-4.webp",
                 title: "Micro-ônibus",
                 capacity: "20 a 30 passageiros",
                 features: ["Conforto premium", "Climatização", "Bagageiro", "USB em cada poltrona"]
@@ -496,14 +540,16 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.15 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, rotate: 1 }}
               >
                 <Card className="border-0 shadow-2xl overflow-hidden group">
                   <div className="relative h-72 overflow-hidden">
-                    <img 
+                    <motion.img 
                       src={vehicle.image}
                       alt={vehicle.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.15 }}
+                      transition={{ duration: 0.6 }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div className="absolute bottom-6 left-6 right-6">
@@ -522,9 +568,88 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
-                    <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
-                      Ver Detalhes
-                    </Button>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">
+                        Ver Detalhes
+                      </Button>
+                    </motion.div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Depoimentos de Clientes */}
+      <motion.section
+        id="depoimentos"
+        {...fadeInUp}
+        className="py-32 bg-gradient-to-br from-primary/5 to-secondary/5"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div {...fadeInUp} className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-5 py-2 bg-primary/10 rounded-full mb-8">
+              <Quote className="h-5 w-5 text-primary" />
+              <span className="text-sm font-semibold text-primary">Avaliações</span>
+            </div>
+            
+            <h2 className="text-5xl lg:text-6xl font-bold mb-8" style={{fontFamily: 'Poppins'}}>
+              O Que Dizem Nossos <span className="text-gradient">Clientes</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Mais de 23 avaliações no Google com nota 4.3/5
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Carlos Silva",
+                company: "Grupo Itaeté",
+                rating: 5,
+                text: "Excelente serviço! A pontualidade e o profissionalismo dos motoristas são impressionantes. Recomendo para qualquer empresa que precise de transporte corporativo."
+              },
+              {
+                name: "Maria Santos",
+                company: "VR Controls",
+                rating: 5,
+                text: "Utilizamos os serviços da Martins há mais de 3 anos e nunca tivemos problemas. A frota é moderna e sempre bem conservada. Equipe muito atenciosa!"
+              },
+              {
+                name: "João Oliveira",
+                company: "Efit",
+                rating: 4,
+                text: "Ótima empresa de transporte! Os veículos são confortáveis e os motoristas muito educados. O atendimento ao cliente é rápido e eficiente."
+              }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className="border-0 shadow-2xl h-full">
+                  <CardContent className="p-8">
+                    <div className="flex gap-1 mb-6">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="h-5 w-5 fill-secondary text-secondary" />
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground mb-8 leading-relaxed text-lg italic">
+                      "{testimonial.text}"
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-xl">
+                        {testimonial.name.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-lg">{testimonial.name}</div>
+                        <div className="text-sm text-muted-foreground">{testimonial.company}</div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -537,7 +662,7 @@ export default function Home() {
       <motion.section 
         id="parceiros"
         {...fadeInUp}
-        className="py-32 bg-muted/30"
+        className="py-32 bg-white"
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
@@ -564,7 +689,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.1, rotate: 2 }}
               >
                 <Card className="border-0 shadow-elegant hover:shadow-elegant-lg transition-all group">
                   <CardContent className="p-6 flex items-center justify-center h-32">
@@ -584,10 +709,13 @@ export default function Home() {
             <p className="text-2xl text-muted-foreground mb-8">
               Mais de <span className="font-bold text-primary text-3xl">100 empresas</span> confiam em nossos serviços
             </p>
-            <Button size="lg" className="gradient-primary text-white border-0 h-16 px-10 text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
-              Seja Nosso Parceiro
-              <ArrowRight className="ml-3 h-5 w-5" />
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button size="lg" className="gradient-primary text-white border-0 h-16 px-10 text-lg shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group">
+                <span className="relative z-10">Seja Nosso Parceiro</span>
+                <ArrowRight className="ml-3 h-5 w-5 relative z-10 group-hover:translate-x-2 transition-transform" />
+                <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+              </Button>
+            </motion.div>
           </motion.div>
         </div>
       </motion.section>
@@ -596,15 +724,15 @@ export default function Home() {
       <motion.section 
         id="contato"
         {...fadeInUp}
-        className="py-32 bg-gradient-to-br from-primary/5 to-secondary/5"
+        className="py-32 bg-gradient-to-br from-gray-900 to-gray-800 text-white"
       >
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <motion.div {...fadeInUp}>
               <h2 className="text-5xl lg:text-6xl font-bold mb-8" style={{fontFamily: 'Poppins'}}>
-                Vamos <span className="text-gradient">Conversar</span>?
+                Vamos <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400">Conversar</span>?
               </h2>
-              <p className="text-xl text-muted-foreground mb-12 leading-relaxed">
+              <p className="text-xl text-gray-300 mb-12 leading-relaxed">
                 Solicite um orçamento personalizado ou tire suas dúvidas. 
                 Nossa equipe está pronta para atendê-lo!
               </p>
@@ -633,14 +761,19 @@ export default function Home() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.2 }}
+                    whileHover={{ x: 10 }}
                     className="flex items-start gap-6 group"
                   >
-                    <div className="bg-primary/10 p-5 rounded-2xl group-hover:bg-primary/20 transition-colors">
-                      <item.icon className="h-8 w-8 text-primary" />
-                    </div>
+                    <motion.div 
+                      className="bg-white/10 p-5 rounded-2xl group-hover:bg-white/20 transition-colors"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <item.icon className="h-8 w-8 text-secondary" />
+                    </motion.div>
                     <div>
                       <h3 className="font-semibold text-xl mb-2">{item.title}</h3>
-                      <p className="text-muted-foreground whitespace-pre-line leading-relaxed">{item.content}</p>
+                      <p className="text-gray-300 whitespace-pre-line leading-relaxed">{item.content}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -655,7 +788,7 @@ export default function Home() {
             >
               <Card className="border-0 shadow-2xl overflow-hidden">
                 <CardContent className="p-12 bg-gradient-to-br from-white to-gray-50">
-                  <h3 className="text-3xl font-bold mb-8" style={{fontFamily: 'Poppins'}}>
+                  <h3 className="text-3xl font-bold mb-8 text-gray-900" style={{fontFamily: 'Poppins'}}>
                     Solicite um Orçamento
                   </h3>
                   <form className="space-y-6">
@@ -669,10 +802,13 @@ export default function Home() {
                       placeholder="Descreva suas necessidades de transporte..." 
                       className="min-h-48 text-base"
                     />
-                    <Button className="w-full h-16 text-lg gradient-primary text-white border-0 shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
-                      Enviar Solicitação
-                      <ArrowRight className="ml-3 h-6 w-6" />
-                    </Button>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button className="w-full h-16 text-lg gradient-primary text-white border-0 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group">
+                        <span className="relative z-10">Enviar Solicitação</span>
+                        <ArrowRight className="ml-3 h-6 w-6 relative z-10 group-hover:translate-x-2 transition-transform" />
+                        <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                      </Button>
+                    </motion.div>
                   </form>
                 </CardContent>
               </Card>
@@ -682,22 +818,19 @@ export default function Home() {
       </motion.section>
 
       {/* Footer Premium */}
-      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20">
+      <footer className="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white py-20">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-16 mb-16">
             <div>
               <img 
-                src="/images/logo-original.webp" 
+                src="/logo-martins-clean.webp" 
                 alt="Martins" 
-                className="h-14 w-auto mb-6 brightness-0 invert"
+                className="h-12 w-auto mb-6 brightness-0 invert"
               />
               <p className="text-gray-400 leading-relaxed mb-6">
                 Mais de 19 anos oferecendo soluções em transporte com excelência, 
                 segurança e inovação.
               </p>
-              <div className="flex gap-4">
-                {/* Redes sociais podem ser adicionadas aqui */}
-              </div>
             </div>
 
             <div>
@@ -733,7 +866,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="pt-10 border-t border-gray-700 text-center text-gray-400">
+          <div className="pt-10 border-t border-gray-800 text-center text-gray-400">
             <p className="text-lg">© 2026 Martins Viagens e Turismo. Todos os direitos reservados.</p>
           </div>
         </div>

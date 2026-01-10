@@ -103,3 +103,13 @@
 - [x] Criar design premium e sofisticado baseado em referências
 - [x] Adicionar animações avançadas e efeitos visuais
 - [x] Implementar seções interativas e elementos dinâmicos
+
+- [x] Buscar fotos reais da Martins Viagens e Turismo no Google
+- [x] Adicionar seção de depoimentos de clientes
+- [x] Implementar números animados (contadores)
+- [x] Criar seção "Como Funciona" com timeline
+- [x] Adicionar micro-interações avançadas
+- [x] Melhorar CTAs com efeitos especiais
+
+- [x] Ajustar logo - remover telefone e deixar limpa
+- [x] Melhorar design geral com refinamentos nano banana
