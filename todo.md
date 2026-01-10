@@ -1,0 +1,92 @@
+# Sistema de Gestão de Frota - Martins Viagens e Turismo
+
+## FASE 1: LANDING PAGE INSTITUCIONAL (PRIORIDADE)
+- [x] Configurar tema elegante com cores azul e laranja
+- [x] Criar hero section com imagem de destaque
+- [x] Seção sobre a empresa
+- [x] Seção de serviços (locação de vans, turismo, transporte escolar)
+- [x] Galeria de veículos da frota
+- [x] Seção de parceiros/clientes
+- [x] Formulário de contato integrado
+- [x] Informações de contato e localização
+- [x] Link "Acesso ao Sistema" no header
+- [x] Design responsivo e elegante
+- [x] Footer com redes sociais
+
+## FASE 2: ESTRUTURA DO SISTEMA
+- [ ] Criar estrutura completa do banco de dados
+- [ ] Implementar DashboardLayout para área administrativa
+- [ ] Configurar rotas protegidas com autenticação
+
+## FASE 3: MÓDULO DE VEÍCULOS
+- [ ] Cadastro completo de veículos
+- [ ] Upload e gestão de documentos (IPVA, seguro, licenciamento)
+- [ ] Controle de vencimento de documentos
+- [ ] Listagem e busca de veículos
+- [ ] Edição e exclusão de veículos
+
+## FASE 4: RASTREAMENTO GPS
+- [ ] Integração com Google Maps
+- [ ] Visualização de localização em tempo real
+- [ ] Histórico de rotas e trajetos
+- [ ] Alertas de desvio de rota
+
+## FASE 5: AGENDAMENTO E RESERVAS
+- [ ] Cadastro de viagens/reservas
+- [ ] Seleção de veículo disponível
+- [ ] Seleção de motorista disponível
+- [ ] Cadastro de passageiros
+- [ ] Calendário de agendamentos
+- [ ] Status de viagens
+
+## FASE 6: MANUTENÇÃO
+- [ ] Cadastro de manutenções preventivas
+- [ ] Cadastro de manutenções corretivas
+- [ ] Registro de revisões programadas
+- [ ] Controle de peças utilizadas
+- [ ] Ordens de serviço
+- [ ] Histórico de manutenções
+- [ ] Alertas de manutenção programada
+
+## FASE 7: GESTÃO DE COMBUSTÍVEL
+- [ ] Registro de abastecimentos
+- [ ] Controle de consumo por veículo
+- [ ] Relatórios de eficiência
+- [ ] Gráficos de consumo
+- [ ] Cálculo de média km/litro
+
+## FASE 8: MOTORISTAS
+- [ ] Cadastro de motoristas
+- [ ] Upload de documentos (CNH, ASO)
+- [ ] Controle de vencimento de CNH
+- [ ] Registro de jornada de trabalho
+- [ ] Histórico de multas
+- [ ] Vinculação motorista-veículo
+
+## FASE 9: MÓDULO FINANCEIRO
+- [ ] Contas a pagar
+- [ ] Contas a receber
+- [ ] Faturamento de viagens
+- [ ] Relatórios financeiros
+- [ ] Gráficos de receitas e despesas
+- [ ] Controle de fluxo de caixa
+
+## FASE 10: DASHBOARD ADMINISTRATIVO
+- [ ] Indicadores de desempenho (KPIs)
+- [ ] Custos operacionais
+- [ ] Relatórios gerenciais
+- [ ] Gráficos e estatísticas
+- [ ] Visão geral da frota
+- [ ] Alertas e notificações
+
+## FASE 11: SISTEMA DE NOTIFICAÇÕES
+- [ ] Notificações de vencimento de documentos
+- [ ] Alertas de manutenção programada
+- [ ] Notificações de viagens agendadas
+- [ ] Alertas operacionais
+
+## FASE 12: FINALIZAÇÃO
+- [ ] Testes completos
+- [ ] Correção de bugs
+- [ ] Otimização de performance
+- [ ] Checkpoint final
