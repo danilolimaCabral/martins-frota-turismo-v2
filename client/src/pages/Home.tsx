@@ -53,11 +53,11 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const heroImages = [
+    "/images/beto-carrero.jpg",
+    "/images/foz-iguacu.jpg",
+    "/images/florianopolis.jpg",
     "/images/martins-fleet-real.webp",
     "/images/martins-van-white-real.webp",
-    "/images/martins-bus-real-4.webp",
-    "/images/martins-bus-real-5.webp",
-    "/images/martins-van-real-1.webp",
   ];
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Weather Ticker - Legenda de Clima */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-1.5 overflow-hidden">
-        <div className="flex gap-8 animate-scroll whitespace-nowrap">
+        <div className="flex gap-4 md:gap-8 animate-scroll whitespace-nowrap">
           {[
             { city: "Curitiba", temp: "25°C", icon: "☀️" },
             { city: "Maringá", temp: "28°C", icon: "🌧️" },
@@ -575,21 +575,21 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
             {[
-              "Escola CO2",
-              "EFIT",
-              "Grupo Itaété",
-              "Demia Zenza",
-              "Ótico Pitol",
-              "VR Controls",
-              "ITC Engenharia",
-              "COL Rodas e Pneus",
-              "Nitport",
-              "Empório Dipulo",
-              "Hanser",
-              "Mistral",
-              "MKS Soluções",
-              "Liandra Centro Universitário",
-              "+ 100 empresas"
+              { name: "EFIT", logo: "/images/partners/efit.png" },
+              { name: "Grupo Itaété", logo: "/images/partners/itaete.jpg" },
+              { name: "VR Controls", logo: "/images/partners/vr-controls.png" },
+              { name: "Escola CO2", logo: null },
+              { name: "Demia Zenza", logo: null },
+              { name: "Ótico Pitol", logo: null },
+              { name: "ITC Engenharia", logo: null },
+              { name: "COL Rodas e Pneus", logo: null },
+              { name: "Nitport", logo: null },
+              { name: "Empório Dipulo", logo: null },
+              { name: "Hanser", logo: null },
+              { name: "Mistral", logo: null },
+              { name: "MKS Soluções", logo: null },
+              { name: "Liandra", logo: null },
+              { name: "+ 100 empresas", logo: null }
             ].map((partner, index) => (
               <motion.div
                 key={index}
@@ -601,9 +601,17 @@ export default function Home() {
               >
                 <Card className="w-full h-24 md:h-28 border-border/50 hover:border-primary/50 transition-all hover:shadow-lg">
                   <CardContent className="p-4 flex items-center justify-center h-full">
-                    <span className="text-xs md:text-sm font-semibold text-center text-muted-foreground hover:text-primary transition-colors">
-                      {partner}
-                    </span>
+                    {partner.logo ? (
+                      <img 
+                        src={partner.logo} 
+                        alt={partner.name} 
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    ) : (
+                      <span className="text-xs md:text-sm font-semibold text-center text-muted-foreground hover:text-primary transition-colors">
+                        {partner.name}
+                      </span>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>

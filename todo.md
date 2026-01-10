@@ -148,3 +148,8 @@
 - [ ] Adicionar fotos reais dos ônibus e vans
 - [x] Criar seção de parceiros com logos dos clientes
 - [x] Coletar dados completos do site oficial
+
+## CORREÇÕES CRÍTICAS
+- [x] Corrigir ticker de clima (texto sobreposto e ilegível)
+- [x] Substituir foto da Turquia por destino brasileiro
+- [x] Buscar e adicionar logos reais dos parceiros
