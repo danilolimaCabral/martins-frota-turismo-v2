@@ -70,24 +70,24 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Weather Ticker - Legenda de Clima */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-2 overflow-hidden">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-1.5 overflow-hidden">
         <div className="flex gap-8 animate-scroll whitespace-nowrap">
           {[
-            { city: "Curitiba", temp: "25°C", condition: "☀️ Ensolarado" },
-            { city: "Maringá", temp: "28°C", condition: "🌧️ Chuva" },
-            { city: "Florianópolis", temp: "23°C", condition: "☀️ Ensolarado" },
-            { city: "São Paulo", temp: "22°C", condition: "⛅ Parcialmente Nublado" },
+            { city: "Curitiba", temp: "25°C", icon: "☀️" },
+            { city: "Maringá", temp: "28°C", icon: "🌧️" },
+            { city: "Florianópolis", temp: "23°C", icon: "☀️" },
+            { city: "São Paulo", temp: "22°C", icon: "⛅" },
             // Duplicar para efeito infinito
-            { city: "Curitiba", temp: "25°C", condition: "☀️ Ensolarado" },
-            { city: "Maringá", temp: "28°C", condition: "🌧️ Chuva" },
-            { city: "Florianópolis", temp: "23°C", condition: "☀️ Ensolarado" },
-            { city: "São Paulo", temp: "22°C", condition: "⛅ Parcialmente Nublado" },
+            { city: "Curitiba", temp: "25°C", icon: "☀️" },
+            { city: "Maringá", temp: "28°C", icon: "🌧️" },
+            { city: "Florianópolis", temp: "23°C", icon: "☀️" },
+            { city: "São Paulo", temp: "22°C", icon: "⛅" },
           ].map((weather, index) => (
-            <div key={index} className="flex items-center gap-2 text-sm font-medium">
-              <span className="font-bold">{weather.city}:</span>
+            <div key={index} className="flex items-center gap-1.5 text-xs md:text-sm font-medium">
+              <span className="font-semibold">{weather.city}</span>
               <span>{weather.temp}</span>
-              <span>{weather.condition}</span>
-              <span className="mx-2">|</span>
+              <span>{weather.icon}</span>
+              <span className="mx-1 md:mx-2 text-white/50">|</span>
             </div>
           ))}
         </div>
@@ -98,7 +98,7 @@ export default function Home() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-10 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
+        className="fixed top-8 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
@@ -553,6 +553,57 @@ export default function Home() {
                         <div className="text-sm text-muted-foreground">{testimonial.company}</div>
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Parceiros - Clientes Atendidos */}
+      <motion.section {...fadeInUp} className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{fontFamily: 'Poppins'}}>
+              Nossos <span className="text-gradient">Parceiros</span>
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground">
+              Empresas que confiam em nossos serviços
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
+            {[
+              "Escola CO2",
+              "EFIT",
+              "Grupo Itaété",
+              "Demia Zenza",
+              "Ótico Pitol",
+              "VR Controls",
+              "ITC Engenharia",
+              "COL Rodas e Pneus",
+              "Nitport",
+              "Empório Dipulo",
+              "Hanser",
+              "Mistral",
+              "MKS Soluções",
+              "Liandra Centro Universitário",
+              "+ 100 empresas"
+            ].map((partner, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="flex items-center justify-center"
+              >
+                <Card className="w-full h-24 md:h-28 border-border/50 hover:border-primary/50 transition-all hover:shadow-lg">
+                  <CardContent className="p-4 flex items-center justify-center h-full">
+                    <span className="text-xs md:text-sm font-semibold text-center text-muted-foreground hover:text-primary transition-colors">
+                      {partner}
+                    </span>
                   </CardContent>
                 </Card>
               </motion.div>

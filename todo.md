@@ -141,3 +141,10 @@
 - [ ] Adicionar README.md completo
 - [ ] Push inicial do projeto
 - [ ] Configurar CI/CD (opcional)
+
+## CORREÇÕES URGENTES - LANDING PAGE
+- [x] Arrumar ticker de clima (está bagunçado no mobile)
+- [ ] Melhorar botões de serviços e orçamento
+- [ ] Adicionar fotos reais dos ônibus e vans
+- [x] Criar seção de parceiros com logos dos clientes
+- [x] Coletar dados completos do site oficial
