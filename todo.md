@@ -153,3 +153,8 @@
 - [x] Corrigir ticker de clima (texto sobreposto e ilegível)
 - [x] Substituir foto da Turquia por destino brasileiro
 - [x] Buscar e adicionar logos reais dos parceiros
+
+## NOVAS CORREÇÕES
+- [x] Buscar logos maiores e de melhor qualidade dos parceiros
+- [x] Corrigir ticker de clima no mobile (ainda sobreposto)
+- [x] Aumentar tamanho dos logos dos parceiros

@@ -70,8 +70,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Weather Ticker - Legenda de Clima */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-1.5 overflow-hidden">
-        <div className="flex gap-4 md:gap-8 animate-scroll whitespace-nowrap">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-0.5 md:py-1.5 overflow-hidden">
+        <div className="flex gap-3 md:gap-8 animate-scroll whitespace-nowrap">
           {[
             { city: "Curitiba", temp: "25°C", icon: "☀️" },
             { city: "Maringá", temp: "28°C", icon: "🌧️" },
@@ -83,11 +83,11 @@ export default function Home() {
             { city: "Florianópolis", temp: "23°C", icon: "☀️" },
             { city: "São Paulo", temp: "22°C", icon: "⛅" },
           ].map((weather, index) => (
-            <div key={index} className="flex items-center gap-1.5 text-xs md:text-sm font-medium">
+            <div key={index} className="flex items-center gap-1 md:gap-1.5 text-[10px] md:text-sm font-medium">
               <span className="font-semibold">{weather.city}</span>
               <span>{weather.temp}</span>
               <span>{weather.icon}</span>
-              <span className="mx-1 md:mx-2 text-white/50">|</span>
+              <span className="mx-0.5 md:mx-2 text-white/50">|</span>
             </div>
           ))}
         </div>
@@ -98,7 +98,7 @@ export default function Home() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-8 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
+        className="fixed top-5 md:top-8 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
@@ -599,7 +599,7 @@ export default function Home() {
                 transition={{ delay: index * 0.05 }}
                 className="flex items-center justify-center"
               >
-                <Card className="w-full h-24 md:h-28 border-border/50 hover:border-primary/50 transition-all hover:shadow-lg">
+                <Card className="w-full h-32 md:h-36 border-border/50 hover:border-primary/50 transition-all hover:shadow-lg">
                   <CardContent className="p-4 flex items-center justify-center h-full">
                     {partner.logo ? (
                       <img 
