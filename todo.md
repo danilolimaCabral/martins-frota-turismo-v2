@@ -119,3 +119,12 @@
 - [x] Transformar logo em 3D sem fundo branco
 - [x] Mudar esquema de cores para laranja e azul vibrante moderno
 - [x] Ajustar layout e espaçamentos para mobile
+
+- [x] Usar logo real das vans (não a versão criada)
+- [x] Extrair logo correta das fotos da frota
+
+- [x] Adicionar seção de cidades atendidas (Beto Carrero e outras)
+- [x] Criar banner animado com cidades passando
+
+- [x] Melhorar logo com Nano Banana (remover telefones completamente)
+- [x] Deixar logo moderna e profissional

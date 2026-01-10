@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import Logo3D from "@/components/Logo3D";
+
 import { 
   Bus, 
   Shield, 
@@ -76,7 +76,7 @@ export default function Home() {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
-            <Logo3D className="h-10 md:h-12 w-auto" />
+            <img src="/images/logo-martins-modern.png" alt="Martins Viagens e Turismo" className="h-12 md:h-16 w-auto" />
             
             {/* Desktop Menu */}
             <nav className="hidden lg:flex items-center gap-8">
@@ -512,12 +512,72 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* Cidades Atendidas - Banner Animado */}
+      <motion.section {...fadeInUp} className="py-12 md:py-16 bg-gradient-to-r from-primary to-secondary overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{fontFamily: 'Poppins'}}>
+              Levamos Você a Qualquer Lugar
+            </h3>
+            <p className="text-white/90 text-sm md:text-base">
+              Já atendemos centenas de destinos pelo Brasil
+            </p>
+          </div>
+          
+          <div className="relative">
+            <div className="flex gap-6 animate-scroll">
+              {[
+                "Beto Carrero World",
+                "Curitiba",
+                "São Paulo",
+                "Florianópolis",
+                "Balneário Camboriú",
+                "Foz do Iguaçu",
+                "Gramado",
+                "Canela",
+                "Porto Alegre",
+                "Rio de Janeiro",
+                "Aparecida do Norte",
+                "Holambra",
+                "Campos do Jordão",
+                "Santos",
+                "Guarujá",
+                "Morretes",
+                "Paranaguá",
+                "Ponta Grossa",
+                "Londrina",
+                "Maringá",
+                // Duplicar para efeito infinito
+                "Beto Carrero World",
+                "Curitiba",
+                "São Paulo",
+                "Florianópolis",
+                "Balneário Camboriú",
+                "Foz do Iguaçu",
+                "Gramado",
+                "Canela",
+                "Porto Alegre",
+                "Rio de Janeiro"
+              ].map((city, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/30 text-white font-semibold text-sm md:text-base whitespace-nowrap"
+                >
+                  <MapPin className="inline-block h-4 w-4 mr-2" />
+                  {city}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
       {/* Footer - Mobile Optimized */}
       <footer className="bg-gradient-to-br from-gray-950 to-gray-900 text-white py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12">
             <div>
-              <Logo3D className="h-10 mb-4" />
+              <img src="/images/logo-martins-modern.png" alt="Martins Viagens e Turismo" className="h-12 mb-4" />
               <p className="text-sm text-gray-400">
                 Mais de 19 anos oferecendo soluções em transporte com excelência.
               </p>
