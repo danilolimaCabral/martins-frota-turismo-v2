@@ -22,7 +22,8 @@ import {
   ThumbsUp,
   Quote,
   Menu,
-  X
+  X,
+  Search
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect, useRef } from "react";
@@ -67,16 +68,41 @@ export default function Home() {
   }, [heroImages.length]);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Header Mobile-First */}
-      <motion.header 
+    <div className="min-h-screen bg-background">
+      {/* Weather Ticker - Legenda de Clima */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-2 overflow-hidden">
+        <div className="flex gap-8 animate-scroll whitespace-nowrap">
+          {[
+            { city: "Curitiba", temp: "25°C", condition: "☀️ Ensolarado" },
+            { city: "Maringá", temp: "28°C", condition: "🌧️ Chuva" },
+            { city: "Florianópolis", temp: "23°C", condition: "☀️ Ensolarado" },
+            { city: "São Paulo", temp: "22°C", condition: "⛅ Parcialmente Nublado" },
+            // Duplicar para efeito infinito
+            { city: "Curitiba", temp: "25°C", condition: "☀️ Ensolarado" },
+            { city: "Maringá", temp: "28°C", condition: "🌧️ Chuva" },
+            { city: "Florianópolis", temp: "23°C", condition: "☀️ Ensolarado" },
+            { city: "São Paulo", temp: "22°C", condition: "⛅ Parcialmente Nublado" },
+          ].map((weather, index) => (
+            <div key={index} className="flex items-center gap-2 text-sm font-medium">
+              <span className="font-bold">{weather.city}:</span>
+              <span>{weather.temp}</span>
+              <span>{weather.condition}</span>
+              <span className="mx-2">|</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Header - Mobile Optimized */}
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
+        transition={{ duration: 0.6 }}
+        className="fixed top-10 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
-            <img src="/images/logo-martins-real.png" alt="Martins Viagens e Turismo" className="h-10 md:h-14 w-auto" />
+            <img src="/images/logo-martins-transparent.png" alt="Martins Viagens e Turismo" className="h-10 md:h-14 w-auto" />
             
             {/* Desktop Menu */}
             <nav className="hidden lg:flex items-center gap-8">
@@ -242,6 +268,87 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Seção de Busca de Viagens */}
+      <motion.section {...fadeInUp} className="py-12 md:py-16 bg-white relative -mt-20 z-30">
+        <div className="container mx-auto px-4">
+          <Card className="shadow-2xl border-0 overflow-hidden">
+            <CardContent className="p-6 md:p-10 bg-gradient-to-br from-primary/5 to-secondary/5">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl md:text-4xl font-bold mb-2" style={{fontFamily: 'Poppins'}}>
+                  Planeje Sua <span className="text-gradient">Viagem</span>
+                </h2>
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Solicite um orçamento personalizado em segundos
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                <div className="lg:col-span-1">
+                  <label className="text-sm font-medium mb-2 block">Origem</label>
+                  <select className="w-full h-12 px-4 rounded-lg border border-border bg-white">
+                    <option>Curitiba - PR</option>
+                    <option>Araucária - PR</option>
+                    <option>São José dos Pinhais - PR</option>
+                    <option>Pinhais - PR</option>
+                  </select>
+                </div>
+
+                <div className="lg:col-span-1">
+                  <label className="text-sm font-medium mb-2 block">Destino</label>
+                  <select className="w-full h-12 px-4 rounded-lg border border-border bg-white">
+                    <option>Beto Carrero - SC</option>
+                    <option>Florianópolis - SC</option>
+                    <option>Foz do Iguaçu - PR</option>
+                    <option>Camboriú - SC</option>
+                    <option>São Paulo - SP</option>
+                    <option>Rio de Janeiro - RJ</option>
+                    <option>Gramado - RS</option>
+                    <option>Aparecida - SP</option>
+                  </select>
+                </div>
+
+                <div className="lg:col-span-1">
+                  <label className="text-sm font-medium mb-2 block">Data de Ida</label>
+                  <input type="date" className="w-full h-12 px-4 rounded-lg border border-border bg-white" />
+                </div>
+
+                <div className="lg:col-span-1">
+                  <label className="text-sm font-medium mb-2 block">Passageiros</label>
+                  <select className="w-full h-12 px-4 rounded-lg border border-border bg-white">
+                    <option>1-10 passageiros (Van)</option>
+                    <option>11-20 passageiros (Micro-ônibus)</option>
+                    <option>21-40 passageiros (Ônibus)</option>
+                    <option>40+ passageiros (Ônibus Grande)</option>
+                  </select>
+                </div>
+
+                <div className="lg:col-span-1 flex items-end">
+                  <Button className="w-full h-12 gradient-primary text-white border-0 text-base font-semibold">
+                    <Search className="mr-2 h-5 w-5" />
+                    Buscar Orçamento
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-4 text-xs md:text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                  <span>Orçamento Grátis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                  <span>Resposta em até 2 horas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                  <span>Sem Compromisso</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </motion.section>
 
       {/* Stats Section */}
       <motion.section {...fadeInUp} className="py-16 md:py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
@@ -577,7 +684,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12">
             <div>
-              <img src="/images/logo-martins-real.png" alt="Martins Viagens e Turismo" className="h-10 mb-4" />
+              <img src="/images/logo-martins-transparent.png" alt="Martins Viagens e Turismo" className="h-10 mb-4" />
               <p className="text-sm text-gray-400">
                 Mais de 19 anos oferecendo soluções em transporte com excelência.
               </p>
