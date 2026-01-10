@@ -98,3 +98,8 @@
 - [x] Melhorar layout e animações
 
 - [x] Criar seção de parceiros/clientes atendidos
+
+- [x] Pesquisar sites modernos de transporte e turismo
+- [x] Criar design premium e sofisticado baseado em referências
+- [x] Adicionar animações avançadas e efeitos visuais
+- [x] Implementar seções interativas e elementos dinâmicos
