@@ -16,8 +16,27 @@ import {
   ArrowRight
 } from "lucide-react";
 import { Link } from "wouter";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const heroImages = [
+    "/images/van-1.jpg",
+    "/images/van-2.jpg",
+    "/images/van-3.png",
+    "/images/bus-luxury.jpg",
+    "/images/van-fleet.png",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 4000); // Troca a cada 4 segundos
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header/Navbar */}
@@ -89,12 +108,33 @@ export default function Home() {
             </div>
             
             <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-elegant-lg">
-                <img 
-                  src="/images/van-1.jpg" 
-                  alt="Frota Martins Viagens e Turismo" 
-                  className="w-full h-auto object-cover"
-                />
+              <div className="relative rounded-2xl overflow-hidden shadow-elegant-lg h-[500px]">
+                {heroImages.map((image, index) => (
+                  <img
+                    key={image}
+                    src={image}
+                    alt={`Frota Martins Viagens e Turismo ${index + 1}`}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                      index === currentImageIndex ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                ))}
+                
+                {/* Indicadores */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {heroImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === currentImageIndex
+                          ? "bg-white w-8"
+                          : "bg-white/50 hover:bg-white/75"
+                      }`}
+                      aria-label={`Ir para imagem ${index + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
               <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-elegant">
                 <div className="flex items-center gap-3">

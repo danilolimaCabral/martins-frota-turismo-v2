@@ -90,3 +90,5 @@
 - [ ] Correção de bugs
 - [ ] Otimização de performance
 - [ ] Checkpoint final
+
+- [x] Adicionar carrossel/banner rotativo com fotos da frota
