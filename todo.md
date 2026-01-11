@@ -62,3 +62,38 @@
 ---
 
 **Sistema pronto para uso!**
+
+
+---
+
+## 🧪 TESTES E VALIDAÇÃO
+
+### Fase 1: Criar Usuários Adicionais
+- [x] Criar usuário admin adicional
+- [x] Criar usuários mecânicos (2)
+- [x] Criar usuário gestor financeiro
+- [ ] Documentar todas as credenciais
+
+### Fase 2: Testar Check-list
+- [ ] Testar criação de template via web
+- [ ] Testar duplicação de template
+- [ ] Testar edição de itens
+- [ ] Testar exclusão de template
+
+### Fase 3: Testar Manutenção
+- [ ] Testar criação manual de OS
+- [ ] Testar criação automática via check-list
+- [ ] Testar atribuição de mecânico
+- [ ] Testar conclusão de OS
+
+### Fase 4: Testar Estoque
+- [ ] Testar cadastro de peças
+- [ ] Testar movimentação de estoque
+- [ ] Testar alertas de estoque baixo
+- [ ] Testar integração com OS
+
+### Fase 5: Testar Financeiro
+- [ ] Testar geração automática de conta a pagar
+- [ ] Testar relatórios de custos
+- [ ] Testar dashboard de manutenção
+- [ ] Testar alertas preventivos

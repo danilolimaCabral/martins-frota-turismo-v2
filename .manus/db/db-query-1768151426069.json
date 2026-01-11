@@ -1,0 +1,66 @@
+{
+  "query": "\n-- Criar admin adicional\nINSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt)\nVALUES ('carlos.admin', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Carlos Admin', 'carlos@martinsturismo.com', 'admin', TRUE, NOW(), NOW());\n\n-- Criar mecânicos\nINSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt)\nVALUES \n('roberto.mecanico', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Roberto Mecânico', 'roberto@martinsturismo.com', 'funcionario', TRUE, NOW(), NOW()),\n('fernando.mecanico', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Fernando Mecânico', 'fernando@martinsturismo.com', 'funcionario', TRUE, NOW(), NOW());\n\n-- Criar gestor financeiro\nINSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt)\nVALUES ('ana.financeiro', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Ana Financeiro', 'ana@martinsturismo.com', 'admin', TRUE, NOW(), NOW());\n\n-- Listar todos os usuários\nSELECT id, username, name, email, role FROM users ORDER BY id;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute \n-- Criar admin adicional\nINSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt)\nVALUES ('carlos.admin', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Carlos Admin', 'carlos@martinsturismo.com', 'admin', TRUE, NOW(), NOW());\n\n-- Criar mecânicos\nINSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt)\nVALUES \n('roberto.mecanico', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Roberto Mecânico', 'roberto@martinsturismo.com', 'funcionario', TRUE, NOW(), NOW()),\n('fernando.mecanico', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Fernando Mecânico', 'fernando@martinsturismo.com', 'funcionario', TRUE, NOW(), NOW());\n\n-- Criar gestor financeiro\nINSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt)\nVALUES ('ana.financeiro', '$2b$10$rZ8qH5vGxKjYxZ5vGxKjYuK5vGxKjYxZ5vGxKjYxZ5vGxKjYxZ5vG', 'Ana Financeiro', 'ana@martinsturismo.com', 'admin', TRUE, NOW(), NOW());\n\n-- Listar todos os usuários\nSELECT id, username, name, email, role FROM users ORDER BY id;\n",
+  "rows": [
+    {
+      "id": "1",
+      "username": "admin",
+      "name": "Administrador",
+      "email": "admin@martinsturismo.com.br",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "joao.silva",
+      "name": "João Silva",
+      "email": "joao.silva@martinsturismo.com.br",
+      "role": "motorista"
+    },
+    {
+      "id": "3",
+      "username": "maria.santos",
+      "name": "Maria Santos",
+      "email": "maria.santos@martinsturismo.com.br",
+      "role": "motorista"
+    },
+    {
+      "id": "4",
+      "username": "pedro.costa",
+      "name": "Pedro Costa",
+      "email": "pedro.costa@martinsturismo.com.br",
+      "role": "motorista"
+    },
+    {
+      "id": "30001",
+      "username": "carlos.admin",
+      "name": "Carlos Admin",
+      "email": "carlos@martinsturismo.com",
+      "role": "admin"
+    },
+    {
+      "id": "30002",
+      "username": "roberto.mecanico",
+      "name": "Roberto Mecânico",
+      "email": "roberto@martinsturismo.com",
+      "role": "funcionario"
+    },
+    {
+      "id": "30003",
+      "username": "fernando.mecanico",
+      "name": "Fernando Mecânico",
+      "email": "fernando@martinsturismo.com",
+      "role": "funcionario"
+    },
+    {
+      "id": "30004",
+      "username": "ana.financeiro",
+      "name": "Ana Financeiro",
+      "email": "ana@martinsturismo.com",
+      "role": "admin"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tname\temail\trole\n1\tadmin\tAdministrador\tadmin@martinsturismo.com.br\tadmin\n2\tjoao.silva\tJoão Silva\tjoao.silva@martinsturismo.com.br\tmotorista\n3\tmaria.santos\tMaria Santos\tmaria.santos@martinsturismo.com.br\tmotorista\n4\tpedro.costa\tPedro Costa\tpedro.costa@martinsturismo.com.br\tmotorista\n30001\tcarlos.admin\tCarlos Admin\tcarlos@martinsturismo.com\tadmin\n30002\troberto.mecanico\tRoberto Mecânico\troberto@martinsturismo.com\tfuncionario\n30003\tfernando.mecanico\tFernando Mecânico\tfernando@martinsturismo.com\tfuncionario\n30004\tana.financeiro\tAna Financeiro\tana@martinsturismo.com\tadmin\n",
+  "stderr": "",
+  "execution_time_ms": 88
+}
