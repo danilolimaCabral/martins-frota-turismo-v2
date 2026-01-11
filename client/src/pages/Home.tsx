@@ -986,27 +986,22 @@ Aguardo retorno!`;
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 max-w-4xl mx-auto">
             {[
               { 
                 name: "ANTT", 
                 logo: "/certificacoes/antt.jpg",
-                description: "Agência Nacional de Transportes Terrestres"
+                description: "Agência Nacional de Transportes Terrestres (Federal)"
               },
               { 
-                name: "ISO 9001", 
-                logo: "/certificacoes/iso9001.png",
-                description: "Certificação Internacional de Qualidade"
+                name: "DER", 
+                logo: "/certificacoes/der.jpg",
+                description: "Departamento de Estradas de Rodagem (Estadual)"
               },
               { 
-                name: "Selo de Qualidade", 
-                logo: "/certificacoes/selo-qualidade.jpeg",
-                description: "Ministério do Turismo"
-              },
-              { 
-                name: "ABRATI", 
-                logo: "/certificacoes/abrati.jpeg",
-                description: "Associação Brasileira de Apoio"
+                name: "Cadastur", 
+                logo: "/certificacoes/cadastur.png",
+                description: "Cadastro de Prestadores de Serviços Turísticos"
               },
             ].map((cert, index) => (
               <motion.div

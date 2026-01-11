@@ -54,10 +54,13 @@ export const vehicles = mysqlTable("vehicles", {
   chassis: varchar("chassis", { length: 100 }), // Chassi
   renavam: varchar("renavam", { length: 20 }),
   
-  // Documentação
-  ipvaExpiry: date("ipvaExpiry"), // Vencimento IPVA
-  insuranceExpiry: date("insuranceExpiry"), // Vencimento Seguro
-  licenseExpiry: date("licenseExpiry"), // Vencimento Licenciamento
+  // Certificados e Registros
+  anttNumber: varchar("anttNumber", { length: 50 }), // Número ANTT (Federal)
+  anttExpiry: date("anttExpiry"), // Vencimento ANTT
+  derNumber: varchar("derNumber", { length: 50 }), // Número DER (Estadual)
+  derExpiry: date("derExpiry"), // Vencimento DER
+  cadasturNumber: varchar("cadasturNumber", { length: 50 }), // Número Cadastur
+  cadasturExpiry: date("cadasturExpiry"), // Vencimento Cadastur
   
   // Status
   status: mysqlEnum("status", ["ativo", "manutencao", "inativo"]).default("ativo").notNull(),
