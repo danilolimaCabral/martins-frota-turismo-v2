@@ -666,19 +666,19 @@ Aguardo retorno!`;
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                image: "/images/martins-van-white-real.webp",
+                image: "/frota/van-executiva-1.jpg",
                 title: "Transporte Corporativo",
                 description: "Transporte de funcionários com rotas personalizadas.",
                 features: ["Rotas customizadas", "Rastreamento GPS", "Motoristas certificados"]
               },
               {
-                image: "/images/martins-bus-real-5.webp",
+                image: "/frota/onibus-executivo-1.jpg",
                 title: "Viagens e Turismo",
                 description: "Excursões e viagens organizadas com excelência.",
                 features: ["Roteiros personalizados", "Guia bilíngue", "Veículos de luxo"]
               },
               {
-                image: "/images/martins-fleet-real.webp",
+                image: "/frota/van-executiva-3.jpg",
                 title: "Locação de Veículos",
                 description: "Aluguel de vans e micro-ônibus para eventos.",
                 features: ["Diversos modelos", "Com ou sem motorista", "Suporte 24/7"]

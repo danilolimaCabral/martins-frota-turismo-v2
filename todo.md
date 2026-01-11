@@ -391,3 +391,11 @@
 - [x] Cards coloridos por status (pendente, aprovada, recusada)
 
 - [ ] Gerar apresentação Nano Banana com todas as funcionalidades criadas
+
+
+## APRESENTAÇÃO E FOTOS (SOLICITADO)
+- [x] Preparar conteúdo detalhado da apresentação Nano Banana
+- [x] Gerar apresentação Nano Banana com todas as funcionalidades (19 slides gerados)
+- [x] Buscar fotos profissionais de ônibus, vans e carros
+- [x] Substituir imagens placeholder por fotos reais da frota (7 fotos adicionadas)
+- [x] Atualizar seção de veículos no site com fotos reais
