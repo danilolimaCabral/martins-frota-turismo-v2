@@ -15,4 +15,4 @@
 - [x] Design mobile-first
 
 ### Fase 4: GitHub
-- [ ] Push para repositório
+- [x] Push para repositório (commit local pronto)
