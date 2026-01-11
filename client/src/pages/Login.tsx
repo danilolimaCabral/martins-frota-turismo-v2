@@ -1,20 +1,16 @@
-import { useState, FormEvent } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import React from "react";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!username || !password) {
-      setError("Por favor, preencha todos os campos");
+      setError("Preencha todos os campos");
       return;
     }
     
@@ -22,93 +18,134 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/login", {
+      const res = await fetch("/api/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok || !data.success) {
+      if (!data.success) {
         setError(data.error || "Erro ao fazer login");
         setLoading(false);
         return;
       }
 
-      // Salvar token e user no localStorage
       localStorage.setItem("martins_auth_token", data.token);
       localStorage.setItem("martins_user_data", JSON.stringify(data.user));
       
-      // Redirecionar para admin
       window.location.href = "/admin";
     } catch (err: any) {
-      setError(err.message || "Erro ao conectar com o servidor");
+      setError("Erro ao conectar com servidor");
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-orange-50 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex justify-center mb-4">
-            <img
-              src="/logo-martins-clean.webp"
-              alt="Martins Viagens e Turismo"
-              className="h-16 object-contain"
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "linear-gradient(135deg, #EBF4FF 0%, #FFE5D9 100%)",
+      padding: "1rem"
+    }}>
+      <div style={{
+        background: "white",
+        borderRadius: "12px",
+        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        padding: "2rem",
+        width: "100%",
+        maxWidth: "400px"
+      }}>
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <img
+            src="/logo-martins-clean.webp"
+            alt="Martins"
+            style={{ height: "64px", marginBottom: "1rem" }}
+          />
+          <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
+            Sistema Martins
+          </h1>
+          <p style={{ color: "#666" }}>
+            Entre com suas credenciais
+          </p>
+        </div>
+
+        <form onSubmit={handleLogin}>
+          <div style={{ marginBottom: "1rem" }}>
+            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+              Usuário
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Digite seu usuário"
+              disabled={loading}
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                border: "1px solid #ddd",
+                borderRadius: "6px",
+                fontSize: "1rem"
+              }}
             />
           </div>
-          <CardTitle className="text-2xl text-center">Sistema Martins</CardTitle>
-          <CardDescription className="text-center">
-            Entre com suas credenciais para acessar o sistema
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="username">Usuário</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="Digite seu usuário"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                autoComplete="username"
-                disabled={loading}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Digite sua senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-                disabled={loading}
-              />
-            </div>
-            {error && (
-              <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
-                {error}
-              </div>
-            )}
-            <Button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700"
+
+          <div style={{ marginBottom: "1rem" }}>
+            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
+              Senha
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Digite sua senha"
               disabled={loading}
-            >
-              {loading ? "Entrando..." : "Entrar"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              style={{
+                width: "100%",
+                padding: "0.75rem",
+                border: "1px solid #ddd",
+                borderRadius: "6px",
+                fontSize: "1rem"
+              }}
+            />
+          </div>
+
+          {error && (
+            <div style={{
+              background: "#FEE2E2",
+              color: "#DC2626",
+              padding: "0.75rem",
+              borderRadius: "6px",
+              marginBottom: "1rem",
+              fontSize: "0.875rem"
+            }}>
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: "100%",
+              padding: "0.75rem",
+              background: loading ? "#93C5FD" : "#2563EB",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              fontSize: "1rem",
+              fontWeight: "500",
+              cursor: loading ? "not-allowed" : "pointer"
+            }}
+          >
+            {loading ? "Entrando..." : "Entrar"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

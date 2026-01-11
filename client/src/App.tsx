@@ -5,7 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+// import Login from "./pages/Login"; // Usando HTML puro em /login-test.html
 import Funcionario from "./pages/Funcionario";
 import Admin from "./pages/Admin";
 import AdminVeiculos from "./pages/AdminVeiculos";
@@ -29,7 +29,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/login" component={Login} />
+      <Route path="/login">{() => { window.location.href = "/login-test.html"; return null; }}</Route>
       <Route path="/funcionario" component={Funcionario} />
         <Route path="/admin">
           <ProtectedRoute requireAdmin>
