@@ -441,3 +441,51 @@ export const blogPosts = mysqlTable("blogPosts", {
 
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = typeof blogPosts.$inferInsert;
+
+// ==================== ROTEIRIZADOR INTELIGENTE ====================
+
+export const rotas = mysqlTable("rotas", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  empresaCliente: varchar("empresa_cliente", { length: 255 }).notNull(),
+  dataViagem: date("data_viagem"),
+  horarioSaida: varchar("horario_saida", { length: 10 }),
+  
+  // Resultados do processamento
+  status: mysqlEnum("status", ["rascunho", "processando", "concluida", "arquivada"]).default("rascunho").notNull(),
+  distanciaTotalKm: decimal("distancia_total_km", { precision: 10, scale: 2 }),
+  tempoTotalMin: int("tempo_total_min"),
+  veiculoSugerido: varchar("veiculo_sugerido", { length: 50 }),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Rota = typeof rotas.$inferSelect;
+export type InsertRota = typeof rotas.$inferInsert;
+
+export const passageirosRota = mysqlTable("passageiros_rota", {
+  id: int("id").autoincrement().primaryKey(),
+  rotaId: int("rota_id").references(() => rotas.id, { onDelete: "cascade" }).notNull(),
+  
+  // Dados do passageiro
+  nome: varchar("nome", { length: 255 }).notNull(),
+  endereco: text("endereco").notNull(),
+  telefone: varchar("telefone", { length: 20 }),
+  
+  // Geocodificação
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  
+  // Otimização de rota
+  pontoEmbarqueSugerido: text("ponto_embarque_sugerido"),
+  ordemColeta: int("ordem_coleta"),
+  horarioEstimado: varchar("horario_estimado", { length: 10 }),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type PassageiroRota = typeof passageirosRota.$inferSelect;
+export type InsertPassageiroRota = typeof passageirosRota.$inferInsert;

@@ -1,80 +1,68 @@
 # Martins Turismo - TODO
 
-## TESTES E CORREÇÕES DA LANDING PAGE - PRIORIDADE MÁXIMA
+## PRIORIDADE MÁXIMA: ROTEIRIZADOR INTELIGENTE
 
-### 1. Testar Todos os Botões e Links
-- [x] Testar botão "Solicitar Orçamento" (hero section) - Conectado com backend
-- [ ] Testar botão "Sistema" (header)
-- [ ] Testar links do menu (Início, Serviços, Frota, Depoimentos, Contato, Blog)
-- [ ] Testar botão de telefone "(41) 99102-1445"
-- [ ] Testar botões "Saiba Mais" dos serviços
-- [ ] Testar navegação do carrossel de imagens
-- [ ] Testar links do footer
+### Funcionalidade Principal
+O roteirizador é o "tendão de Aquiles" do negócio - ferramenta essencial para fretamento corporativo que:
+1. Recebe planilha Excel com lista de funcionários + endereços
+2. Calcula automaticamente a rota mais econômica
+3. Sugere pontos de embarque otimizados
+4. Reduz custos e tempo de deslocamento
 
-### 2. Formulário de Orçamento (Hero Section)
-- [x] Criar tabela `orcamentos` no banco de dados
-- [x] Criar procedure tRPC para salvar orçamento (5 procedures: create, list, updateStatus, getById, delete)
-- [x] Conectar formulário com backend (salva no banco + abre WhatsApp)
-- [x] Adicionar validações (origem, destino, data, passageiros)
-- [x] Implementar feedback visual (loading, sucesso, erro com toasts)
-- [x] Testar envio de orçamento (funcional - validações OK, salva no banco, abre WhatsApp)
+### Implementação
+- [x] Criar tabela `rotas` no banco (id, nome, empresa_cliente, data_criacao, status)
+- [x] Criar tabela `passageiros_rota` (id, rota_id, nome, endereco, lat, lng, ponto_embarque_sugerido, ordem_coleta)
+- [x] Criar procedure tRPC para upload de planilha Excel (processarPlanilha)
+- [x] Implementar parser de Excel (biblioteca xlsx instalada)
+- [x] Criar 7 procedures tRPC (create, list, getById, addPassageiro, processarPlanilha, delete, deletePassageiro)
+- [ ] Integrar Google Maps Geocoding API (converter endereços em coordenadas) - TODO
+- [ ] Integrar Google Maps Directions API (calcular rotas otimizadas) - TODO
+- [ ] Criar algoritmo de clusterização para sugerir pontos de embarque - TODO
+- [ ] Implementar cálculo de rota mais econômica (TSP - Traveling Salesman Problem simplificado) - TODO
+- [ ] Criar página /admin/roteirizador com interface drag-and-drop - TODO
+- [ ] Adicionar visualização de mapa com marcadores e rota - TODO
+- [ ] Implementar exportação de resultado (PDF com endereços e horários) - TODO
+- [ ] Testar com dados reais - TODO
 
-### 3. Formulário de Contato
-- [x] Criar tabela `contatos` no banco de dados
-- [x] Criar procedure tRPC para salvar contato (5 procedures: create, list, updateStatus, getById, delete)
-- [x] Conectar formulário com backend (limpa formulário após envio)
-- [x] Adicionar validações (nome, email, telefone, mensagem)
-- [x] Implementar feedback visual (loading, sucesso, erro com toasts)
-- [x] Testar envio de mensagem (funcional - validações OK, limpa formulário)
+---
 
-### 4. Roteirização
-- [ ] Verificar se funcionalidade de roteirização existe
-- [ ] Testar busca de rotas
-- [ ] Corrigir se necessário
+## AJUSTES SISTEMA ATUAL
 
-### 5. Funcionalidades Gerais
-- [ ] Verificar responsividade mobile
-- [ ] Testar menu hamburguer (mobile)
-- [ ] Verificar scroll suave para seções
-- [ ] Testar todos os CTAs (Call-to-Actions)
+### Orçamentos
+- [x] Formulário de orçamento funcional (apenas coleta dados)
+- [x] Tabela administrativa para visualizar solicitações
+- [x] NÃO calcular preço automático (cliente faz manualmente)
+- [ ] Simplificar painel AdminOrcamentos (remover cálculos automáticos)
 
-## CONCLUÍDO ✅
+### Rastreamento Life
+- [x] Sistema simulado funcionando (60 veículos, Google Maps)
+- [ ] Aguardar contato da Life para integração real
+- [ ] Documentar requisitos de API quando disponível
 
-### Blog
-- [x] Criar tabela blog_posts no banco de dados
-- [x] Popular blog com 8 artigos reais
-- [x] Interface administrativa completa
+---
 
-### API de Clima
-- [x] Integrar Open-Meteo API
-- [x] Ticker funcionando perfeitamente
+## FUNCIONALIDADES COMPLETAS ✅
 
-### Layout e Design
-- [x] Corrigir sobreposição do ticker
-- [x] Trocar cores para laranja
-- [x] Ajustar responsividade geral
+### Landing Page
+- [x] Ticker de clima com API Open-Meteo
+- [x] Formulário de orçamento (salva no banco + WhatsApp)
+- [x] Formulário de contato (salva no banco)
+- [x] Roteirização básica (cálculo de distância e custo)
+- [x] Blog com 8 artigos completos
+- [x] Design responsivo laranja
+
+### Área Administrativa
+- [x] Dashboard com KPIs
+- [x] Painel de orçamentos (/admin/orcamentos)
+- [x] Painel de blog (/admin/blog)
+- [x] Rastreamento simulado (/rastreamento)
+- [x] Gestão de veículos, motoristas, viagens, despesas
+
+### Backend
+- [x] 10 routers tRPC funcionais
+- [x] Tabelas: users, vehicles, drivers, trips, expenses, blogPosts, orcamentos, contatos
+- [x] API de clima integrada
+- [x] Notificações ao proprietário
 
 ### GitHub
 - [x] Repositório: https://github.com/danilolimaCabral/martins-turismo
-
-
-## PAINEL ADMINISTRATIVO DE ORÇAMENTOS
-- [x] Criar página AdminOrcamentos.tsx (completa com 300+ linhas)
-- [x] Implementar listagem de orçamentos com paginação (tabela responsiva)
-- [x] Adicionar filtros por status (pendente, em análise, aprovado, recusado)
-- [x] Implementar ações de gerenciamento (visualizar detalhes em dialog, alterar status inline, deletar com confirmação)
-- [x] Adicionar rota /admin/orcamentos no App.tsx
-- [x] Adicionar link no menu administrativo (botões Orçamentos e Blog no dashboard)
-- [ ] Testar todas as funcionalidades (aguardando teste final)
-
-
-## RASTREAMENTO DA FROTA - IMPLEMENTAÇÃO COMPLETA
-- [x] Analisar página Rastreamento.tsx existente (302 linhas, totalmente funcional)
-- [x] Verificar APIs disponíveis no backend (usando dados simulados com 60 veículos)
-- [x] Implementar mapa com localização em tempo real dos veículos (Google Maps integrado)
-- [x] Adicionar marcadores para cada veículo ativo (marcadores coloridos por status)
-- [x] Implementar painel lateral com lista de veículos (sidebar com scroll)
-- [x] Adicionar filtros por status (em viagem, parado, manutenção, alerta) e tipo (onibus, van, carro)
-- [x] Implementar histórico de rotas (atualização a cada 5 segundos)
-- [x] Adicionar informações detalhadas de cada veículo (motorista, destino, velocidade, placa, última atualização)
-- [x] Testar todas as funcionalidades (100% funcional)
