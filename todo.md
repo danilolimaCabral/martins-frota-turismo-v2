@@ -430,3 +430,9 @@
 - [ ] Adicionar cards com totalizadores
 - [ ] Criar função de exportação PDF
 - [ ] Criar função de exportação Excel
+
+
+## CORREÇÃO TICKER MOBILE (URGENTE) ✅
+- [x] Corrigir z-index do ticker para não sobrepor conteúdo (z-30 no ticker, z-40 no header)
+- [x] Ajustar espaçamento no mobile (top-8 no header para compensar ticker)
+- [x] Melhorar responsividade do ticker
