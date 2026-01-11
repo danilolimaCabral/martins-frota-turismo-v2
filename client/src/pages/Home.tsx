@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect, useRef } from "react";
+import { trpc } from "@/lib/trpc";
 import { motion, useInView } from "framer-motion";
 import CountUp from "react-countup";
 
@@ -51,6 +52,11 @@ function AnimatedNumber({ end, suffix = "" }: { end: number; suffix?: string }) 
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Buscar dados de clima real
+  const { data: weatherData } = trpc.weather.getWeather.useQuery(undefined, {
+    refetchInterval: 10 * 60 * 1000, // Atualizar a cada 10 minutos
+  });
   
   // Estado do formulário de busca
   const [searchForm, setSearchForm] = useState({
@@ -193,45 +199,93 @@ Aguardo retorno!`;
       <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-2.5 overflow-hidden">
         <div className="flex animate-scroll">
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
-            {[
-              { city: "Curitiba", temp: "22°C", condition: "☀️ Ensolarado", day: "Hoje" },
-              { city: "Araucária", temp: "21°C", condition: "☀️ Ensolarado", day: "Hoje" },
-              { city: "Curitiba", temp: "24°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
-              { city: "Araucária", temp: "23°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
-              { city: "Curitiba", temp: "20°C", condition: "🌧️ Chuva", day: "Terça" },
-              { city: "Araucária", temp: "19°C", condition: "🌧️ Chuva", day: "Terça" },
-              { city: "Curitiba", temp: "18°C", condition: "☁️ Nublado", day: "Quarta" },
-              { city: "Araucária", temp: "17°C", condition: "☁️ Nublado", day: "Quarta" },
-            ].map((weather, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <span className="font-bold">{weather.city}</span>
-                <span>•</span>
-                <span className="text-lg">{weather.condition}</span>
-                <span className="font-semibold">{weather.temp}</span>
-                <span className="text-xs opacity-80">({weather.day})</span>
-              </div>
-            ))}
+            {weatherData ? (
+              // Dados reais da API
+              [
+                // Curitiba - Atual
+                { city: weatherData.curitiba.city, temp: `${weatherData.curitiba.current.temperature}°C`, condition: `${weatherData.curitiba.current.icon} ${weatherData.curitiba.current.description}`, day: "Agora" },
+                // Araucária - Atual
+                { city: weatherData.araucaria.city, temp: `${weatherData.araucaria.current.temperature}°C`, condition: `${weatherData.araucaria.current.icon} ${weatherData.araucaria.current.description}`, day: "Agora" },
+                // Previsões de Curitiba
+                ...weatherData.curitiba.forecast.map((f: any) => ({
+                  city: weatherData.curitiba.city,
+                  temp: `${f.maxTemp}°C`,
+                  condition: `${f.icon} ${f.description}`,
+                  day: f.day
+                })),
+                // Previsões de Araucária
+                ...weatherData.araucaria.forecast.map((f: any) => ({
+                  city: weatherData.araucaria.city,
+                  temp: `${f.maxTemp}°C`,
+                  condition: `${f.icon} ${f.description}`,
+                  day: f.day
+                })),
+              ].map((weather, index) => (
+                <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
+                  <span className="font-bold">{weather.city}</span>
+                  <span>•</span>
+                  <span className="text-lg">{weather.condition}</span>
+                  <span className="font-semibold">{weather.temp}</span>
+                  <span className="text-xs opacity-80">({weather.day})</span>
+                </div>
+              ))
+            ) : (
+              // Dados de fallback enquanto carrega
+              [
+                { city: "Curitiba", temp: "--°C", condition: "⏳ Carregando...", day: "Hoje" },
+                { city: "Araucária", temp: "--°C", condition: "⏳ Carregando...", day: "Hoje" },
+              ].map((weather, index) => (
+                <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
+                  <span className="font-bold">{weather.city}</span>
+                  <span>•</span>
+                  <span className="text-lg">{weather.condition}</span>
+                  <span className="font-semibold">{weather.temp}</span>
+                  <span className="text-xs opacity-80">({weather.day})</span>
+                </div>
+              ))
+            )}
           </div>
           {/* Duplicar para efeito de loop infinito */}
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
-            {[
-              { city: "Curitiba", temp: "22°C", condition: "☀️ Ensolarado", day: "Hoje" },
-              { city: "Araucária", temp: "21°C", condition: "☀️ Ensolarado", day: "Hoje" },
-              { city: "Curitiba", temp: "24°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
-              { city: "Araucária", temp: "23°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
-              { city: "Curitiba", temp: "20°C", condition: "🌧️ Chuva", day: "Terça" },
-              { city: "Araucária", temp: "19°C", condition: "🌧️ Chuva", day: "Terça" },
-              { city: "Curitiba", temp: "18°C", condition: "☁️ Nublado", day: "Quarta" },
-              { city: "Araucária", temp: "17°C", condition: "☁️ Nublado", day: "Quarta" },
-            ].map((weather, index) => (
-              <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <span className="font-bold">{weather.city}</span>
-                <span>•</span>
-                <span className="text-lg">{weather.condition}</span>
-                <span className="font-semibold">{weather.temp}</span>
-                <span className="text-xs opacity-80">({weather.day})</span>
-              </div>
-            ))}
+            {weatherData ? (
+              [
+                { city: weatherData.curitiba.city, temp: `${weatherData.curitiba.current.temperature}°C`, condition: `${weatherData.curitiba.current.icon} ${weatherData.curitiba.current.description}`, day: "Agora" },
+                { city: weatherData.araucaria.city, temp: `${weatherData.araucaria.current.temperature}°C`, condition: `${weatherData.araucaria.current.icon} ${weatherData.araucaria.current.description}`, day: "Agora" },
+                ...weatherData.curitiba.forecast.map((f: any) => ({
+                  city: weatherData.curitiba.city,
+                  temp: `${f.maxTemp}°C`,
+                  condition: `${f.icon} ${f.description}`,
+                  day: f.day
+                })),
+                ...weatherData.araucaria.forecast.map((f: any) => ({
+                  city: weatherData.araucaria.city,
+                  temp: `${f.maxTemp}°C`,
+                  condition: `${f.icon} ${f.description}`,
+                  day: f.day
+                })),
+              ].map((weather, index) => (
+                <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
+                  <span className="font-bold">{weather.city}</span>
+                  <span>•</span>
+                  <span className="text-lg">{weather.condition}</span>
+                  <span className="font-semibold">{weather.temp}</span>
+                  <span className="text-xs opacity-80">({weather.day})</span>
+                </div>
+              ))
+            ) : (
+              [
+                { city: "Curitiba", temp: "--°C", condition: "⏳ Carregando...", day: "Hoje" },
+                { city: "Araucária", temp: "--°C", condition: "⏳ Carregando...", day: "Hoje" },
+              ].map((weather, index) => (
+                <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
+                  <span className="font-bold">{weather.city}</span>
+                  <span>•</span>
+                  <span className="text-lg">{weather.condition}</span>
+                  <span className="font-semibold">{weather.temp}</span>
+                  <span className="text-xs opacity-80">({weather.day})</span>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

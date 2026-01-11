@@ -98,24 +98,13 @@ export const authRouter = router({
 
   /**
    * Buscar usuário atual pelo token
+   * Retorna null se não autenticado (para compatibilidade com useAuth)
    */
   me: publicProcedure
-    .input(
-      z.object({
-        userId: z.number(),
-      })
-    )
-    .query(async ({ input }) => {
-      const user = await getUserById(input.userId);
-
-      if (!user) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Usuário não encontrado",
-        });
-      }
-
-      return user;
+    .query(async () => {
+      // Por enquanto retorna null - implementar autenticação via contexto futuramente
+      // TODO: Implementar verificação de token JWT no contexto
+      return null;
     }),
 
   /**
