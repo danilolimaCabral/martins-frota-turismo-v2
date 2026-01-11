@@ -251,3 +251,40 @@
 - [x] Verificar se servidor está respondendo - OK
 - [x] Sistema precisa ser publicado para funcionar na URL manus.space
 - [ ] Publicar sistema via UI
+
+---
+
+## 🚀 MELHORIAS SOLICITADAS
+
+### 1. Popular Banco de Dados
+- [ ] Criar script de seed com dados de exemplo
+- [ ] Adicionar 5 veículos (diferentes tipos)
+- [ ] Adicionar 3 motoristas
+- [ ] Adicionar 10 viagens
+- [ ] Executar seed
+
+### 2. Configurar Domínio Personalizado
+- [ ] Documentar processo de configuração
+- [ ] Criar guia passo a passo
+
+### 3. Criar Usuários Adicionais
+- [ ] Implementar página de gestão de usuários
+- [ ] Adicionar funcionalidade de criar usuários
+- [ ] Adicionar sistema de permissões por role
+- [ ] Criar usuários de exemplo (gerente, supervisor, motorista)
+
+---
+
+## 📦 GITHUB E RAILWAY
+
+### GitHub
+- [ ] Criar repositório no GitHub (usar interface do Manus: Settings → GitHub)
+- [x] Configurar .gitignore
+- [ ] Fazer commit inicial (automático via Manus)
+- [ ] Push para GitHub (automático via Manus)
+
+### Railway
+- [x] Criar railway.json
+- [x] Configurar Procfile
+- [x] Documentar variáveis de ambiente
+- [x] Criar guia de deploy (GUIA_DEPLOY_RAILWAY.md)
