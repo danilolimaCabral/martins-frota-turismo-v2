@@ -1,0 +1,9 @@
+{
+  "query": "CREATE UNIQUE INDEX idx_username ON users(username);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute CREATE UNIQUE INDEX idx_username ON users(username);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 503
+}

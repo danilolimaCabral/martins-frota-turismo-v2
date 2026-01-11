@@ -158,3 +158,51 @@
 - [x] Buscar logos maiores e de melhor qualidade dos parceiros
 - [x] Corrigir ticker de clima no mobile (ainda sobreposto)
 - [x] Aumentar tamanho dos logos dos parceiros
+
+## FASE ATUAL: IMPLEMENTAÇÕES PRINCIPAIS
+
+### 1. ESTRUTURA DO BANCO DE DADOS ✅
+- [x] Criar tabela de usuários com hash de senha (bcrypt)
+- [x] Criar tabela de veículos (frota)
+- [x] Criar tabela de motoristas
+- [x] Criar tabela de agendamentos/reservas
+- [x] Criar tabela de viagens
+- [x] Criar tabela de manutenções
+- [x] Criar tabela de abastecimentos
+- [x] Criar tabela de despesas
+- [x] Criar tabela de clientes
+- [x] Criar tabela de orçamentos
+- [x] Criar tabela de conversas do chatbot
+- [x] Executar migrations no banco
+
+### 2. AUTENTICAÇÃO LOCAL ✅
+- [x] Remover todas as referências ao Manus OAuth
+- [x] Criar sistema de login local (usuário/senha)
+- [x] Implementar hash de senha com bcrypt
+- [x] Criar JWT para sessões
+- [x] Criar middleware de autenticação
+- [x] Criar página de login (/login)
+- [x] Criar tRPC procedures de autenticação
+- [x] Implementar controle de permissões (admin, funcionário, motorista)
+- [x] Criar usuário admin inicial (username: admin, senha: admin123)
+
+### 3. CHATBOT MV COM IA
+- [ ] Criar componente de chat flutuante
+- [ ] Integrar com LLM (Gemini via invokeLLM)
+- [ ] Criar contexto do chatbot (informações da Martins)
+- [ ] Implementar respostas sobre transporte e viagens
+- [ ] Adicionar cálculo de quilometragem
+- [ ] Implementar encaminhamento para WhatsApp
+- [ ] Salvar conversas no banco de dados
+- [ ] Adicionar botão de chat no site
+
+### 4. PUBLICAÇÃO NO GITHUB
+- [ ] Criar .gitignore
+- [ ] Criar README.md completo
+- [ ] Inicializar repositório Git
+- [ ] Fazer commit inicial
+- [ ] Criar repositório no GitHub
+- [ ] Push para o GitHub
+
+## CORREÇÃO URGENTE
+- [ ] Corrigir ticker de clima (texto duplicado e sobreposto)

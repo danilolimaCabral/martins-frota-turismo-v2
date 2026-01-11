@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt) \nVALUES ('admin', '$2b$10$JPsUvZke.G42BnvButy0k.CHBKDjh1Qmfgd6swtNVumTw6ELWksRm', 'Administrador', 'admin@martins.com.br', 'admin', true, NOW(), NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute INSERT INTO users (username, password, name, email, role, active, createdAt, updatedAt) \nVALUES ('admin', '$2b$10$JPsUvZke.G42BnvButy0k.CHBKDjh1Qmfgd6swtNVumTw6ELWksRm', 'Administrador', 'admin@martins.com.br', 'admin', true, NOW(), NOW());",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'password' in 'field list'"
+  ]
+}

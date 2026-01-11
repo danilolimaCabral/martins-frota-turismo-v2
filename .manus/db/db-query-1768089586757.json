@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE users (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  username VARCHAR(100) NOT NULL UNIQUE,\n  password TEXT NOT NULL,\n  name TEXT NOT NULL,\n  email VARCHAR(320),\n  phone VARCHAR(20),\n  role ENUM('admin', 'funcionario', 'motorista') NOT NULL DEFAULT 'funcionario',\n  active BOOLEAN NOT NULL DEFAULT TRUE,\n  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  lastLogin TIMESTAMP NULL\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute CREATE TABLE users (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  username VARCHAR(100) NOT NULL UNIQUE,\n  password TEXT NOT NULL,\n  name TEXT NOT NULL,\n  email VARCHAR(320),\n  phone VARCHAR(20),\n  role ENUM('admin', 'funcionario', 'motorista') NOT NULL DEFAULT 'funcionario',\n  active BOOLEAN NOT NULL DEFAULT TRUE,\n  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  lastLogin TIMESTAMP NULL\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 181
+}

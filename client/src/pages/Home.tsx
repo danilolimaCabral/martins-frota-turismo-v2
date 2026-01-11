@@ -70,26 +70,37 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Weather Ticker - Legenda de Clima */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-0.5 md:py-1.5 overflow-hidden">
-        <div className="flex gap-3 md:gap-8 animate-scroll whitespace-nowrap">
-          {[
-            { city: "Curitiba", temp: "25°C", icon: "☀️" },
-            { city: "Maringá", temp: "28°C", icon: "🌧️" },
-            { city: "Florianópolis", temp: "23°C", icon: "☀️" },
-            { city: "São Paulo", temp: "22°C", icon: "⛅" },
-            // Duplicar para efeito infinito
-            { city: "Curitiba", temp: "25°C", icon: "☀️" },
-            { city: "Maringá", temp: "28°C", icon: "🌧️" },
-            { city: "Florianópolis", temp: "23°C", icon: "☀️" },
-            { city: "São Paulo", temp: "22°C", icon: "⛅" },
-          ].map((weather, index) => (
-            <div key={index} className="flex items-center gap-1 md:gap-1.5 text-[10px] md:text-sm font-medium">
-              <span className="font-semibold">{weather.city}</span>
-              <span>{weather.temp}</span>
-              <span>{weather.icon}</span>
-              <span className="mx-0.5 md:mx-2 text-white/50">|</span>
-            </div>
-          ))}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-1 overflow-hidden">
+        <div className="flex animate-scroll">
+          <div className="flex gap-6 md:gap-8 whitespace-nowrap">
+            {[
+              { city: "Curitiba", temp: "25°C", icon: "☀️" },
+              { city: "Maringá", temp: "28°C", icon: "🌧️" },
+              { city: "Florianópolis", temp: "23°C", icon: "☀️" },
+              { city: "São Paulo", temp: "22°C", icon: "⛅" },
+            ].map((weather, index) => (
+              <div key={index} className="flex items-center gap-2 text-xs md:text-sm font-medium">
+                <span className="font-semibold">{weather.city}</span>
+                <span>{weather.temp}</span>
+                <span>{weather.icon}</span>
+              </div>
+            ))}
+          </div>
+          {/* Duplicar para efeito infinito */}
+          <div className="flex gap-6 md:gap-8 whitespace-nowrap ml-6 md:ml-8">
+            {[
+              { city: "Curitiba", temp: "25°C", icon: "☀️" },
+              { city: "Maringá", temp: "28°C", icon: "🌧️" },
+              { city: "Florianópolis", temp: "23°C", icon: "☀️" },
+              { city: "São Paulo", temp: "22°C", icon: "⛅" },
+            ].map((weather, index) => (
+              <div key={`dup-${index}`} className="flex items-center gap-2 text-xs md:text-sm font-medium">
+                <span className="font-semibold">{weather.city}</span>
+                <span>{weather.temp}</span>
+                <span>{weather.icon}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
