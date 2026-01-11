@@ -1,0 +1,16 @@
+{
+  "query": "SELECT \n  (SELECT COUNT(*) FROM vehicles) as total_veiculos,\n  (SELECT COUNT(*) FROM vehicles WHERE status = 'active') as veiculos_ativos,\n  (SELECT COUNT(*) FROM funcionarios) as total_funcionarios,\n  (SELECT COUNT(*) FROM funcionarios WHERE cargo LIKE '%motorista%') as total_motoristas;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT \n  (SELECT COUNT(*) FROM vehicles) as total_veiculos,\n  (SELECT COUNT(*) FROM vehicles WHERE status = 'active') as veiculos_ativos,\n  (SELECT COUNT(*) FROM funcionarios) as total_funcionarios,\n  (SELECT COUNT(*) FROM funcionarios WHERE cargo LIKE '%motorista%') as total_motoristas;",
+  "rows": [
+    {
+      "total_veiculos": "46",
+      "veiculos_ativos": "0",
+      "total_funcionarios": "36",
+      "total_motoristas": "28"
+    }
+  ],
+  "messages": [],
+  "stdout": "total_veiculos\tveiculos_ativos\ttotal_funcionarios\ttotal_motoristas\n46\t0\t36\t28\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

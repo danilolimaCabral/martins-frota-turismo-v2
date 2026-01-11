@@ -63,8 +63,9 @@ export default function Admin() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Buscar dados reais do sistema
-  const { data: veiculosData } = trpc.vehicle.list.useQuery();
-  const { data: funcionariosData } = trpc.funcionario.list.useQuery();
+  const { data: statsData } = trpc.dashboard.getStats.useQuery();
+  const { data: despesasData } = trpc.dashboard.getDespesasMensais.useQuery();
+  const { data: viagensData } = trpc.dashboard.getViagensMensais.useQuery();
   const { data: alertasData } = trpc.notificacoes.verificarAlertas.useQuery();
 
   useEffect(() => {
@@ -92,10 +93,10 @@ export default function Admin() {
   }
 
   // Calcular estatísticas reais
-  const totalVeiculos = veiculosData?.length || 0;
-  const veiculosAtivos = veiculosData?.filter((v: any) => v.status === "active").length || 0;
-  const totalFuncionarios = funcionariosData?.length || 0;
-  const motoristas = funcionariosData?.filter((f: any) => f.cargo?.toLowerCase().includes("motorista")).length || 0;
+  const totalVeiculos = statsData?.totalVeiculos || 0;
+  const veiculosAtivos = statsData?.veiculosAtivos || 0;
+  const totalFuncionarios = statsData?.totalFuncionarios || 0;
+  const motoristas = statsData?.motoristas || 0;
   const alertasCriticos = alertasData?.criticos || 0;
   const alertasAltos = alertasData?.altos || 0;
 

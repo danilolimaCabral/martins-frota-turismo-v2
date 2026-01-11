@@ -28,6 +28,8 @@ import { agendaRouter } from "./agenda-routers";
 import { roteirizacaoRouter } from "./roteirizacao-routers";
 import { relatoriosRouter } from "./relatorios-routers";
 import { notificacoesRouter } from "./notificacoes-routers";
+import { dashboardRouter } from "./dashboard-routers";
+import { localAuthRouter } from "./local-auth-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -60,6 +62,8 @@ export const appRouter = router({
   roteirizacao: roteirizacaoRouter,
   relatorios: relatoriosRouter,
   notificacoes: notificacoesRouter,
+  dashboard: dashboardRouter,
+  localAuth: localAuthRouter,
 });
 
 // TODO: add feature routers here, e.g.

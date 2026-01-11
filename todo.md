@@ -248,5 +248,16 @@
 - [x] Adicionar gráfico de linha - Tendência de despesas mensais
 - [x] Adicionar gráfico de rosca - Distribuição da frota por tipo
 - [x] Adicionar gráfico de barras - Viagens por mês
+- [ ] Conectar gráficos a dados reais do banco
+- [ ] Adicionar filtros de período nos gráficos
 - [ ] Implementar notificações push em tempo real
 - [ ] Testar todas as funcionalidades
+
+
+## 🆕 REMOVER AUTENTICAÇÃO MANUS (NOVA SOLICITAÇÃO)
+
+- [ ] Criar sistema de login local simples
+- [ ] Criar tabela de usuários no banco
+- [ ] Atualizar routers para não usar Manus OAuth
+- [ ] Criar página de login local
+- [ ] Testar acesso sem autenticação Manus

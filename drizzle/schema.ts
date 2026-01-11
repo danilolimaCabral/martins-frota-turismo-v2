@@ -1335,3 +1335,20 @@ export const pagamentosEvento = mysqlTable("pagamentos_evento", {
 
 export type PagamentoEvento = typeof pagamentosEvento.$inferSelect;
 export type InsertPagamentoEvento = typeof pagamentosEvento.$inferInsert;
+
+
+// ============================================
+// TABELA DE USUÁRIOS LOCAIS (SEM MANUS OAUTH)
+// ============================================
+
+export const localUsers = mysqlTable("local_users", {
+  id: int("id").primaryKey().autoincrement(),
+  username: varchar("username", { length: 100 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(), // Hash bcrypt
+  nome: varchar("nome", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  role: mysqlEnum("role", ["admin", "user"]).notNull().default("user"),
+  ativo: boolean("ativo").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
+});

@@ -1,10 +1,29 @@
 import React from "react";
+import { trpc } from "../lib/trpc";
 
 export default function Login() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+
+  const loginMutation = trpc.localAuth.login.useMutation();
+  const { data: setupData } = trpc.localAuth.needsSetup.useQuery();
+  const createAdminMutation = trpc.localAuth.createDefaultAdmin.useMutation();
+
+  const handleCreateAdmin = async () => {
+    setLoading(true);
+    try {
+      const result = await createAdminMutation.mutateAsync();
+      alert(`Admin criado!\nUsuário: ${result.username}\nSenha: ${result.password}`);
+      setUsername("admin");
+      setPassword("admin123");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,26 +37,17 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+      const result = await loginMutation.mutateAsync({
+        username,
+        password,
       });
 
-      const data = await res.json();
-
-      if (!data.success) {
-        setError(data.error || "Erro ao fazer login");
-        setLoading(false);
-        return;
-      }
-
-      localStorage.setItem("martins_auth_token", data.token);
-      localStorage.setItem("martins_user_data", JSON.stringify(data.user));
+      localStorage.setItem("martins_auth_token", result.token);
+      localStorage.setItem("martins_user_data", JSON.stringify(result.user));
       
       window.location.href = "/admin";
     } catch (err: any) {
-      setError("Erro ao conectar com servidor");
+      setError(err.message || "Erro ao fazer login");
       setLoading(false);
     }
   };
@@ -72,6 +82,37 @@ export default function Login() {
             Entre com suas credenciais
           </p>
         </div>
+
+        {setupData?.needsSetup && (
+          <div style={{
+            background: "#FEF3C7",
+            border: "1px solid #FDE047",
+            borderRadius: "6px",
+            padding: "1rem",
+            marginBottom: "1rem"
+          }}>
+            <p style={{ fontSize: "0.875rem", color: "#92400E", marginBottom: "0.5rem" }}>
+              Nenhum usuário cadastrado. Clique abaixo para criar o admin padrão:
+            </p>
+            <button
+              onClick={handleCreateAdmin}
+              disabled={loading}
+              style={{
+                width: "100%",
+                padding: "0.5rem",
+                background: loading ? "#E5E7EB" : "white",
+                color: "#1F2937",
+                border: "1px solid #D1D5DB",
+                borderRadius: "6px",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+                cursor: loading ? "not-allowed" : "pointer"
+              }}
+            >
+              {loading ? "Criando..." : "Criar Usuário Admin"}
+            </button>
+          </div>
+        )}
 
         <form onSubmit={handleLogin}>
           <div style={{ marginBottom: "1rem" }}>
