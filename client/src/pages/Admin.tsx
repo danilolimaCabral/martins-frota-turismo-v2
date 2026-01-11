@@ -58,6 +58,8 @@ export default function Admin() {
     { icon: DollarSign, label: "Folha de Pagamento", path: "/admin/folha" },
     { icon: DollarSign, label: "Lançamentos RH", path: "/admin/lancamentos-rh" },
     { icon: AlertTriangle, label: "Alertas Documentos", path: "/admin/alertas" },
+    { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro" },
+    { icon: Receipt, label: "Importar Dados", path: "/admin/importar" },
     { icon: Receipt, label: "Despesas", path: "/admin/despesas" },
     { icon: Wrench, label: "Manutenção", path: "/admin/manutencao" },
     { icon: FileText, label: "Relatórios", path: "/admin/relatorios" },

@@ -25,6 +25,8 @@ import AdminFuncionarios from "./pages/AdminFuncionarios";
 import AdminFolhaPagamento from "./pages/AdminFolhaPagamento";
 import AdminLancamentosRH from "./pages/AdminLancamentosRH";
 import AdminAlertas from "./pages/AdminAlertas";
+import AdminFinanceiro from "./pages/AdminFinanceiro";
+import AdminImportar from "./pages/AdminImportar";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -78,6 +80,16 @@ function Router() {
         <Route path="/admin/alertas">
           <ProtectedRoute requireAdmin>
             <AdminAlertas />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/financeiro">
+          <ProtectedRoute requireAdmin>
+            <AdminFinanceiro />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/importar">
+          <ProtectedRoute requireAdmin>
+            <AdminImportar />
           </ProtectedRoute>
         </Route>
         <Route path="/rastreamento" component={Rastreamento} />
