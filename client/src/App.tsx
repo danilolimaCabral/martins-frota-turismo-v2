@@ -22,6 +22,7 @@ import AdminOrcamentos from "./pages/AdminOrcamentos";
 import MotoristaChecklist from "./pages/MotoristaChecklist";
 import AdminTemplates from "./pages/AdminTemplates";
 import ChatbotMV from "./components/ChatbotMV";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -30,21 +31,61 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/funcionario" component={Funcionario} />
-        <Route path="/admin" component={Admin} />
-        <Route path="/admin/veiculos" component={AdminVeiculos} />
-        <Route path="/admin/motoristas" component={AdminMotoristas} />
-        <Route path="/admin/viagens" component={AdminViagens} />
-        <Route path="/admin/despesas" component={AdminDespesas} />
+        <Route path="/admin">
+          <ProtectedRoute requireAdmin>
+            <Admin />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/veiculos">
+          <ProtectedRoute requireAdmin>
+            <AdminVeiculos />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/motoristas">
+          <ProtectedRoute requireAdmin>
+            <AdminMotoristas />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/viagens">
+          <ProtectedRoute requireAdmin>
+            <AdminViagens />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/despesas">
+          <ProtectedRoute requireAdmin>
+            <AdminDespesas />
+          </ProtectedRoute>
+        </Route>
         <Route path="/rastreamento" component={Rastreamento} />
         <Route path="/sobre" component={Sobre} />
         <Route path="/motorista" component={Motorista} />
         <Route path="/blog" component={Blog} />
         <Route path="/blog/:slug" component={BlogPost} />
-        <Route path="/admin/blog" component={AdminBlog} />
-        <Route path="/admin/orcamentos" component={AdminOrcamentos} />
-        <Route path="/motorista/checklist" component={MotoristaChecklist} />
-        <Route path="/admin/templates" component={AdminTemplates} />
-        <Route path="/dashboard" component={Admin} />
+        <Route path="/admin/blog">
+          <ProtectedRoute requireAdmin>
+            <AdminBlog />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/orcamentos">
+          <ProtectedRoute requireAdmin>
+            <AdminOrcamentos />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/motorista/checklist">
+          <ProtectedRoute>
+            <MotoristaChecklist />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/templates">
+          <ProtectedRoute requireAdmin>
+            <AdminTemplates />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/dashboard">
+          <ProtectedRoute requireAdmin>
+            <Admin />
+          </ProtectedRoute>
+        </Route>
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>

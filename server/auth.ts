@@ -64,13 +64,16 @@ export async function authenticateUserByUsername(
       role: user.role,
     });
 
-    // Remove hash da senha antes de retornar
+    // Remove hash da senha antes de retornar e garante que active existe
     const { password: _, ...userWithoutPassword } = user;
 
     return {
       success: true,
       token,
-      user: userWithoutPassword,
+      user: {
+        ...userWithoutPassword,
+        active: userWithoutPassword.active ?? true, // Garante que active sempre existe
+      },
     };
   } catch (error) {
     console.error("Erro na autenticação:", error);
@@ -129,13 +132,16 @@ export async function authenticateUser(
       role: user.role,
     });
 
-    // Remove hash da senha antes de retornar
+    // Remove hash da senha antes de retornar e garante que active existe
     const { password: _, ...userWithoutPassword } = user;
 
     return {
       success: true,
       token,
-      user: userWithoutPassword,
+      user: {
+        ...userWithoutPassword,
+        active: userWithoutPassword.active ?? true, // Garante que active sempre existe
+      },
     };
   } catch (error) {
     console.error("Erro na autenticação:", error);

@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, username, password, role FROM users WHERE username = 'admin' LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT id, username, password, role FROM users WHERE username = 'admin' LIMIT 1;",
+  "rows": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "$2b$10$6qrcU2k/9dC3xngjoRXqY.bX8zRdSbxxKMlMKrRbgwPYrg6GB6oBK",
+      "role": "admin"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tpassword\trole\n1\tadmin\t$2b$10$6qrcU2k/9dC3xngjoRXqY.bX8zRdSbxxKMlMKrRbgwPYrg6GB6oBK\tadmin\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

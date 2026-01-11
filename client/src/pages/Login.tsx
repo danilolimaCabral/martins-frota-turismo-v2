@@ -26,6 +26,10 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!username || !password) {
+      setError("Por favor, preencha todos os campos");
+      return;
+    }
     setError("");
     loginMutation.mutate({ username, password });
   };
@@ -36,9 +40,9 @@ export default function Login() {
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
             <img
-              src="/logo-martins.png"
+              src="/logo-martins-clean.webp"
               alt="Martins Viagens e Turismo"
-              className="h-16"
+              className="h-16 object-contain"
             />
           </div>
           <CardTitle className="text-2xl text-center">Sistema Martins</CardTitle>

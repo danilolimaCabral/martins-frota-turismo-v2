@@ -51,10 +51,14 @@ export function useLocalAuth(options?: UseAuthOptions) {
 
   // Função de login
   const login = useCallback((newToken: string, userData: AuthUser) => {
+    console.log("✅ useLocalAuth.login chamado");
+    console.log("Token recebido:", newToken);
+    console.log("User data recebido:", userData);
     localStorage.setItem(TOKEN_KEY, newToken);
     localStorage.setItem(USER_KEY, JSON.stringify(userData));
     setToken(newToken);
     setUser(userData);
+    console.log("✅ Token e user salvos no localStorage e state");
   }, []);
 
   // Função de logout

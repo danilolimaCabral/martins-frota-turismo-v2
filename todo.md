@@ -199,3 +199,17 @@
 - [x] Atualizar auth.me para retornar usuário do token
 - [x] Criar middleware de autenticação
 - [x] Testar login e acesso protegido
+
+
+---
+
+## 🔐 LOGIN E PROTEÇÃO DE ROTAS
+
+- [x] Criar tela de login (/login)
+- [x] Implementar autenticação com JWT
+- [x] Armazenar token no localStorage
+- [x] Criar componente ProtectedRoute
+- [x] Atualizar rotas admin para usar proteção
+- [ ] Testar fluxo de login completo
+- [x] Corrigir logo que não aparece na página de login
+- [x] URGENTE: Corrigir login que não funciona (botão não executa ação) - Código corrigido, aguardando validação manual
