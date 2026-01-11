@@ -457,15 +457,15 @@
 ## CORREÇÃO URGENTE - TICKER
 - [x] Corrigir ticker de notícias que está sobrepondo o conteúdo (z-index aumentado para z-50)
 
-## CRIAÇÃO DE CONTEÚDO - BLOG
-- [ ] Criar artigo sobre Fernando de Noronha
-- [ ] Criar artigo sobre Chapada Diamantina
-- [ ] Criar artigo sobre Ouro Preto
-- [ ] Criar artigo sobre Bonito/MS
-- [ ] Criar artigo sobre Lençóis Maranhenses
-- [ ] Criar artigo sobre Gramado/RS
-- [ ] Criar artigo sobre Foz do Iguaçu
-- [ ] Criar artigo sobre Florianópolis
+## CRIAÇÃO DE CONTEÚDO - BLOG (INFORMAÇÕES REAIS)
+- [x] Criar artigo sobre Gramado/RS (Natal Luz, parques temáticos)
+- [x] Criar artigo sobre Beto Carrero World (maior parque temático da América Latina)
+- [x] Criar artigo sobre praias de Santa Catarina (Florianópolis, Bombinhas, Balneário Camboriú)
+- [x] Criar artigo sobre Aparecida/SP (Santuário Nacional)
+- [x] Criar artigo sobre cidades históricas de Minas (Ouro Preto, Tiradentes, Mariana)
+- [x] Criar artigo sobre Fernando de Noronha
+- [x] Criar artigo sobre Foz do Iguaçu
+- [x] Criar artigo sobre Bonito/MS
 
 ## AJUSTE DE CORES - IDENTIDADE VISUAL
 - [x] Trocar botão "Solicitar Orçamento" de azul/gradiente para laranja (gradient-primary agora é laranja sólido)
