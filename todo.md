@@ -263,3 +263,34 @@
 - [x] Estimar tempo de viagem
 - [x] Sugerir tipo de veículo ideal
 - [x] Mostrar previsão de custo aproximado
+
+
+## MELHORIAS ÁREA DO MOTORISTA (SOLICITAÇÃO)
+- [ ] Implementar sistema de checkpoint de viagem (saída, paradas, chegada)
+- [ ] Adicionar captura de localização GPS em cada checkpoint
+- [ ] Permitir upload de fotos em checkpoints
+- [ ] Criar visualização de rota no mapa (Google Maps)
+- [ ] Mostrar histórico de trajetos do motorista
+- [ ] Implementar comparação entre rota planejada vs rota real
+- [ ] Adicionar estatísticas de performance do motorista
+- [ ] Criar dashboard de viagens ativas
+- [ ] Implementar alertas de desvio de rota
+- [ ] Adicionar relatório detalhado de cada viagem
+
+
+## SISTEMA DE RASTREAMENTO EM TEMPO REAL (SOLICITAÇÃO PRIORITÁRIA) ✅
+- [x] Criar página de mapa centralizado no admin (/rastreamento)
+- [x] Integrar Google Maps API para visualização
+- [x] Criar sistema genérico para integração com APIs de rastreamento (pronto para Onixsat, Autotrac, Sascar, Omnilink, Tracker)
+- [x] Mostrar todos os veículos no mapa em tempo real (60 veículos simulados)
+- [x] Adicionar ícones coloridos por status (verde, amarelo, vermelho, cinza)
+- [x] Implementar filtros (tipo de veículo, status)
+- [x] Mostrar informações ao clicar no veículo (velocidade, localização, motorista, destino)
+- [x] Implementar atualização automática a cada 5 segundos
+- [x] Adicionar painel lateral com lista de veículos
+- [x] Mostrar status visual (verde=em viagem, amarelo=parado, cinza=manutenção, vermelho=alerta)
+- [x] Adicionar botão "Ver Rastreamento" no dashboard admin
+- [ ] Criar histórico de trajetos com replay (futuro)
+- [ ] Implementar alertas de desvio de rota (futuro)
+- [ ] Adicionar geofencing - cercas virtuais (futuro)
+- [ ] Criar relatório de rotas planejadas vs reais (futuro)

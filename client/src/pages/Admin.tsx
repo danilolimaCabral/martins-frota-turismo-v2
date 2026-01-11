@@ -20,6 +20,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   Clock,
+  MapPin,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -150,13 +151,22 @@ export default function Admin() {
       <main className="ml-64 p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              Dashboard Administrativo
-            </h1>
-            <p className="text-gray-600">
-              Visão completa da gestão de frotas e operações
-            </p>
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                Dashboard Administrativo
+              </h1>
+              <p className="text-gray-600">
+                Visão completa da gestão de frotas e operações
+              </p>
+            </div>
+            <Button
+              onClick={() => window.location.href = '/rastreamento'}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:shadow-xl"
+            >
+              <MapPin className="h-4 w-4 mr-2" />
+              Ver Rastreamento
+            </Button>
           </div>
 
           {/* Dashboard */}
