@@ -1,0 +1,10 @@
+{
+  "query": "INSERT INTO users (username, name, email, phone, password, role, active, createdAt, updatedAt)\nVALUES (\n  'motorista',\n  'João Silva - Motorista',\n  'motorista@martinsviagens.com.br',\n  '(41) 99999-8888',\n  '$2a$10$YourHashedPasswordHere',\n  'motorista',\n  1,\n  datetime('now'),\n  datetime('now')\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute INSERT INTO users (username, name, email, phone, password, role, active, createdAt, updatedAt)\nVALUES (\n  'motorista',\n  'João Silva - Motorista',\n  'motorista@martinsviagens.com.br',\n  '(41) 99999-8888',\n  '$2a$10$YourHashedPasswordHere',\n  'motorista',\n  1,\n  datetime('now'),\n  datetime('now')\n);",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1064 (42000) at line 1: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 10 column 12 near \"('now'),",
+    "  datetime('now')",
+    ")\""
+  ]
+}

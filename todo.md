@@ -331,3 +331,18 @@
 - [x] Buscar logo da Hanser
 - [x] Buscar logo da Mistral
 - [x] Adicionar todos os logos encontrados na seção de parceiros do site
+
+
+## NOVAS IMPLEMENTAÇÕES SOLICITADAS
+- [ ] Criar usuário motorista de teste no banco de dados
+- [ ] Buscar logos restantes: Escola CO2, Ótico Pitol, COL Rodas e Pneus, Empório Dipulo
+- [ ] Implementar página de histórico de rotas (/rastreamento/historico)
+- [ ] Adicionar replay animado de rotas com controles play/pause/velocidade
+- [ ] Mostrar comparação rota planejada vs rota real
+- [x] Buscar certificações de transporte (ANTT, ABRATI, ISO 9001, Selo Qualidade MTur)
+- [x] Criar seção de certificações premium no site
+- [x] Adicionar cards de certificação com descrições
+
+-- [x] Mudar palavra "INTELIGENTE" de azul para laranja
+- [ ] Mudar menus/botões coloridos para laranja (parcialmente - botão Sistema ainda precisa ser ajustado)
+- [x] Atualizar ticker de clima para mostrar apenas Curitiba, Araucária e São Paulo

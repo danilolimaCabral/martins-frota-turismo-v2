@@ -196,6 +196,7 @@ Aguardo retorno!`;
             {[
               { city: "Curitiba", temp: "25°C", icon: "☀️" },
               { city: "Araucária", temp: "24°C", icon: "⛅" },
+              { city: "São Paulo", temp: "28°C", icon: "☀️" },
             ].map((weather, index) => (
               <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
                 <span className="font-semibold">{weather.city}</span>
@@ -209,6 +210,7 @@ Aguardo retorno!`;
             {[
               { city: "Curitiba", temp: "25°C", icon: "☀️" },
               { city: "Araucária", temp: "24°C", icon: "⛅" },
+              { city: "São Paulo", temp: "28°C", icon: "☀️" },
             ].map((weather, index) => (
               <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
                 <span className="font-semibold">{weather.city}</span>
@@ -330,7 +332,7 @@ Aguardo retorno!`;
             >
               TRANSPORTE
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600">
                 INTELIGENTE
               </span>
             </motion.h1>
@@ -804,6 +806,109 @@ Aguardo retorno!`;
                         {partner.name}
                       </span>
                     )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Certificações e Qualidade Premium */}
+      <motion.section {...fadeInUp} className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-orange-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{fontFamily: 'Poppins'}}>
+              Empresa <span className="text-gradient">Premium</span> Certificada
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+              Reconhecida pelos principais órgãos reguladores e associações do setor de transporte
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
+            {[
+              { 
+                name: "ANTT", 
+                logo: "/certificacoes/antt.jpg",
+                description: "Agência Nacional de Transportes Terrestres"
+              },
+              { 
+                name: "ISO 9001", 
+                logo: "/certificacoes/iso9001.png",
+                description: "Certificação Internacional de Qualidade"
+              },
+              { 
+                name: "Selo de Qualidade", 
+                logo: "/certificacoes/selo-qualidade.jpeg",
+                description: "Ministério do Turismo"
+              },
+              { 
+                name: "ABRATI", 
+                logo: "/certificacoes/abrati.jpeg",
+                description: "Associação Brasileira de Apoio"
+              },
+            ].map((cert, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex flex-col items-center"
+              >
+                <Card className="w-full h-40 md:h-48 border-2 border-primary/20 hover:border-primary/50 transition-all hover:shadow-xl bg-white">
+                  <CardContent className="p-4 flex flex-col items-center justify-center h-full">
+                    <img 
+                      src={cert.logo} 
+                      alt={cert.name} 
+                      className="max-w-full max-h-24 md:max-h-28 object-contain mb-2"
+                    />
+                    <p className="text-xs text-center text-muted-foreground mt-2">
+                      {cert.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+            {[
+              {
+                icon: Shield,
+                title: "Segurança Certificada",
+                description: "Todos os veículos passam por rigorosas inspeções de segurança e manutenção preventiva"
+              },
+              {
+                icon: Award,
+                title: "Qualidade Garantida",
+                description: "Processos certificados ISO 9001 garantindo excelência em todos os serviços"
+              },
+              {
+                icon: CheckCircle2,
+                title: "Regularização Total",
+                description: "Empresa 100% regularizada junto à ANTT e demais órgãos competentes"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-shadow bg-white">
+                  <CardContent className="p-6">
+                    <div className="bg-gradient-to-br from-orange-500 to-orange-600 w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                      <item.icon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold mb-2" style={{fontFamily: 'Poppins'}}>
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {item.description}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
