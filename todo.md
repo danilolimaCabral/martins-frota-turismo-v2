@@ -368,10 +368,26 @@
 - [x] Criar procedures tRPC para CRUD de motoristas
 - [x] Implementar interface de gestão de motoristas
 - [x] Criar procedures tRPC para gestão de viagens
-- [ ] Implementar interface de criação e acompanhamento de viagens (falta UI)
+- [x] Implementar interface de criação e acompanhamento de viagens
 - [x] Criar procedures tRPC para aprovação de despesas
-- [ ] Implementar interface de aprovação/rejeição de despesas (falta UI)
+- [x] Implementar interface de aprovação/rejeição de despesas
 - [ ] Criar procedures tRPC para relatórios financeiros
 - [ ] Implementar dashboards com gráficos de receitas/despesas
 - [ ] Adicionar filtros por período nos relatórios
 - [ ] Implementar exportação de relatórios em PDF/Excel
+
+
+## INTERFACES SOLICITADAS (URGENTE) ✅
+- [x] Criar interface de Gestão de Viagens (/admin/viagens)
+- [x] Listagem de viagens com cards coloridos por status
+- [x] Formulário para criar/editar viagens
+- [x] Botões para iniciar/finalizar viagem
+- [x] Filtros por status (planejada, em-andamento, concluida, cancelada)
+- [x] Criar interface de Aprovação de Despesas (/admin/despesas)
+- [x] Dashboard com despesas pendentes (cards com stats)
+- [x] Visualização de comprovantes em modal
+- [x] Botões aprovar/rejeitar com confirmação
+- [x] Filtros por status
+- [x] Cards coloridos por status (pendente, aprovada, recusada)
+
+- [ ] Gerar apresentação Nano Banana com todas as funcionalidades criadas

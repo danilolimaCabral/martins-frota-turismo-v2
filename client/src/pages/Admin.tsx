@@ -21,6 +21,7 @@ import {
   AlertTriangle,
   Clock,
   MapPin,
+  Route,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -174,6 +175,20 @@ export default function Admin() {
               >
                 <Users className="h-4 w-4 mr-2" />
                 Motoristas
+              </Button>
+              <Button
+                onClick={() => window.location.href = '/admin/viagens'}
+                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:shadow-xl"
+              >
+                <Route className="h-4 w-4 mr-2" />
+                Viagens
+              </Button>
+              <Button
+                onClick={() => window.location.href = '/admin/despesas'}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-xl"
+              >
+                <Receipt className="h-4 w-4 mr-2" />
+                Despesas
               </Button>
               <Button
                 onClick={() => window.location.href = '/rastreamento'}

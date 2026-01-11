@@ -10,6 +10,8 @@ import Funcionario from "./pages/Funcionario";
 import Admin from "./pages/Admin";
 import AdminVeiculos from "./pages/AdminVeiculos";
 import AdminMotoristas from "./pages/AdminMotoristas";
+import AdminViagens from "./pages/AdminViagens";
+import AdminDespesas from "./pages/AdminDespesas";
 import Rastreamento from "./pages/Rastreamento";
 import Motorista from "./pages/Motorista";
 import ChatbotMV from "./components/ChatbotMV";
@@ -24,6 +26,8 @@ function Router() {
         <Route path="/admin" component={Admin} />
         <Route path="/admin/veiculos" component={AdminVeiculos} />
         <Route path="/admin/motoristas" component={AdminMotoristas} />
+        <Route path="/admin/viagens" component={AdminViagens} />
+        <Route path="/admin/despesas" component={AdminDespesas} />
       <Route path="/rastreamento" component={Rastreamento} />
       <Route path="/motorista" component={Motorista} />
       {/* Final fallback route */}
