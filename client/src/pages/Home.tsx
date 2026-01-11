@@ -190,7 +190,7 @@ Aguardo retorno!`;
   return (
     <div className="min-h-screen bg-background">
       {/* News Ticker - Notícias de Viagens e Turismo */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-1.5 overflow-hidden">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-2.5 overflow-hidden">
         <div className="flex animate-scroll">
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {[
@@ -229,7 +229,7 @@ Aguardo retorno!`;
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed top-8 md:top-10 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
+        className="fixed top-10 md:top-11 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-border/20 shadow-lg"
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">

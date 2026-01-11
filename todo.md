@@ -470,3 +470,6 @@
 ## AJUSTE DE CORES - IDENTIDADE VISUAL
 - [x] Trocar botão "Solicitar Orçamento" de azul/gradiente para laranja (gradient-primary agora é laranja sólido)
 - [x] Verificar e trocar todos os elementos azuis para laranja (títulos, números de passos, backgrounds)
+
+## CORREÇÃO TICKER - TEXTO CORTADO
+- [x] Ajustar altura e padding do ticker para evitar texto cortado/sobreposto (py-2.5, header ajustado)
