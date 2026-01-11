@@ -157,3 +157,25 @@
 - [ ] Analisar custos de manutenção
 - [ ] Definir modelo de cobrança mensal
 - [ ] Criar documento de precificação
+
+
+---
+
+## 📱 GERAR APK ANDROID
+
+- [ ] Preparar ambiente EAS Build
+- [ ] Configurar eas.json
+- [ ] Executar build do APK
+- [ ] Testar instalação
+- [ ] Criar guia de distribuição
+
+
+---
+
+## 🧪 TESTE DE LOGIN
+
+- [x] Acessar sistema via browser
+- [x] Testar login com admin / 123456
+- [x] Verificar autenticação OAuth
+- [x] Testar acesso às páginas protegidas
+- [x] Corrigir rota /dashboard (404 resolvido)

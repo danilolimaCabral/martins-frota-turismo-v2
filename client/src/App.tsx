@@ -44,6 +44,7 @@ function Router() {
         <Route path="/admin/orcamentos" component={AdminOrcamentos} />
         <Route path="/motorista/checklist" component={MotoristaChecklist} />
         <Route path="/admin/templates" component={AdminTemplates} />
+        <Route path="/dashboard" component={Admin} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
