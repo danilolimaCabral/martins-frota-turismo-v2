@@ -97,3 +97,21 @@
 - [ ] Testar relatórios de custos
 - [ ] Testar dashboard de manutenção
 - [ ] Testar alertas preventivos
+
+
+---
+
+## 🚨 URGENTE: Corrigir Erro 404
+
+### Problema
+- [ ] Site retornando 404 em mvturismo.vip
+- [ ] Verificar configuração de rotas
+- [ ] Verificar servidor
+- [ ] Testar acesso
+
+### SEO
+- [ ] Adicionar meta tags
+- [ ] Criar sitemap.xml
+- [ ] Criar robots.txt
+- [ ] Adicionar Open Graph tags
+- [ ] Estruturar dados schema.org

@@ -1,0 +1,66 @@
+{
+  "query": "\n-- Atualizar emails de todos os usuários\nUPDATE users SET email = 'admin@mvturismo.vip' WHERE username = 'admin';\nUPDATE users SET email = 'carlos@mvturismo.vip' WHERE username = 'carlos.admin';\nUPDATE users SET email = 'ana@mvturismo.vip' WHERE username = 'ana.financeiro';\nUPDATE users SET email = 'joao@mvturismo.vip' WHERE username = 'joao.silva';\nUPDATE users SET email = 'maria@mvturismo.vip' WHERE username = 'maria.santos';\nUPDATE users SET email = 'pedro@mvturismo.vip' WHERE username = 'pedro.costa';\nUPDATE users SET email = 'roberto@mvturismo.vip' WHERE username = 'roberto.mecanico';\nUPDATE users SET email = 'fernando@mvturismo.vip' WHERE username = 'fernando.mecanico';\n\n-- Verificar atualização\nSELECT id, username, name, email, role FROM users ORDER BY id;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute \n-- Atualizar emails de todos os usuários\nUPDATE users SET email = 'admin@mvturismo.vip' WHERE username = 'admin';\nUPDATE users SET email = 'carlos@mvturismo.vip' WHERE username = 'carlos.admin';\nUPDATE users SET email = 'ana@mvturismo.vip' WHERE username = 'ana.financeiro';\nUPDATE users SET email = 'joao@mvturismo.vip' WHERE username = 'joao.silva';\nUPDATE users SET email = 'maria@mvturismo.vip' WHERE username = 'maria.santos';\nUPDATE users SET email = 'pedro@mvturismo.vip' WHERE username = 'pedro.costa';\nUPDATE users SET email = 'roberto@mvturismo.vip' WHERE username = 'roberto.mecanico';\nUPDATE users SET email = 'fernando@mvturismo.vip' WHERE username = 'fernando.mecanico';\n\n-- Verificar atualização\nSELECT id, username, name, email, role FROM users ORDER BY id;\n",
+  "rows": [
+    {
+      "id": "1",
+      "username": "admin",
+      "name": "Administrador",
+      "email": "admin@mvturismo.vip",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "joao.silva",
+      "name": "João Silva",
+      "email": "joao@mvturismo.vip",
+      "role": "motorista"
+    },
+    {
+      "id": "3",
+      "username": "maria.santos",
+      "name": "Maria Santos",
+      "email": "maria@mvturismo.vip",
+      "role": "motorista"
+    },
+    {
+      "id": "4",
+      "username": "pedro.costa",
+      "name": "Pedro Costa",
+      "email": "pedro@mvturismo.vip",
+      "role": "motorista"
+    },
+    {
+      "id": "30001",
+      "username": "carlos.admin",
+      "name": "Carlos Admin",
+      "email": "carlos@mvturismo.vip",
+      "role": "admin"
+    },
+    {
+      "id": "30002",
+      "username": "roberto.mecanico",
+      "name": "Roberto Mecânico",
+      "email": "roberto@mvturismo.vip",
+      "role": "funcionario"
+    },
+    {
+      "id": "30003",
+      "username": "fernando.mecanico",
+      "name": "Fernando Mecânico",
+      "email": "fernando@mvturismo.vip",
+      "role": "funcionario"
+    },
+    {
+      "id": "30004",
+      "username": "ana.financeiro",
+      "name": "Ana Financeiro",
+      "email": "ana@mvturismo.vip",
+      "role": "admin"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tname\temail\trole\n1\tadmin\tAdministrador\tadmin@mvturismo.vip\tadmin\n2\tjoao.silva\tJoão Silva\tjoao@mvturismo.vip\tmotorista\n3\tmaria.santos\tMaria Santos\tmaria@mvturismo.vip\tmotorista\n4\tpedro.costa\tPedro Costa\tpedro@mvturismo.vip\tmotorista\n30001\tcarlos.admin\tCarlos Admin\tcarlos@mvturismo.vip\tadmin\n30002\troberto.mecanico\tRoberto Mecânico\troberto@mvturismo.vip\tfuncionario\n30003\tfernando.mecanico\tFernando Mecânico\tfernando@mvturismo.vip\tfuncionario\n30004\tana.financeiro\tAna Financeiro\tana@mvturismo.vip\tadmin\n",
+  "stderr": "",
+  "execution_time_ms": 280
+}
