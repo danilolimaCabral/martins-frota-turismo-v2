@@ -288,3 +288,17 @@
 - [x] Configurar Procfile
 - [x] Documentar variáveis de ambiente
 - [x] Criar guia de deploy (GUIA_DEPLOY_RAILWAY.md)
+
+---
+
+## 🚨 CRÍTICO: LOGIN NÃO FUNCIONA
+
+- [ ] Identificar por que o formulário limpa e volta à tela de login
+- [ ] Verificar se mutation está sendo executada
+- [ ] Verificar se há erro de import do useState
+- [ ] Corrigir e testar até funcionar 100%
+
+- [x] Criar endpoint REST direto para login (bypass tRPC) - /api/login FUNCIONANDO
+- [x] Reescrever Login.tsx usando fetch direto
+- [x] Testar backend com curl - 100% funcional
+- [ ] Resolver problema do frontend React não executar o código

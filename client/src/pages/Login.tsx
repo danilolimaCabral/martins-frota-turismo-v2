@@ -1,38 +1,53 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useLocalAuth } from "@/hooks/useLocalAuth";
+import { useState, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { useLocation } from "wouter";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [, setLocation] = useLocation();
-  const { login } = useLocalAuth();
+  const [loading, setLoading] = useState(false);
 
-  const loginMutation = trpc.auth.loginByUsername.useMutation({
-    onSuccess: (data) => {
-      login(data.token, data.user);
-      setLocation("/admin");
-    },
-    onError: (err) => {
-      setError(err.message || "Erro ao fazer login");
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Tentando login com:", { username, password, passwordLength: password.length });
+    
     if (!username || !password) {
       setError("Por favor, preencha todos os campos");
       return;
     }
+    
     setError("");
-    loginMutation.mutate({ username, password });
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        setError(data.error || "Erro ao fazer login");
+        setLoading(false);
+        return;
+      }
+
+      // Salvar token e user no localStorage
+      localStorage.setItem("martins_auth_token", data.token);
+      localStorage.setItem("martins_user_data", JSON.stringify(data.user));
+      
+      // Redirecionar para admin
+      window.location.href = "/admin";
+    } catch (err: any) {
+      setError(err.message || "Erro ao conectar com o servidor");
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,6 +77,8 @@ export default function Login() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
+                autoComplete="username"
+                disabled={loading}
               />
             </div>
             <div className="space-y-2">
@@ -73,6 +90,8 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="current-password"
+                disabled={loading}
               />
             </div>
             {error && (
@@ -83,9 +102,9 @@ export default function Login() {
             <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700"
-              disabled={loginMutation.isPending}
+              disabled={loading}
             >
-              {loginMutation.isPending ? "Entrando..." : "Entrar"}
+              {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
         </CardContent>
