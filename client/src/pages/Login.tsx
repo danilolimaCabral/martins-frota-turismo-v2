@@ -26,6 +26,7 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Tentando login com:", { username, password, passwordLength: password.length });
     if (!username || !password) {
       setError("Por favor, preencha todos os campos");
       return;

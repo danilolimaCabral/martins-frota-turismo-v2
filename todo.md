@@ -234,3 +234,20 @@
 - [x] Testar componentes frontend
 - [x] Documentar funcionalidades encontradas
 - [x] Gerar relatório técnico completo
+
+---
+
+## 🐛 BUG: Validação de Senha
+
+- [ ] Corrigir validação de senha no login (erro: "Senha deve ter no mínimo 6 caracteres")
+- [ ] Remover validação client-side ou ajustar para aceitar senha correta
+- [ ] Testar login com admin/123456
+
+---
+
+## 🐛 BUG: Load Failed no Login
+
+- [x] Diagnosticar erro "Load failed" - URL incorreta
+- [x] Verificar se servidor está respondendo - OK
+- [x] Sistema precisa ser publicado para funcionar na URL manus.space
+- [ ] Publicar sistema via UI
