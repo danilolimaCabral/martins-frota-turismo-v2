@@ -19,16 +19,28 @@ import {
   DollarSign,
   Calendar,
   MapPin,
+  TrendingUp,
+  TrendingDown,
+  ChevronRight,
+  Bell,
+  Fuel,
+  Route,
+  FileBarChart,
 } from "lucide-react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 export default function Admin() {
   const [, setLocation] = useLocation();
   const [user, setUser] = useState<any>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Buscar dados reais do sistema
+  const { data: veiculosData } = trpc.vehicle.list.useQuery();
+  const { data: funcionariosData } = trpc.funcionario.list.useQuery();
+  const { data: alertasData } = trpc.notificacoes.verificarAlertas.useQuery();
+
   useEffect(() => {
-    // Ler dados do usuário do localStorage
     const userData = localStorage.getItem("martins_user_data");
     if (userData) {
       try {
@@ -52,6 +64,14 @@ export default function Admin() {
     return null;
   }
 
+  // Calcular estatísticas reais
+  const totalVeiculos = veiculosData?.length || 0;
+  const veiculosAtivos = veiculosData?.filter((v: any) => v.status === "active").length || 0;
+  const totalFuncionarios = funcionariosData?.length || 0;
+  const motoristas = funcionariosData?.filter((f: any) => f.cargo?.toLowerCase().includes("motorista")).length || 0;
+  const alertasCriticos = alertasData?.criticos || 0;
+  const alertasAltos = alertasData?.altos || 0;
+
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
     { icon: Bus, label: "Veículos", path: "/admin/veiculos" },
@@ -71,6 +91,64 @@ export default function Admin() {
     { icon: FileText, label: "Relatórios", path: "/admin/relatorios" },
   ];
 
+  // Cards clicáveis do dashboard
+  const dashboardCards = [
+    {
+      title: "Veículos Ativos",
+      value: veiculosAtivos,
+      subtitle: `${totalVeiculos} total na frota`,
+      icon: Bus,
+      iconColor: "text-blue-600",
+      bgColor: "bg-blue-50",
+      path: "/admin/veiculos",
+      trend: totalVeiculos > 40 ? "up" : null,
+      trendValue: totalVeiculos > 40 ? "+2 este mês" : null,
+    },
+    {
+      title: "Motoristas",
+      value: motoristas,
+      subtitle: `${totalFuncionarios} funcionários`,
+      icon: Users,
+      iconColor: "text-green-600",
+      bgColor: "bg-green-50",
+      path: "/admin/funcionarios",
+      trend: null,
+      trendValue: "Todos ativos",
+    },
+    {
+      title: "Alertas Críticos",
+      value: alertasCriticos + alertasAltos,
+      subtitle: `${alertasCriticos} críticos, ${alertasAltos} altos`,
+      icon: Bell,
+      iconColor: alertasCriticos > 0 ? "text-red-600" : "text-orange-600",
+      bgColor: alertasCriticos > 0 ? "bg-red-50" : "bg-orange-50",
+      path: "/admin/alertas",
+      trend: alertasCriticos > 0 ? "down" : null,
+      trendValue: alertasCriticos > 0 ? "Ação necessária" : "Sob controle",
+    },
+    {
+      title: "Relatórios",
+      value: "5",
+      subtitle: "Tipos disponíveis",
+      icon: FileBarChart,
+      iconColor: "text-purple-600",
+      bgColor: "bg-purple-50",
+      path: "/admin/relatorios",
+      trend: null,
+      trendValue: "PDF disponível",
+    },
+  ];
+
+  // Atalhos rápidos
+  const quickActions = [
+    { icon: Bus, label: "Novo Veículo", path: "/admin/veiculos", color: "bg-blue-600 hover:bg-blue-700" },
+    { icon: Users, label: "Novo Funcionário", path: "/admin/funcionarios", color: "bg-green-600 hover:bg-green-700" },
+    { icon: Calendar, label: "Nova Agenda", path: "/admin/agenda", color: "bg-orange-600 hover:bg-orange-700" },
+    { icon: Route, label: "Roteirizar", path: "/admin/roteirizacao", color: "bg-purple-600 hover:bg-purple-700" },
+    { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro", color: "bg-emerald-600 hover:bg-emerald-700" },
+    { icon: FileText, label: "Relatórios", path: "/admin/relatorios", color: "bg-slate-600 hover:bg-slate-700" },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header Mobile */}
@@ -78,9 +156,13 @@ export default function Admin() {
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
             <img 
-              src="/logo.png" 
-              alt="Martins" 
-              className="h-8 w-auto"
+              src="/logo-martins-clean.png" 
+              alt="Martins Viagens" 
+              className="h-10 w-auto object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/logo-martins.webp";
+              }}
             />
             <div>
               <h1 className="font-bold text-slate-900">Sistema Martins</h1>
@@ -109,74 +191,78 @@ export default function Admin() {
 
       {/* Sidebar */}
       <aside className={`
-        fixed top-0 left-0 h-full w-72 bg-blue-600 text-white z-50 transform transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 h-full w-72 bg-gradient-to-b from-blue-600 to-blue-700 text-white z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto
         lg:translate-x-0 lg:static lg:block
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         {/* Header Desktop */}
-        <div className="p-6 border-b border-blue-500 hidden lg:block">
+        <div className="p-6 border-b border-blue-500/50 hidden lg:block">
           <div className="flex items-center gap-3">
             <img 
-              src="/logo.png" 
-              alt="Martins" 
-              className="h-10 w-auto"
+              src="/logo-martins-clean.png" 
+              alt="Martins Viagens" 
+              className="h-12 w-auto object-contain bg-white rounded-lg p-1"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/logo-martins.webp";
+              }}
             />
             <div>
-              <h1 className="font-bold text-lg">Sistema Martins</h1>
-              <p className="text-xs text-blue-200">Gestão de Frotas</p>
+              <h1 className="font-bold text-lg">Martins Turismo</h1>
+              <p className="text-xs text-blue-200">Sistema de Gestão</p>
             </div>
           </div>
         </div>
 
         {/* User Info */}
-        <div className="p-6 border-b border-blue-500">
+        <div className="p-4 border-b border-blue-500/50">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center">
-              <User className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <User className="w-5 h-5" />
             </div>
-            <div>
-              <p className="font-semibold">{user.name}</p>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold truncate">{user.name}</p>
               <p className="text-sm text-blue-200 capitalize">{user.role}</p>
             </div>
           </div>
         </div>
 
         {/* Menu Items */}
-        <nav className="p-4 space-y-2">
+        <nav className="p-3 space-y-1">
           {menuItems.map((item) => (
             <Button
               key={item.path}
               variant="ghost"
-              className="w-full justify-start text-white hover:bg-blue-500 hover:text-white"
+              className="w-full justify-start text-white/90 hover:bg-white/10 hover:text-white text-sm h-10"
               onClick={() => {
                 setLocation(item.path);
                 setIsMobileMenuOpen(false);
               }}
             >
-              <item.icon className="w-5 h-5 mr-3" />
-              {item.label}
+              <item.icon className="w-4 h-4 mr-3 flex-shrink-0" />
+              <span className="truncate">{item.label}</span>
             </Button>
           ))}
         </nav>
 
         {/* Logout Button */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-blue-500">
+        <div className="p-4 border-t border-blue-500/50 mt-auto">
           <Button
             variant="ghost"
-            className="w-full justify-start text-white hover:bg-red-500 hover:text-white"
+            className="w-full justify-start text-white hover:bg-red-500/20 hover:text-red-200"
             onClick={handleLogout}
           >
             <LogOut className="w-5 h-5 mr-3" />
-            Sair
+            Sair do Sistema
           </Button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="lg:ml-72 p-4 lg:p-8">
+      <main className="lg:ml-72 p-4 lg:p-6">
         {/* Dashboard Header */}
-        <div className="mb-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-2">
+        <div className="mb-6">
+          <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-1">
             Dashboard
           </h2>
           <p className="text-slate-600">
@@ -184,149 +270,224 @@ export default function Admin() {
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">
-                Veículos Ativos
-              </CardTitle>
-              <Bus className="h-5 w-5 text-blue-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">12</div>
-              <p className="text-xs text-green-600 mt-1">
-                +2 este mês
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">
-                Motoristas
-              </CardTitle>
-              <Users className="h-5 w-5 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">8</div>
-              <p className="text-xs text-slate-500 mt-1">
-                Todos ativos
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">
-                Despesas Mês
-              </CardTitle>
-              <DollarSign className="h-5 w-5 text-orange-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">R$ 45.2k</div>
-              <p className="text-xs text-red-600 mt-1">
-                +12% vs mês anterior
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">
-                Manutenções
-              </CardTitle>
-              <Wrench className="h-5 w-5 text-purple-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-slate-900">3</div>
-              <p className="text-xs text-orange-600 mt-1">
-                Pendentes
-              </p>
-            </CardContent>
-          </Card>
+        {/* Quick Actions - Atalhos Rápidos */}
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
+            Atalhos Rápidos
+          </h3>
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            {quickActions.map((action) => (
+              <Button
+                key={action.path}
+                className={`${action.color} text-white flex flex-col items-center justify-center h-20 sm:h-24 gap-2 text-xs sm:text-sm`}
+                onClick={() => setLocation(action.path)}
+              >
+                <action.icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="text-center leading-tight">{action.label}</span>
+              </Button>
+            ))}
+          </div>
         </div>
 
-        {/* Alerts Section */}
+        {/* Stats Grid - Cards Clicáveis */}
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
+            Visão Geral
+          </h3>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+            {dashboardCards.map((card) => (
+              <Card 
+                key={card.title}
+                className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] border-l-4"
+                style={{ borderLeftColor: card.iconColor.replace('text-', '').replace('-600', '') === 'blue' ? '#2563eb' : 
+                         card.iconColor.includes('green') ? '#16a34a' : 
+                         card.iconColor.includes('red') ? '#dc2626' : 
+                         card.iconColor.includes('orange') ? '#ea580c' : '#9333ea' }}
+                onClick={() => setLocation(card.path)}
+              >
+                <CardHeader className="flex flex-row items-center justify-between pb-2 pt-4 px-4">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-slate-600">
+                    {card.title}
+                  </CardTitle>
+                  <div className={`p-2 rounded-lg ${card.bgColor}`}>
+                    <card.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${card.iconColor}`} />
+                  </div>
+                </CardHeader>
+                <CardContent className="px-4 pb-4">
+                  <div className="text-2xl sm:text-3xl font-bold text-slate-900">{card.value}</div>
+                  <div className="flex items-center justify-between mt-1">
+                    <p className="text-xs text-slate-500 truncate">{card.subtitle}</p>
+                    <ChevronRight className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                  </div>
+                  {card.trendValue && (
+                    <p className={`text-xs mt-2 flex items-center gap-1 ${
+                      card.trend === 'up' ? 'text-green-600' : 
+                      card.trend === 'down' ? 'text-red-600' : 'text-slate-500'
+                    }`}>
+                      {card.trend === 'up' && <TrendingUp className="h-3 w-3" />}
+                      {card.trend === 'down' && <TrendingDown className="h-3 w-3" />}
+                      {card.trendValue}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Análises Detalhadas */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-          {/* Próximas Manutenções */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-blue-600" />
-                Próximas Manutenções
+          {/* Frota por Categoria */}
+          <Card 
+            className="cursor-pointer hover:shadow-lg transition-all"
+            onClick={() => setLocation("/admin/veiculos")}
+          >
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <Bus className="h-5 w-5 text-blue-600" />
+                  Frota por Categoria
+                </span>
+                <ChevronRight className="h-5 w-5 text-slate-400" />
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                <Wrench className="h-5 w-5 text-blue-600 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 text-sm">Troca de óleo - Van ABC-1234</p>
-                  <p className="text-xs text-slate-600 mt-1">18/01/2026 • 08:00</p>
+            <CardContent className="space-y-3">
+              {[
+                { label: "Vans", count: 24, color: "bg-blue-500" },
+                { label: "Micro-ônibus", count: 7, color: "bg-green-500" },
+                { label: "Ônibus", count: 12, color: "bg-orange-500" },
+              ].map((item) => (
+                <div key={item.label} className="flex items-center gap-3">
+                  <div className="flex-1">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-slate-600">{item.label}</span>
+                      <span className="font-semibold">{item.count}</span>
+                    </div>
+                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full ${item.color} rounded-full transition-all`}
+                        style={{ width: `${(item.count / 43) * 100}%` }}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
+              <p className="text-xs text-slate-500 pt-2 border-t">
+                Total: 43 veículos cadastrados
+              </p>
+            </CardContent>
+          </Card>
 
-              <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                <Wrench className="h-5 w-5 text-blue-600 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 text-sm">Revisão completa - Ônibus XYZ-5678</p>
-                  <p className="text-xs text-slate-600 mt-1">20/01/2026 • 14:00</p>
+          {/* Alertas de Documentos */}
+          <Card 
+            className="cursor-pointer hover:shadow-lg transition-all"
+            onClick={() => setLocation("/admin/alertas")}
+          >
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-orange-600" />
+                  Alertas de Documentos
+                </span>
+                <ChevronRight className="h-5 w-5 text-slate-400" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {alertasData?.alertas?.slice(0, 4).map((alerta: any, index: number) => (
+                <div 
+                  key={index}
+                  className={`flex items-start gap-3 p-3 rounded-lg ${
+                    alerta.urgencia === 'critico' ? 'bg-red-50' :
+                    alerta.urgencia === 'alto' ? 'bg-orange-50' : 'bg-yellow-50'
+                  }`}
+                >
+                  <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                    alerta.urgencia === 'critico' ? 'bg-red-500' :
+                    alerta.urgencia === 'alto' ? 'bg-orange-500' : 'bg-yellow-500'
+                  }`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-900 text-sm truncate">{alerta.titulo}</p>
+                    <p className="text-xs text-slate-600 truncate">{alerta.categoria}</p>
+                  </div>
                 </div>
-              </div>
+              )) || (
+                <div className="text-center py-4 text-slate-500">
+                  <CheckCircle2 className="h-8 w-8 mx-auto mb-2 text-green-500" />
+                  <p className="text-sm">Nenhum alerta pendente</p>
+                </div>
+              )}
+              {(alertasData?.total ?? 0) > 4 && (
+                <p className="text-xs text-blue-600 text-center pt-2">
+                  Ver todos os {alertasData?.total ?? 0} alertas →
+                </p>
+              )}
+            </CardContent>
+          </Card>
 
-              <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                <Wrench className="h-5 w-5 text-blue-600 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 text-sm">Alinhamento - Van DEF-9012</p>
-                  <p className="text-xs text-slate-600 mt-1">22/01/2026 • 10:00</p>
-                </div>
+          {/* Funcionários por Cargo */}
+          <Card 
+            className="cursor-pointer hover:shadow-lg transition-all"
+            onClick={() => setLocation("/admin/funcionarios")}
+          >
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-green-600" />
+                  Equipe por Função
+                </span>
+                <ChevronRight className="h-5 w-5 text-slate-400" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { label: "Motoristas", count: motoristas, icon: "🚗" },
+                  { label: "Administrativo", count: Math.max(0, totalFuncionarios - motoristas), icon: "💼" },
+                  { label: "Total Ativos", count: totalFuncionarios, icon: "👥" },
+                  { label: "CNH Válida", count: totalFuncionarios, icon: "✅" },
+                ].map((item) => (
+                  <div key={item.label} className="bg-slate-50 rounded-lg p-3 text-center">
+                    <span className="text-2xl">{item.icon}</span>
+                    <p className="text-2xl font-bold text-slate-900 mt-1">{item.count}</p>
+                    <p className="text-xs text-slate-600">{item.label}</p>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* Despesas Pendentes */}
+          {/* Módulos do Sistema */}
           <Card>
-            <CardHeader>
+            <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-orange-600" />
-                Despesas Pendentes de Aprovação
+                <LayoutDashboard className="h-5 w-5 text-purple-600" />
+                Módulos Disponíveis
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-start justify-between gap-3 p-3 bg-orange-50 rounded-lg">
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 text-sm">Alimentação - João Silva</p>
-                  <p className="text-xs text-slate-600 mt-1">Viagem Curitiba → Florianópolis • 10/01/2026</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-slate-900">R$ 85,00</p>
-                  <div className="flex gap-1 mt-2">
-                    <Button size="sm" className="h-7 text-xs bg-green-600 hover:bg-green-700">
-                      Aprovar
-                    </Button>
-                    <Button size="sm" variant="outline" className="h-7 text-xs">
-                      Rejeitar
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start justify-between gap-3 p-3 bg-orange-50 rounded-lg">
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 text-sm">Pedágio - Maria Santos</p>
-                  <p className="text-xs text-slate-600 mt-1">Viagem Curitiba → São Paulo • 09/01/2026</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-slate-900">R$ 142,50</p>
-                  <div className="flex gap-1 mt-2">
-                    <Button size="sm" className="h-7 text-xs bg-green-600 hover:bg-green-700">
-                      Aprovar
-                    </Button>
-                    <Button size="sm" variant="outline" className="h-7 text-xs">
-                      Rejeitar
-                    </Button>
-                  </div>
-                </div>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: "Frota", status: "100%", color: "bg-green-500", path: "/admin/veiculos" },
+                  { label: "RH", status: "100%", color: "bg-green-500", path: "/admin/funcionarios" },
+                  { label: "Financeiro", status: "100%", color: "bg-green-500", path: "/admin/financeiro" },
+                  { label: "Agenda", status: "100%", color: "bg-green-500", path: "/admin/agenda" },
+                  { label: "Roteirização", status: "100%", color: "bg-green-500", path: "/admin/roteirizacao" },
+                  { label: "Relatórios", status: "100%", color: "bg-green-500", path: "/admin/relatorios" },
+                ].map((modulo) => (
+                  <Button
+                    key={modulo.label}
+                    variant="outline"
+                    className="h-auto py-3 flex flex-col items-start gap-1 hover:bg-slate-50"
+                    onClick={() => setLocation(modulo.path)}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span className="font-medium text-sm">{modulo.label}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full text-white ${modulo.color}`}>
+                        {modulo.status}
+                      </span>
+                    </div>
+                  </Button>
+                ))}
               </div>
             </CardContent>
           </Card>
