@@ -1,20 +1,32 @@
 # TODO - Sistema Martins Turismo
 
-## 🚨 PRIORIDADE MÁXIMA: AUTENTICAÇÃO
+## ✅ LOGIN FUNCIONANDO!
 
-- [ ] Corrigir login para funcionar 100%
-- [ ] Garantir que após login redirecione para /admin
-- [ ] Validar que token JWT está sendo salvo corretamente
+- [x] Backend 100% funcional
+- [x] Endpoint REST /api/login criado
+- [x] Página HTML pura funcionando
+- [x] Login testado e aprovado pelo usuário
+
+## 🗄️ POPULAR BANCO DE DADOS
+
+- [ ] Criar script de seed
+- [ ] Adicionar 5 veículos de exemplo
+- [ ] Adicionar 3 motoristas de exemplo
+- [ ] Adicionar 10 viagens de exemplo
+- [ ] Adicionar 3 clientes de exemplo
+- [ ] Executar script de seed
 
 ## 🧪 TESTAR TODOS OS MÓDULOS ADMIN
 
+### Acesso
+- [ ] Fazer login e acessar /admin
+- [ ] Verificar se dashboard carrega
+
 ### Módulo RH
-- [ ] Listar funcionários
-- [ ] Cadastrar novo funcionário
-- [ ] Editar funcionário
 - [ ] Listar motoristas
 - [ ] Cadastrar novo motorista
 - [ ] Editar motorista
+- [ ] Validar dados salvos
 
 ### Módulo de Serviços
 - [ ] Listar veículos
@@ -27,18 +39,13 @@
 ### Módulo de Manutenção
 - [ ] Listar check-lists
 - [ ] Criar check-list
-- [ ] Listar ordens de serviço
-- [ ] Criar ordem de serviço
-- [ ] Listar manutenções
-- [ ] Registrar manutenção
+- [ ] Validar fluxo completo
 
 ### Módulo de Clientes
 - [ ] Listar clientes
 - [ ] Cadastrar novo cliente
 - [ ] Editar cliente
 
-## 🔧 CORREÇÕES NECESSÁRIAS
+## 🔧 CORREÇÕES
 
-- [ ] Se algum módulo não funcionar, corrigir imediatamente
-- [ ] Garantir que todas as páginas carregam corretamente
-- [ ] Validar que dados são salvos no banco
+- [ ] Corrigir problemas encontrados durante testes
