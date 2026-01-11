@@ -17,6 +17,8 @@ import {
   AlertTriangle,
   Clock,
   DollarSign,
+  Calendar,
+  MapPin,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -59,6 +61,8 @@ export default function Admin() {
     { icon: DollarSign, label: "Lançamentos RH", path: "/admin/lancamentos-rh" },
     { icon: AlertTriangle, label: "Alertas Documentos", path: "/admin/alertas" },
     { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro" },
+    { icon: Calendar, label: "Agenda", path: "/admin/agenda" },
+    { icon: MapPin, label: "Roteirização", path: "/admin/roteirizacao" },
     { icon: Receipt, label: "Importar Dados", path: "/admin/importar" },
     { icon: Receipt, label: "Despesas", path: "/admin/despesas" },
     { icon: Wrench, label: "Manutenção", path: "/admin/manutencao" },

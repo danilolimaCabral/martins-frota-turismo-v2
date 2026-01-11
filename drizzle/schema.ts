@@ -1266,3 +1266,72 @@ export const extratosBancarios = mysqlTable("extratos_bancarios", {
 
 export type ExtratoBancario = typeof extratosBancarios.$inferSelect;
 export type InsertExtratoBancario = typeof extratosBancarios.$inferInsert;
+
+
+// ============================================
+// MÓDULO: AGENDA DE COMPROMISSOS
+// ============================================
+
+export const eventos = mysqlTable("eventos", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Dados do Evento
+  titulo: varchar("titulo", { length: 255 }).notNull(),
+  descricao: text("descricao"),
+  tipoServico: mysqlEnum("tipo_servico", ["viagem", "especial", "fretamento", "transfer", "excursao"]).default("viagem").notNull(),
+  
+  // Datas
+  dataInicio: timestamp("data_inicio").notNull(),
+  dataFim: timestamp("data_fim").notNull(),
+  
+  // Cliente
+  clienteId: int("cliente_id"),
+  clienteNome: varchar("cliente_nome", { length: 255 }),
+  clienteTelefone: varchar("cliente_telefone", { length: 20 }),
+  clienteEmail: varchar("cliente_email", { length: 320 }),
+  
+  // Veículo
+  veiculoId: int("veiculo_id").references(() => vehicles.id),
+  
+  // Motorista
+  motoristaId: int("motorista_id").references(() => drivers.id),
+  
+  // Valores
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }).default("0"),
+  valorPago: decimal("valor_pago", { precision: 10, scale: 2 }).default("0"),
+  
+  // Status
+  status: mysqlEnum("status", ["agendado", "confirmado", "em_andamento", "concluido", "cancelado"]).default("agendado").notNull(),
+  
+  // Localização
+  enderecoOrigem: text("endereco_origem"),
+  enderecoDestino: text("endereco_destino"),
+  
+  // Observações
+  observacoes: text("observacoes"),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  createdBy: int("created_by").references(() => users.id),
+});
+
+export type Evento = typeof eventos.$inferSelect;
+export type InsertEvento = typeof eventos.$inferInsert;
+
+// Pagamentos do Evento
+export const pagamentosEvento = mysqlTable("pagamentos_evento", {
+  id: int("id").autoincrement().primaryKey(),
+  eventoId: int("evento_id").references(() => eventos.id, { onDelete: "cascade" }).notNull(),
+  
+  valor: decimal("valor", { precision: 10, scale: 2 }).notNull(),
+  dataPagamento: timestamp("data_pagamento").notNull(),
+  formaPagamento: mysqlEnum("forma_pagamento", ["dinheiro", "cartao_credito", "cartao_debito", "pix", "transferencia", "boleto", "cheque"]).notNull(),
+  
+  comprovante: text("comprovante"), // URL do comprovante
+  observacoes: text("observacoes"),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type PagamentoEvento = typeof pagamentosEvento.$inferSelect;
+export type InsertPagamentoEvento = typeof pagamentosEvento.$inferInsert;

@@ -24,6 +24,8 @@ import { lancamentosRHRouter } from "./lancamentos-rh-routers";
 import { alertasRouter } from "./alertas-routers";
 import { financeiroRouter } from "./financeiro-routers";
 import { importRouter } from "./import-routers";
+import { agendaRouter } from "./agenda-routers";
+import { roteirizacaoRouter } from "./roteirizacao-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -52,6 +54,8 @@ export const appRouter = router({
   alertas: alertasRouter,
   financeiro: financeiroRouter,
   import: importRouter,
+  agenda: agendaRouter,
+  roteirizacao: roteirizacaoRouter,
 });
 
 // TODO: add feature routers here, e.g.
