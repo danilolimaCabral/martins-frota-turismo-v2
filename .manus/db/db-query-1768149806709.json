@@ -1,0 +1,40 @@
+{
+  "query": "SELECT id, plate, brand, model, type, capacity, currentKm, status FROM vehicles ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT id, plate, brand, model, type, capacity, currentKm, status FROM vehicles ORDER BY id;",
+  "rows": [
+    {
+      "id": "1",
+      "plate": "ABC-1234",
+      "brand": "Mercedes-Benz",
+      "model": "Sprinter 415",
+      "type": "van",
+      "capacity": "16",
+      "currentKm": "45230.00",
+      "status": "ativo"
+    },
+    {
+      "id": "2",
+      "plate": "DEF-5678",
+      "brand": "Iveco",
+      "model": "Daily 70C17",
+      "type": "micro-onibus",
+      "capacity": "28",
+      "currentKm": "67890.00",
+      "status": "ativo"
+    },
+    {
+      "id": "3",
+      "plate": "GHI-9012",
+      "brand": "Marcopolo",
+      "model": "Volare W9",
+      "type": "onibus",
+      "capacity": "44",
+      "currentKm": "125000.00",
+      "status": "ativo"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tplate\tbrand\tmodel\ttype\tcapacity\tcurrentKm\tstatus\n1\tABC-1234\tMercedes-Benz\tSprinter 415\tvan\t16\t45230.00\tativo\n2\tDEF-5678\tIveco\tDaily 70C17\tmicro-onibus\t28\t67890.00\tativo\n3\tGHI-9012\tMarcopolo\tVolare W9\tonibus\t44\t125000.00\tativo\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}
