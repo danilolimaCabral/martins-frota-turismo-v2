@@ -1,0 +1,28 @@
+# robots.txt para MV Turismo
+# https://mvturismo.vip
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /motorista/
+Disallow: /sistema/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://mvturismo.vip/sitemap.xml
+
+# Crawl-delay (opcional, para evitar sobrecarga)
+Crawl-delay: 10
+
+# Bots específicos
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /motorista/
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /motorista/
+Disallow: /api/
