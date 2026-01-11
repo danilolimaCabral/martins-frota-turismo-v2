@@ -240,3 +240,11 @@
 - [ ] Alertas de CNH vencendo
 - [ ] Alertas de ANTT/DER vencendo
 - [ ] Alertas de pagamentos pendentes
+
+
+## 🆕 MELHORIAS DASHBOARD (NOVA SOLICITAÇÃO)
+
+- [ ] Corrigir queries dos cards para buscar dados reais
+- [ ] Adicionar gráficos Chart.js (despesas, viagens, ocupação)
+- [ ] Implementar notificações push em tempo real
+- [ ] Testar todas as funcionalidades
