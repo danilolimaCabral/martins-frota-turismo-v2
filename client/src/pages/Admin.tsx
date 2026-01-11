@@ -160,20 +160,27 @@ export default function Admin() {
                 Visão completa da gestão de frotas e operações
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Button
                 onClick={() => window.location.href = '/admin/veiculos'}
                 className="bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-xl"
               >
                 <Bus className="h-4 w-4 mr-2" />
-                Gestão de Veículos
+                Veículos
+              </Button>
+              <Button
+                onClick={() => window.location.href = '/admin/motoristas'}
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:shadow-xl"
+              >
+                <Users className="h-4 w-4 mr-2" />
+                Motoristas
               </Button>
               <Button
                 onClick={() => window.location.href = '/rastreamento'}
                 className="bg-gradient-to-r from-blue-600 to-blue-700 hover:shadow-xl"
               >
                 <MapPin className="h-4 w-4 mr-2" />
-                Ver Rastreamento
+                Rastreamento
               </Button>
             </div>
           </div>

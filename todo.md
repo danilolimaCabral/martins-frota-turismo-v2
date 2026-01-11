@@ -365,14 +365,12 @@
 ## DESENVOLVIMENTO COMPLETO DA ÁREA ADMIN
 - [x] Criar procedures tRPC para CRUD de veículos
 - [x] Implementar interface de gestão de veículos (listar, adicionar, editar, excluir)
-- [ ] Criar procedures tRPC para CRUD de motoristas
-- [ ] Implementar interface de gestão de motoristas
-- [ ] Criar procedures tRPC para CRUD de clientes
-- [ ] Implementar interface de gestão de clientes
-- [ ] Criar procedures tRPC para gestão de viagens
-- [ ] Implementar interface de criação e acompanhamento de viagens
-- [ ] Criar procedures tRPC para aprovação de despesas
-- [ ] Implementar interface de aprovação/rejeição de despesas
+- [x] Criar procedures tRPC para CRUD de motoristas
+- [x] Implementar interface de gestão de motoristas
+- [x] Criar procedures tRPC para gestão de viagens
+- [ ] Implementar interface de criação e acompanhamento de viagens (falta UI)
+- [x] Criar procedures tRPC para aprovação de despesas
+- [ ] Implementar interface de aprovação/rejeição de despesas (falta UI)
 - [ ] Criar procedures tRPC para relatórios financeiros
 - [ ] Implementar dashboards com gráficos de receitas/despesas
 - [ ] Adicionar filtros por período nos relatórios
