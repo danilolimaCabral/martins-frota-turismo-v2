@@ -489,3 +489,199 @@ export const passageirosRota = mysqlTable("passageiros_rota", {
 
 export type PassageiroRota = typeof passageirosRota.$inferSelect;
 export type InsertPassageiroRota = typeof passageirosRota.$inferInsert;
+
+// ==================== SISTEMA DE MÓDULOS E PERMISSÕES ====================
+
+export const modulos = mysqlTable("modulos", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
+  descricao: text("descricao"),
+  icone: varchar("icone", { length: 50 }), // Nome do ícone (ex: "Users", "DollarSign", "Truck")
+  ordem: int("ordem").default(0), // Ordem de exibição no menu
+  ativo: boolean("ativo").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Modulo = typeof modulos.$inferSelect;
+export type InsertModulo = typeof modulos.$inferInsert;
+
+export const permissoesUsuario = mysqlTable("permissoes_usuario", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  moduloId: int("modulo_id").references(() => modulos.id, { onDelete: "cascade" }).notNull(),
+  podeVisualizar: boolean("pode_visualizar").default(true).notNull(),
+  podeEditar: boolean("pode_editar").default(false).notNull(),
+  podeDeletar: boolean("pode_deletar").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type PermissaoUsuario = typeof permissoesUsuario.$inferSelect;
+export type InsertPermissaoUsuario = typeof permissoesUsuario.$inferInsert;
+
+// ==================== MÓDULO RH - FUNCIONÁRIOS ====================
+
+export const funcionarios = mysqlTable("funcionarios", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").references(() => users.id), // Link opcional com usuário do sistema
+  
+  // Dados Pessoais
+  nome: varchar("nome", { length: 255 }).notNull(),
+  cpf: varchar("cpf", { length: 14 }).unique().notNull(),
+  rg: varchar("rg", { length: 20 }),
+  rgOrgaoEmissor: varchar("rg_orgao_emissor", { length: 20 }),
+  dataNascimento: date("data_nascimento"),
+  sexo: mysqlEnum("sexo", ["M", "F", "Outro"]),
+  estadoCivil: mysqlEnum("estado_civil", ["Solteiro", "Casado", "Divorciado", "Viuvo", "Uniao Estavel"]),
+  
+  // Contato
+  telefone: varchar("telefone", { length: 20 }),
+  celular: varchar("celular", { length: 20 }),
+  email: varchar("email", { length: 320 }),
+  
+  // Endereço
+  cep: varchar("cep", { length: 10 }),
+  endereco: text("endereco"),
+  numero: varchar("numero", { length: 20 }),
+  complemento: varchar("complemento", { length: 100 }),
+  bairro: varchar("bairro", { length: 100 }),
+  cidade: varchar("cidade", { length: 100 }),
+  estado: varchar("estado", { length: 2 }),
+  
+  // Dados Contratuais
+  dataAdmissao: date("data_admissao").notNull(),
+  dataDemissao: date("data_demissao"),
+  cargo: varchar("cargo", { length: 100 }).notNull(),
+  departamento: varchar("departamento", { length: 100 }),
+  tipoContrato: mysqlEnum("tipo_contrato", ["CLT", "PJ", "Estagiario", "Temporario"]).default("CLT").notNull(),
+  
+  // Dados Salariais
+  salarioBase: decimal("salario_base", { precision: 10, scale: 2 }).notNull(),
+  adicionalPericulosidade: decimal("adicional_periculosidade", { precision: 5, scale: 2 }).default("0"),
+  adicionalInsalubridade: decimal("adicional_insalubridade", { precision: 5, scale: 2 }).default("0"),
+  adicionalNoturno: decimal("adicional_noturno", { precision: 5, scale: 2 }).default("0"),
+  valeTransporte: decimal("vale_transporte", { precision: 10, scale: 2 }).default("0"),
+  valeAlimentacao: decimal("vale_alimentacao", { precision: 10, scale: 2 }).default("0"),
+  planoSaude: decimal("plano_saude", { precision: 10, scale: 2 }).default("0"),
+  
+  // Dados Bancários
+  banco: varchar("banco", { length: 100 }),
+  agencia: varchar("agencia", { length: 20 }),
+  conta: varchar("conta", { length: 30 }),
+  tipoConta: mysqlEnum("tipo_conta", ["Corrente", "Poupanca", "Salario"]),
+  pixChave: varchar("pix_chave", { length: 100 }),
+  
+  // Documentos Trabalhistas
+  ctpsNumero: varchar("ctps_numero", { length: 20 }),
+  ctpsSerie: varchar("ctps_serie", { length: 20 }),
+  ctpsUf: varchar("ctps_uf", { length: 2 }),
+  pisNumero: varchar("pis_numero", { length: 20 }),
+  tituloEleitor: varchar("titulo_eleitor", { length: 20 }),
+  reservista: varchar("reservista", { length: 20 }),
+  
+  // CNH (para motoristas)
+  cnhNumero: varchar("cnh_numero", { length: 20 }),
+  cnhCategoria: varchar("cnh_categoria", { length: 5 }),
+  cnhValidade: date("cnh_validade"),
+  
+  // Status
+  status: mysqlEnum("status", ["ativo", "ferias", "afastado", "demitido"]).default("ativo").notNull(),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Funcionario = typeof funcionarios.$inferSelect;
+export type InsertFuncionario = typeof funcionarios.$inferInsert;
+
+export const dependentes = mysqlTable("dependentes", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  cpf: varchar("cpf", { length: 14 }),
+  dataNascimento: date("data_nascimento").notNull(),
+  parentesco: mysqlEnum("parentesco", ["Filho", "Filha", "Conjuge", "Pai", "Mae", "Outro"]).notNull(),
+  dependenteIR: boolean("dependente_ir").default(true).notNull(), // Dependente para IR
+  dependenteSF: boolean("dependente_sf").default(true).notNull(), // Dependente para Salário Família
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Dependente = typeof dependentes.$inferSelect;
+export type InsertDependente = typeof dependentes.$inferInsert;
+
+// ==================== MÓDULO FOLHA DE PAGAMENTO ====================
+
+export const folhasPagamento = mysqlTable("folhas_pagamento", {
+  id: int("id").autoincrement().primaryKey(),
+  mesReferencia: int("mes_referencia").notNull(), // 1-12
+  anoReferencia: int("ano_referencia").notNull(), // 2026
+  status: mysqlEnum("status", ["aberta", "processando", "fechada", "paga"]).default("aberta").notNull(),
+  dataFechamento: timestamp("data_fechamento"),
+  dataPagamento: date("data_pagamento"),
+  totalBruto: decimal("total_bruto", { precision: 12, scale: 2 }).default("0"),
+  totalDescontos: decimal("total_descontos", { precision: 12, scale: 2 }).default("0"),
+  totalLiquido: decimal("total_liquido", { precision: 12, scale: 2 }).default("0"),
+  arquivoCnab: text("arquivo_cnab"), // Path do arquivo CNAB gerado
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type FolhaPagamento = typeof folhasPagamento.$inferSelect;
+export type InsertFolhaPagamento = typeof folhasPagamento.$inferInsert;
+
+export const itensFolha = mysqlTable("itens_folha", {
+  id: int("id").autoincrement().primaryKey(),
+  folhaId: int("folha_id").references(() => folhasPagamento.id, { onDelete: "cascade" }).notNull(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id).notNull(),
+  
+  // Proventos
+  salarioBase: decimal("salario_base", { precision: 10, scale: 2 }).default("0"),
+  horasExtras50: decimal("horas_extras_50", { precision: 10, scale: 2 }).default("0"),
+  horasExtras100: decimal("horas_extras_100", { precision: 10, scale: 2 }).default("0"),
+  adicionalNoturno: decimal("adicional_noturno", { precision: 10, scale: 2 }).default("0"),
+  adicionalPericulosidade: decimal("adicional_periculosidade", { precision: 10, scale: 2 }).default("0"),
+  adicionalInsalubridade: decimal("adicional_insalubridade", { precision: 10, scale: 2 }).default("0"),
+  comissoes: decimal("comissoes", { precision: 10, scale: 2 }).default("0"),
+  bonus: decimal("bonus", { precision: 10, scale: 2 }).default("0"),
+  outrosProventos: decimal("outros_proventos", { precision: 10, scale: 2 }).default("0"),
+  
+  // Descontos
+  inss: decimal("inss", { precision: 10, scale: 2 }).default("0"),
+  irrf: decimal("irrf", { precision: 10, scale: 2 }).default("0"),
+  fgts: decimal("fgts", { precision: 10, scale: 2 }).default("0"),
+  valeTransporte: decimal("vale_transporte", { precision: 10, scale: 2 }).default("0"),
+  valeAlimentacao: decimal("vale_alimentacao", { precision: 10, scale: 2 }).default("0"),
+  planoSaude: decimal("plano_saude", { precision: 10, scale: 2 }).default("0"),
+  adiantamento: decimal("adiantamento", { precision: 10, scale: 2 }).default("0"),
+  faltas: decimal("faltas", { precision: 10, scale: 2 }).default("0"),
+  outrosDescontos: decimal("outros_descontos", { precision: 10, scale: 2 }).default("0"),
+  
+  // Totais
+  totalProventos: decimal("total_proventos", { precision: 10, scale: 2 }).default("0"),
+  totalDescontos: decimal("total_descontos", { precision: 10, scale: 2 }).default("0"),
+  salarioLiquido: decimal("salario_liquido", { precision: 10, scale: 2 }).default("0"),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type ItemFolha = typeof itensFolha.$inferSelect;
+export type InsertItemFolha = typeof itensFolha.$inferInsert;
+
+export const horasExtras = mysqlTable("horas_extras", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  data: date("data").notNull(),
+  horasTrabalhadas: decimal("horas_trabalhadas", { precision: 5, scale: 2 }).notNull(),
+  tipo: mysqlEnum("tipo", ["50%", "100%", "Noturno"]).notNull(),
+  valorHora: decimal("valor_hora", { precision: 10, scale: 2 }),
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }),
+  aprovado: boolean("aprovado").default(false).notNull(),
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type HoraExtra = typeof horasExtras.$inferSelect;
+export type InsertHoraExtra = typeof horasExtras.$inferInsert;
