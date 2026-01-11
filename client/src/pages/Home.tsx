@@ -235,13 +235,23 @@ Aguardo retorno!`;
             
             {/* Desktop Menu */}
             <nav className="hidden lg:flex items-center gap-8">
-              {["Início", "Serviços", "Frota", "Depoimentos", "Contato"].map((item) => (
+              {[
+                { label: "Início", href: "#hero" },
+                { label: "Serviços", href: "#servicos" },
+                { label: "Frota", href: "#frota" },
+                { label: "Depoimentos", href: "#depoimentos" },
+                { label: "Contato", href: "#contato" }
+              ].map((item) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
+                  key={item.label}
+                  href={item.href}
                   className="text-sm font-medium hover:text-primary transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  {item}
+                  {item.label}
                 </a>
               ))}
               <Link href="/dashboard">
@@ -269,14 +279,26 @@ Aguardo retorno!`;
               className="lg:hidden pb-4"
             >
               <nav className="flex flex-col gap-4">
-                {["Início", "Serviços", "Frota", "Depoimentos", "Contato"].map((item) => (
+                {[
+                  { label: "Início", href: "#hero" },
+                  { label: "Serviços", href: "#servicos" },
+                  { label: "Frota", href: "#frota" },
+                  { label: "Depoimentos", href: "#depoimentos" },
+                  { label: "Contato", href: "#contato" }
+                ].map((item) => (
                   <a
-                    key={item}
-                    href={`#${item.toLowerCase()}`}
-                    onClick={() => setMobileMenuOpen(false)}
+                    key={item.label}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      setTimeout(() => {
+                        document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                      }, 300);
+                    }}
                     className="text-sm font-medium hover:text-primary transition-colors py-2"
                   >
-                    {item}
+                    {item.label}
                   </a>
                 ))}
                 <Link href="/dashboard">
@@ -291,7 +313,7 @@ Aguardo retorno!`;
       </motion.header>
 
       {/* Hero Section Mobile-Optimized */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-0">
+      <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-0">
         {/* Background Carousel */}
         <div className="absolute inset-0 z-0">
           {heroImages.map((image, index) => (
@@ -633,6 +655,7 @@ Aguardo retorno!`;
 
       {/* Serviços - Mobile Grid */}
       <motion.section id="servicos" {...fadeInUp} className="py-16 md:py-24 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div id="frota" className="absolute -top-20"></div>
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{fontFamily: 'Poppins'}}>

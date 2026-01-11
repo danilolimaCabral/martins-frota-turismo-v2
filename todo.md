@@ -346,3 +346,10 @@
 -- [x] Mudar palavra "INTELIGENTE" de azul para laranja
 - [ ] Mudar menus/botões coloridos para laranja (parcialmente - botão Sistema ainda precisa ser ajustado)
 - [x] Atualizar ticker de clima para mostrar apenas Curitiba, Araucária e São Paulo
+
+- [x] Arrumar navegação do menu mobile (Início, Serviços, Frota, Depoimentos, Contato)
+- [x] Implementar scroll suave até as seções ao clicar nos itens do menu
+- [x] Fechar menu mobile automaticamente após clicar em um item
+
+- [x] Criar ícone 3D com letras "MV" para o botão do chatbot
+- [x] Substituir ícone de mensagem genérico pelo ícone personalizado MV

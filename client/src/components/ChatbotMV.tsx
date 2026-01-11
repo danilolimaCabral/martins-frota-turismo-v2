@@ -85,10 +85,20 @@ export default function ChatbotMV() {
           >
             <Button
               onClick={() => setIsOpen(true)}
-              className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 shadow-2xl hover:shadow-blue-500/50 transition-all duration-300"
+              className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 relative overflow-hidden"
               size="icon"
             >
-              <MessageCircle className="h-8 w-8 text-white" />
+              <span 
+                className="text-3xl font-black text-white"
+                style={{
+                  fontFamily: 'Poppins',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3), -1px -1px 2px rgba(255,255,255,0.2)',
+                  transform: 'perspective(100px) rotateX(10deg)',
+                  display: 'inline-block'
+                }}
+              >
+                MV
+              </span>
             </Button>
           </motion.div>
         )}
@@ -109,7 +119,15 @@ export default function ChatbotMV() {
               <div className="bg-gradient-to-r from-blue-600 to-orange-500 p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
-                    <MessageCircle className="h-6 w-6 text-white" />
+                    <span 
+                      className="text-lg font-black text-white"
+                      style={{
+                        fontFamily: 'Poppins',
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+                      }}
+                    >
+                      MV
+                    </span>
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-lg">
