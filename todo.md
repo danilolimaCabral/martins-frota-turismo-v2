@@ -213,3 +213,24 @@
 - [ ] Testar fluxo de login completo
 - [x] Corrigir logo que não aparece na página de login
 - [x] URGENTE: Corrigir login que não funciona (botão não executa ação) - Código corrigido, aguardando validação manual
+
+---
+
+## 🔄 REFAZER SISTEMA DE LOGIN
+
+- [ ] Analisar código de autenticação atual
+- [ ] Limpar código antigo problemático
+- [ ] Reimplementar backend de autenticação
+- [ ] Reimplementar frontend de login
+- [ ] Testar login funcionando
+- [ ] Validar redirect após login
+
+---
+
+## 🧪 TESTE COMPLETO DE FUNCIONALIDADES
+
+- [x] Analisar código de todos os módulos
+- [x] Validar procedures tRPC (105 endpoints encontrados)
+- [x] Testar componentes frontend
+- [x] Documentar funcionalidades encontradas
+- [x] Gerar relatório técnico completo
