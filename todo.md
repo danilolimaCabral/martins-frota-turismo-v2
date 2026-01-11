@@ -473,3 +473,7 @@
 
 ## CORREÇÃO TICKER - TEXTO CORTADO
 - [x] Ajustar altura e padding do ticker para evitar texto cortado/sobreposto (py-2.5, header ajustado)
+
+## SUBSTITUIÇÃO TICKER
+- [x] Remover ticker de notícias de viagens
+- [x] Implementar ticker de clima com temperatura atual e previsão dos próximos 4 dias (Curitiba e Araucária - Hoje, Amanhã, Terça, Quarta)

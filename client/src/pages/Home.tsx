@@ -189,35 +189,47 @@ Aguardo retorno!`;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* News Ticker - Notícias de Viagens e Turismo */}
+      {/* Weather Ticker - Previsão do Tempo */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-2.5 overflow-hidden">
         <div className="flex animate-scroll">
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {[
-              { icon: "🏝️", text: "Conheça as praias paradisíacas de Fernando de Noronha" },
-              { icon: "⛰️", text: "Aventura na Chapada Diamantina: trilhas e cachoeiras incríveis" },
-              { icon: "🏛️", text: "Ouro Preto: história e cultura em Minas Gerais" },
-              { icon: "🌴", text: "Bonito/MS: ecoturismo e mergulho em águas cristalinas" },
-              { icon: "🏖️", text: "Lençóis Maranhenses: dunas e lagoas de tirar o fôlego" },
-            ].map((news, index) => (
+              { city: "Curitiba", temp: "22°C", condition: "☀️ Ensolarado", day: "Hoje" },
+              { city: "Araucária", temp: "21°C", condition: "☀️ Ensolarado", day: "Hoje" },
+              { city: "Curitiba", temp: "24°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
+              { city: "Araucária", temp: "23°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
+              { city: "Curitiba", temp: "20°C", condition: "🌧️ Chuva", day: "Terça" },
+              { city: "Araucária", temp: "19°C", condition: "🌧️ Chuva", day: "Terça" },
+              { city: "Curitiba", temp: "18°C", condition: "☁️ Nublado", day: "Quarta" },
+              { city: "Araucária", temp: "17°C", condition: "☁️ Nublado", day: "Quarta" },
+            ].map((weather, index) => (
               <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <span className="text-lg">{news.icon}</span>
-                <span>{news.text}</span>
+                <span className="font-bold">{weather.city}</span>
+                <span>•</span>
+                <span className="text-lg">{weather.condition}</span>
+                <span className="font-semibold">{weather.temp}</span>
+                <span className="text-xs opacity-80">({weather.day})</span>
               </div>
             ))}
           </div>
           {/* Duplicar para efeito de loop infinito */}
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {[
-              { icon: "🏝️", text: "Conheça as praias paradisíacas de Fernando de Noronha" },
-              { icon: "⛰️", text: "Aventura na Chapada Diamantina: trilhas e cachoeiras incríveis" },
-              { icon: "🏛️", text: "Ouro Preto: história e cultura em Minas Gerais" },
-              { icon: "🌴", text: "Bonito/MS: ecoturismo e mergulho em águas cristalinas" },
-              { icon: "🏖️", text: "Lençóis Maranhenses: dunas e lagoas de tirar o fôlego" },
-            ].map((news, index) => (
+              { city: "Curitiba", temp: "22°C", condition: "☀️ Ensolarado", day: "Hoje" },
+              { city: "Araucária", temp: "21°C", condition: "☀️ Ensolarado", day: "Hoje" },
+              { city: "Curitiba", temp: "24°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
+              { city: "Araucária", temp: "23°C", condition: "⛅ Parcialmente Nublado", day: "Amanhã" },
+              { city: "Curitiba", temp: "20°C", condition: "🌧️ Chuva", day: "Terça" },
+              { city: "Araucária", temp: "19°C", condition: "🌧️ Chuva", day: "Terça" },
+              { city: "Curitiba", temp: "18°C", condition: "☁️ Nublado", day: "Quarta" },
+              { city: "Araucária", temp: "17°C", condition: "☁️ Nublado", day: "Quarta" },
+            ].map((weather, index) => (
               <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <span className="text-lg">{news.icon}</span>
-                <span>{news.text}</span>
+                <span className="font-bold">{weather.city}</span>
+                <span>•</span>
+                <span className="text-lg">{weather.condition}</span>
+                <span className="font-semibold">{weather.temp}</span>
+                <span className="text-xs opacity-80">({weather.day})</span>
               </div>
             ))}
           </div>
