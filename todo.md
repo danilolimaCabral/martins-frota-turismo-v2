@@ -140,3 +140,20 @@
 - [x] Integrar Google Analytics 4 (placeholder)
 - [ ] Configurar eventos de conversão
 - [ ] Adicionar tracking de páginas
+
+
+---
+
+## 🚨 URGENTE: Erro de Acesso ao Sistema
+
+- [ ] Diagnosticar erro de login
+- [ ] Verificar rotas de autenticação
+- [ ] Testar credenciais
+- [ ] Corrigir problema
+
+## 💰 Análise de Precificação
+
+- [ ] Calcular valor de desenvolvimento
+- [ ] Analisar custos de manutenção
+- [ ] Definir modelo de cobrança mensal
+- [ ] Criar documento de precificação
