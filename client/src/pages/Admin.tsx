@@ -56,6 +56,8 @@ export default function Admin() {
     { icon: Users, label: "Motoristas", path: "/admin/motoristas" },
     { icon: Users, label: "Funcionários", path: "/admin/funcionarios" },
     { icon: DollarSign, label: "Folha de Pagamento", path: "/admin/folha" },
+    { icon: DollarSign, label: "Lançamentos RH", path: "/admin/lancamentos-rh" },
+    { icon: AlertTriangle, label: "Alertas Documentos", path: "/admin/alertas" },
     { icon: Receipt, label: "Despesas", path: "/admin/despesas" },
     { icon: Wrench, label: "Manutenção", path: "/admin/manutencao" },
     { icon: FileText, label: "Relatórios", path: "/admin/relatorios" },

@@ -23,6 +23,8 @@ import MotoristaChecklist from "./pages/MotoristaChecklist";
 import AdminTemplates from "./pages/AdminTemplates";
 import AdminFuncionarios from "./pages/AdminFuncionarios";
 import AdminFolhaPagamento from "./pages/AdminFolhaPagamento";
+import AdminLancamentosRH from "./pages/AdminLancamentosRH";
+import AdminAlertas from "./pages/AdminAlertas";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -66,6 +68,16 @@ function Router() {
         <Route path="/admin/folha">
           <ProtectedRoute requireAdmin>
             <AdminFolhaPagamento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/lancamentos-rh">
+          <ProtectedRoute requireAdmin>
+            <AdminLancamentosRH />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/alertas">
+          <ProtectedRoute requireAdmin>
+            <AdminAlertas />
           </ProtectedRoute>
         </Route>
         <Route path="/rastreamento" component={Rastreamento} />
