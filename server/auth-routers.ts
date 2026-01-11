@@ -101,7 +101,7 @@ export const authRouter = router({
    * Retorna null se não autenticado (para compatibilidade com useAuth)
    */
   me: publicProcedure
-    .query(async () => {
+    .query(async (): Promise<{ id: number; username: string; name: string; email: string | null; phone: string | null; role: "admin" | "funcionario" | "motorista"; active: boolean } | null> => {
       // Por enquanto retorna null - implementar autenticação via contexto futuramente
       // TODO: Implementar verificação de token JWT no contexto
       return null;

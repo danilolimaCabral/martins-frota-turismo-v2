@@ -67,7 +67,7 @@ export function useLocalAuth(options?: UseAuthOptions) {
 
   // Busca dados do usuário se tiver token
   const meQuery = trpc.auth.me.useQuery(
-    { userId: userId! },
+    undefined,
     {
       enabled: !!userId,
       retry: false,
