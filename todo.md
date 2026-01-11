@@ -206,3 +206,60 @@
 
 ## CORREÇÃO URGENTE
 - [ ] Corrigir ticker de clima (texto duplicado e sobreposto)
+
+
+## FASE ATUAL: IMPLEMENTAÇÕES PRINCIPAIS (CONTINUAÇÃO)
+
+### 3. CHATBOT MV COM IA ✅
+- [x] Criar componente de chat flutuante (botão no canto inferior direito)
+- [x] Integrar com LLM (invokeLLM) para respostas inteligentes
+- [x] Criar contexto do chatbot com informações da Martins
+- [x] Implementar respostas sobre serviços de transporte
+- [x] Adicionar sugestões de veículos baseadas em necessidades
+- [x] Implementar cálculo de quilometragem entre cidades
+- [x] Adicionar botão para encaminhar para WhatsApp
+- [ ] Salvar histórico de conversas no banco de dados (opcional)
+- [x] Adicionar animações e design moderno ao chat
+- [x] Testar chatbot com diferentes perguntas
+
+### 4. PORTAL DO FUNCIONÁRIO (/funcionario)
+- [ ] Criar layout do portal com sidebar
+- [ ] Implementar dashboard do funcionário
+- [ ] Criar formulário de lançamento de despesas
+- [ ] Adicionar upload de comprovantes (fotos)
+- [ ] Criar formulário de registro de abastecimentos
+- [ ] Implementar checklist de veículo
+- [ ] Mostrar histórico de viagens do funcionário
+- [ ] Adicionar relatório de despesas do mês
+- [ ] Implementar notificações para o funcionário
+- [ ] Testar todas as funcionalidades do portal
+
+### 5. SISTEMA ADMINISTRATIVO (/admin)
+- [ ] Criar layout administrativo com sidebar completa
+- [ ] Implementar dashboard principal com KPIs
+- [ ] Criar módulo de gestão de veículos (CRUD)
+- [ ] Implementar controle de documentação (IPVA, seguro, licenciamento)
+- [ ] Criar módulo de gestão de motoristas
+- [ ] Implementar controle de manutenção (preventiva/corretiva)
+- [ ] Criar calendário de agendamentos
+- [ ] Implementar módulo de gestão de clientes
+- [ ] Criar relatórios financeiros
+- [ ] Adicionar gráficos e estatísticas
+- [ ] Implementar controle de combustível
+- [ ] Criar módulo de aprovação de despesas
+- [ ] Adicionar rastreamento GPS (integração futura)
+- [ ] Testar todo o sistema administrativo
+
+
+## AJUSTES SOLICITADOS
+- [x] Mudar cor do ticker de clima de azul para laranja
+- [x] Reduzir quantidade de cidades no ticker (deixar apenas Curitiba e Araucária)
+
+- [x] Arrumar formulário de busca de viagens (origem/destino/data/passageiros)
+- [x] Implementar funcionalidade de cotação automática (via WhatsApp)
+
+- [x] Implementar simulador de rota e distância
+- [x] Calcular distância aproximada entre cidades
+- [x] Estimar tempo de viagem
+- [x] Sugerir tipo de veículo ideal
+- [x] Mostrar previsão de custo aproximado

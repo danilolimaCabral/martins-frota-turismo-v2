@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import ChatbotMV from "./components/ChatbotMV";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -32,6 +33,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <ChatbotMV />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

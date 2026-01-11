@@ -52,6 +52,126 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
+  // Estado do formulário de busca
+  const [searchForm, setSearchForm] = useState({
+    origem: "Curitiba - PR",
+    destino: "Beto Carrero - SC",
+    dataIda: "",
+    passageiros: "1-10 passageiros (Van)"
+  });
+  
+  const [routeSimulation, setRouteSimulation] = useState<{
+    distance: number;
+    duration: string;
+    vehicleType: string;
+    estimatedCost: string;
+  } | null>(null);
+
+  // Banco de dados de distâncias entre cidades (km)
+  const distances: Record<string, Record<string, number>> = {
+    "Curitiba - PR": {
+      "Beto Carrero - SC": 120,
+      "Florianópolis - SC": 300,
+      "Foz do Iguaçu - PR": 640,
+      "Camboriú - SC": 100,
+      "São Paulo - SP": 400,
+      "Rio de Janeiro - RJ": 850,
+      "Gramado - RS": 380,
+      "Aparecida - SP": 380,
+    },
+    "Araucária - PR": {
+      "Beto Carrero - SC": 130,
+      "Florianópolis - SC": 310,
+      "Foz do Iguaçu - PR": 650,
+      "Camboriú - SC": 110,
+      "São Paulo - SP": 410,
+      "Rio de Janeiro - RJ": 860,
+      "Gramado - RS": 390,
+      "Aparecida - SP": 390,
+    },
+    "São José dos Pinhais - PR": {
+      "Beto Carrero - SC": 115,
+      "Florianópolis - SC": 295,
+      "Foz do Iguaçu - PR": 635,
+      "Camboriú - SC": 95,
+      "São Paulo - SP": 395,
+      "Rio de Janeiro - RJ": 845,
+      "Gramado - RS": 375,
+      "Aparecida - SP": 375,
+    },
+    "Maringá - PR": {
+      "Beto Carrero - SC": 450,
+      "Florianópolis - SC": 730,
+      "Foz do Iguaçu - PR": 550,
+      "Camboriú - SC": 430,
+      "São Paulo - SP": 600,
+      "Rio de Janeiro - RJ": 1200,
+      "Gramado - RS": 710,
+      "Aparecida - SP": 680,
+    },
+  };
+
+  const calculateRoute = () => {
+    const distance = distances[searchForm.origem]?.[searchForm.destino] || 0;
+    
+    if (distance === 0) {
+      setRouteSimulation(null);
+      return;
+    }
+
+    // Calcular tempo (média 70 km/h)
+    const hours = Math.floor(distance / 70);
+    const minutes = Math.round((distance % 70) / 70 * 60);
+    const duration = `${hours}h${minutes > 0 ? minutes + 'min' : ''}`;
+
+    // Determinar tipo de veículo
+    const passengers = parseInt(searchForm.passageiros.split('-')[0]);
+    let vehicleType = "Van";
+    if (passengers > 20) vehicleType = "Ônibus";
+    else if (passengers > 10) vehicleType = "Micro-ônibus";
+
+    // Estimar custo (R$ 4-6 por km dependendo do veículo)
+    const costPerKm = vehicleType === "Ônibus" ? 6 : vehicleType === "Micro-ônibus" ? 5 : 4;
+    const totalCost = distance * costPerKm;
+    const estimatedCost = `R$ ${(totalCost * 0.8).toLocaleString('pt-BR', {minimumFractionDigits: 2})} - R$ ${(totalCost * 1.2).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+    setRouteSimulation({
+      distance,
+      duration,
+      vehicleType,
+      estimatedCost
+    });
+  };
+
+  const handleSearchSubmit = () => {
+    calculateRoute();
+    
+    const routeInfo = routeSimulation ? `
+📏 Distância: ${routeSimulation.distance} km
+⏱️ Tempo estimado: ${routeSimulation.duration}
+🚐 Veículo sugerido: ${routeSimulation.vehicleType}
+💰 Custo estimado: ${routeSimulation.estimatedCost}
+` : '';
+    
+    const message = `Olá! Gostaria de solicitar um orçamento:
+
+📍 Origem: ${searchForm.origem}
+🎯 Destino: ${searchForm.destino}
+📅 Data: ${searchForm.dataIda || "A definir"}
+👥 Passageiros: ${searchForm.passageiros}${routeInfo}
+Aguardo retorno!`;
+    
+    const whatsappUrl = `https://wa.me/5541991021445?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
+  
+  // Recalcular rota quando origem ou destino mudar
+  useEffect(() => {
+    if (searchForm.origem && searchForm.destino) {
+      calculateRoute();
+    }
+  }, [searchForm.origem, searchForm.destino, searchForm.passageiros]);
+  
   const heroImages = [
     "/images/beto-carrero.jpg",
     "/images/foz-iguacu.jpg",
@@ -70,16 +190,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Weather Ticker - Legenda de Clima */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-white py-1 overflow-hidden">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-1.5 overflow-hidden">
         <div className="flex animate-scroll">
-          <div className="flex gap-6 md:gap-8 whitespace-nowrap">
+          <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {[
               { city: "Curitiba", temp: "25°C", icon: "☀️" },
-              { city: "Maringá", temp: "28°C", icon: "🌧️" },
-              { city: "Florianópolis", temp: "23°C", icon: "☀️" },
-              { city: "São Paulo", temp: "22°C", icon: "⛅" },
+              { city: "Araucária", temp: "24°C", icon: "⛅" },
             ].map((weather, index) => (
-              <div key={index} className="flex items-center gap-2 text-xs md:text-sm font-medium">
+              <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
                 <span className="font-semibold">{weather.city}</span>
                 <span>{weather.temp}</span>
                 <span>{weather.icon}</span>
@@ -87,14 +205,12 @@ export default function Home() {
             ))}
           </div>
           {/* Duplicar para efeito infinito */}
-          <div className="flex gap-6 md:gap-8 whitespace-nowrap ml-6 md:ml-8">
+          <div className="flex gap-8 md:gap-12 whitespace-nowrap ml-8 md:ml-12">
             {[
               { city: "Curitiba", temp: "25°C", icon: "☀️" },
-              { city: "Maringá", temp: "28°C", icon: "🌧️" },
-              { city: "Florianópolis", temp: "23°C", icon: "☀️" },
-              { city: "São Paulo", temp: "22°C", icon: "⛅" },
+              { city: "Araucária", temp: "24°C", icon: "⛅" },
             ].map((weather, index) => (
-              <div key={`dup-${index}`} className="flex items-center gap-2 text-xs md:text-sm font-medium">
+              <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
                 <span className="font-semibold">{weather.city}</span>
                 <span>{weather.temp}</span>
                 <span>{weather.icon}</span>
@@ -297,17 +413,27 @@ export default function Home() {
               <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
                 <div className="lg:col-span-1">
                   <label className="text-sm font-medium mb-2 block">Origem</label>
-                  <select className="w-full h-12 px-4 rounded-lg border border-border bg-white">
+                  <select 
+                    className="w-full h-12 px-4 rounded-lg border border-border bg-white"
+                    value={searchForm.origem}
+                    onChange={(e) => setSearchForm({...searchForm, origem: e.target.value})}
+                  >
                     <option>Curitiba - PR</option>
                     <option>Araucária - PR</option>
                     <option>São José dos Pinhais - PR</option>
                     <option>Pinhais - PR</option>
+                    <option>Colombo - PR</option>
+                    <option>Maringá - PR</option>
                   </select>
                 </div>
 
                 <div className="lg:col-span-1">
                   <label className="text-sm font-medium mb-2 block">Destino</label>
-                  <select className="w-full h-12 px-4 rounded-lg border border-border bg-white">
+                  <select 
+                    className="w-full h-12 px-4 rounded-lg border border-border bg-white"
+                    value={searchForm.destino}
+                    onChange={(e) => setSearchForm({...searchForm, destino: e.target.value})}
+                  >
                     <option>Beto Carrero - SC</option>
                     <option>Florianópolis - SC</option>
                     <option>Foz do Iguaçu - PR</option>
@@ -316,17 +442,27 @@ export default function Home() {
                     <option>Rio de Janeiro - RJ</option>
                     <option>Gramado - RS</option>
                     <option>Aparecida - SP</option>
+                    <option>Curitiba - PR</option>
                   </select>
                 </div>
 
                 <div className="lg:col-span-1">
                   <label className="text-sm font-medium mb-2 block">Data de Ida</label>
-                  <input type="date" className="w-full h-12 px-4 rounded-lg border border-border bg-white" />
+                  <input 
+                    type="date" 
+                    className="w-full h-12 px-4 rounded-lg border border-border bg-white"
+                    value={searchForm.dataIda}
+                    onChange={(e) => setSearchForm({...searchForm, dataIda: e.target.value})}
+                  />
                 </div>
 
                 <div className="lg:col-span-1">
                   <label className="text-sm font-medium mb-2 block">Passageiros</label>
-                  <select className="w-full h-12 px-4 rounded-lg border border-border bg-white">
+                  <select 
+                    className="w-full h-12 px-4 rounded-lg border border-border bg-white"
+                    value={searchForm.passageiros}
+                    onChange={(e) => setSearchForm({...searchForm, passageiros: e.target.value})}
+                  >
                     <option>1-10 passageiros (Van)</option>
                     <option>11-20 passageiros (Micro-ônibus)</option>
                     <option>21-40 passageiros (Ônibus)</option>
@@ -335,12 +471,57 @@ export default function Home() {
                 </div>
 
                 <div className="lg:col-span-1 flex items-end">
-                  <Button className="w-full h-12 gradient-primary text-white border-0 text-base font-semibold">
+                  <Button 
+                    onClick={handleSearchSubmit}
+                    className="w-full h-12 gradient-primary text-white border-0 text-base font-semibold hover:shadow-xl transition-all"
+                  >
                     <Search className="mr-2 h-5 w-5" />
                     Buscar Orçamento
                   </Button>
                 </div>
               </div>
+
+              {/* Simulação de Rota */}
+              {routeSimulation && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-6 bg-gradient-to-br from-orange-50 to-blue-50 rounded-xl border-2 border-orange-200"
+                >
+                  <h3 className="text-lg font-bold mb-4 text-center" style={{fontFamily: 'Poppins'}}>
+                    🗺️ Simulação de Rota
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                      <div className="text-2xl font-bold text-primary" style={{fontFamily: 'Poppins'}}>
+                        {routeSimulation.distance} km
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">Distância</div>
+                    </div>
+                    <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                      <div className="text-2xl font-bold text-primary" style={{fontFamily: 'Poppins'}}>
+                        {routeSimulation.duration}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">Tempo Estimado</div>
+                    </div>
+                    <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                      <div className="text-2xl font-bold text-primary" style={{fontFamily: 'Poppins'}}>
+                        {routeSimulation.vehicleType}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">Veículo Sugerido</div>
+                    </div>
+                    <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+                      <div className="text-sm font-bold text-primary" style={{fontFamily: 'Poppins'}}>
+                        {routeSimulation.estimatedCost}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">Custo Estimado</div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-center text-muted-foreground mt-4">
+                    * Valores aproximados. Orçamento final pode variar conforme data, horário e serviços adicionais.
+                  </p>
+                </motion.div>
+              )}
 
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs md:text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
