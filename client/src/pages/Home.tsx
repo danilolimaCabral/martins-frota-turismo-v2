@@ -190,7 +190,7 @@ Aguardo retorno!`;
   return (
     <div className="min-h-screen bg-background">
       {/* News Ticker - Notícias de Viagens e Turismo */}
-      <div className="fixed top-0 left-0 right-0 z-30 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-1.5 overflow-hidden">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-1.5 overflow-hidden">
         <div className="flex animate-scroll">
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {[

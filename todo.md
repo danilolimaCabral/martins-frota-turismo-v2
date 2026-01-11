@@ -453,3 +453,6 @@
 
 ## CORREÇÃO URGENTE - LAYOUT
 -- [x] Corrigir seção de motivos/diferenciais que está baguçada (layout, espaçamento, alinhamento) - Melhorado grid de "Como Funciona" para 2 colunas, centralizado todas as seções com max-w-6xl
+
+## CORREÇÃO URGENTE - TICKER
+- [x] Corrigir ticker de notícias que está sobrepondo o conteúdo (z-index aumentado para z-50)
