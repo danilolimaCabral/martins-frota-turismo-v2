@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Funcionario from "./pages/Funcionario";
 import Admin from "./pages/Admin";
 import Rastreamento from "./pages/Rastreamento";
+import Motorista from "./pages/Motorista";
 import ChatbotMV from "./components/ChatbotMV";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/funcionario" component={Funcionario} />
       <Route path="/admin" component={Admin} />
       <Route path="/rastreamento" component={Rastreamento} />
+      <Route path="/motorista" component={Motorista} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>

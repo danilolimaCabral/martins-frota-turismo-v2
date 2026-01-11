@@ -294,3 +294,40 @@
 - [ ] Implementar alertas de desvio de rota (futuro)
 - [ ] Adicionar geofencing - cercas virtuais (futuro)
 - [ ] Criar relatório de rotas planejadas vs reais (futuro)
+
+
+## ÁREA DO MOTORISTA APRIMORADA (EM DESENVOLVIMENTO)
+- [ ] Criar página dedicada do motorista (/motorista)
+- [ ] Implementar dashboard com viagens ativas
+- [ ] Criar sistema de checkpoints de viagem (saída, paradas, chegada)
+- [ ] Adicionar captura automática de localização GPS em checkpoints
+- [ ] Permitir upload de fotos em cada checkpoint
+- [ ] Adicionar campo de observações em checkpoints
+- [ ] Mostrar rota planejada vs rota real
+- [ ] Implementar botões de ação rápida (iniciar viagem, registrar parada, finalizar)
+- [ ] Criar timeline visual dos checkpoints
+- [ ] Adicionar estatísticas do motorista (viagens concluídas, km rodados, avaliação)
+
+## HISTÓRICO DE ROTAS COM REPLAY (EM DESENVOLVIMENTO)
+- [ ] Criar página de histórico de rotas (/rastreamento/historico)
+- [ ] Listar todas as viagens passadas com filtros (data, motorista, veículo)
+- [ ] Implementar visualização de rota completa no mapa
+- [ ] Adicionar replay animado da rota com controles (play, pause, velocidade)
+- [ ] Mostrar checkpoints ao longo da rota
+- [ ] Comparar rota planejada vs rota real com destaque de desvios
+- [ ] Adicionar linha do tempo com eventos (paradas, alertas, checkpoints)
+- [ ] Mostrar estatísticas da viagem (distância, tempo, velocidade média)
+- [ ] Permitir exportar relatório da viagem em PDF
+
+
+## LOGOS DOS PARCEIROS (SOLICITAÇÃO URGENTE) ✅
+- [ ] Buscar logo da Escola CO2 (não encontrado - mantido texto)
+- [x] Buscar logo da Demia Zenza
+- [ ] Buscar logo do Ótico Pitol (não encontrado - mantido texto)
+- [x] Buscar logo da ITC Engenharia
+- [ ] Buscar logo da COL Rodas e Pneus (não encontrado - mantido texto)
+- [x] Buscar logo da Nitport
+- [ ] Buscar logo do Empório Dipulo (não encontrado - mantido texto)
+- [x] Buscar logo da Hanser
+- [x] Buscar logo da Mistral
+- [x] Adicionar todos os logos encontrados na seção de parceiros do site
