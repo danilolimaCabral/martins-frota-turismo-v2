@@ -219,3 +219,24 @@
 - [ ] Criar AdminAgenda.tsx (calendário)
 - [ ] Integrar com veículos e clientes
 - [ ] Adicionar rotas e links
+
+
+## 🆕 NOVA IMPLEMENTAÇÃO
+
+### Páginas de Ponto e Férias
+- [ ] Criar AdminPonto.tsx (registro entrada/saída)
+- [ ] Criar AdminFerias.tsx (solicitações e aprovações)
+- [ ] Adicionar rotas no App.tsx
+- [ ] Adicionar links no menu Admin
+
+### Relatórios em PDF
+- [ ] Criar endpoint de geração de relatório financeiro
+- [ ] Criar endpoint de relatório de folha de pagamento
+- [ ] Criar endpoint de relatório de custos operacionais
+- [ ] Criar página AdminRelatorios.tsx com opções de download
+
+### Notificações Automáticas
+- [ ] Configurar sistema de alertas por e-mail
+- [ ] Alertas de CNH vencendo
+- [ ] Alertas de ANTT/DER vencendo
+- [ ] Alertas de pagamentos pendentes

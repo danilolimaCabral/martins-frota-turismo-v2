@@ -29,6 +29,9 @@ import AdminFinanceiro from "./pages/AdminFinanceiro";
 import AdminImportar from "./pages/AdminImportar";
 import AdminAgenda from "./pages/AdminAgenda";
 import AdminRoteirizacao from "./pages/AdminRoteirizacao";
+import AdminPonto from "./pages/AdminPonto";
+import AdminRelatorios from "./pages/AdminRelatorios";
+import AdminFerias from "./pages/AdminFerias";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -102,6 +105,21 @@ function Router() {
         <Route path="/admin/roteirizacao">
           <ProtectedRoute requireAdmin>
             <AdminRoteirizacao />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/relatorios">
+          <ProtectedRoute requireAdmin>
+            <AdminRelatorios />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/ponto">
+          <ProtectedRoute requireAdmin>
+            <AdminPonto />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/ferias">
+          <ProtectedRoute requireAdmin>
+            <AdminFerias />
           </ProtectedRoute>
         </Route>
         <Route path="/rastreamento" component={Rastreamento} />

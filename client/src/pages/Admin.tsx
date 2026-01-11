@@ -63,6 +63,8 @@ export default function Admin() {
     { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro" },
     { icon: Calendar, label: "Agenda", path: "/admin/agenda" },
     { icon: MapPin, label: "Roteirização", path: "/admin/roteirizacao" },
+    { icon: Clock, label: "Controle de Ponto", path: "/admin/ponto" },
+    { icon: Calendar, label: "Férias", path: "/admin/ferias" },
     { icon: Receipt, label: "Importar Dados", path: "/admin/importar" },
     { icon: Receipt, label: "Despesas", path: "/admin/despesas" },
     { icon: Wrench, label: "Manutenção", path: "/admin/manutencao" },
