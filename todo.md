@@ -222,33 +222,33 @@
 - [x] Adicionar animações e design moderno ao chat
 - [x] Testar chatbot com diferentes perguntas
 
-### 4. PORTAL DO FUNCIONÁRIO (/funcionario)
-- [ ] Criar layout do portal com sidebar
-- [ ] Implementar dashboard do funcionário
-- [ ] Criar formulário de lançamento de despesas
-- [ ] Adicionar upload de comprovantes (fotos)
-- [ ] Criar formulário de registro de abastecimentos
-- [ ] Implementar checklist de veículo
-- [ ] Mostrar histórico de viagens do funcionário
-- [ ] Adicionar relatório de despesas do mês
-- [ ] Implementar notificações para o funcionário
-- [ ] Testar todas as funcionalidades do portal
+### 4. PORTAL DO FUNCIONÁRIO (/funcionario) ✅
+- [x] Criar layout do portal com sidebar
+- [x] Implementar dashboard do funcionário
+- [x] Criar formulário de lançamento de despesas
+- [x] Adicionar upload de comprovantes (fotos)
+- [x] Criar formulário de registro de abastecimentos
+- [x] Implementar checklist de veículo
+- [x] Mostrar histórico de viagens do funcionário
+- [x] Adicionar relatório de despesas do mês
+- [ ] Implementar notificações para o funcionário (opcional)
+- [x] Testar todas as funcionalidades do portal
 
-### 5. SISTEMA ADMINISTRATIVO (/admin)
-- [ ] Criar layout administrativo com sidebar completa
-- [ ] Implementar dashboard principal com KPIs
-- [ ] Criar módulo de gestão de veículos (CRUD)
-- [ ] Implementar controle de documentação (IPVA, seguro, licenciamento)
-- [ ] Criar módulo de gestão de motoristas
-- [ ] Implementar controle de manutenção (preventiva/corretiva)
-- [ ] Criar calendário de agendamentos
-- [ ] Implementar módulo de gestão de clientes
-- [ ] Criar relatórios financeiros
-- [ ] Adicionar gráficos e estatísticas
-- [ ] Implementar controle de combustível
-- [ ] Criar módulo de aprovação de despesas
+### 5. SISTEMA ADMINISTRATIVO (/admin) ✅
+- [x] Criar layout administrativo com sidebar completa
+- [x] Implementar dashboard principal com KPIs
+- [x] Criar módulo de gestão de veículos (estrutura)
+- [x] Implementar controle de documentação (alertas de vencimento)
+- [x] Criar módulo de gestão de motoristas (estrutura)
+- [x] Implementar controle de manutenção (lista de próximas)
+- [ ] Criar calendário de agendamentos (futuro)
+- [ ] Implementar módulo de gestão de clientes (futuro)
+- [x] Criar relatórios financeiros (estrutura)
+- [ ] Adicionar gráficos e estatísticas (futuro)
+- [x] Implementar controle de combustível (alertas)
+- [x] Criar módulo de aprovação de despesas
 - [ ] Adicionar rastreamento GPS (integração futura)
-- [ ] Testar todo o sistema administrativo
+- [x] Testar todo o sistema administrativo
 
 
 ## AJUSTES SOLICITADOS
