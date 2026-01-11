@@ -579,7 +579,7 @@ Aguardo retorno!`;
       {/* Stats Section */}
       <motion.section {...fadeInUp} className="py-16 md:py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 max-w-6xl mx-auto">
             {[
               { number: 100, suffix: "+", label: "Empresas Parceiras", icon: Briefcase },
               { number: 250, suffix: "+", label: "Pessoas/Mês", icon: Users },
@@ -624,7 +624,7 @@ Aguardo retorno!`;
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-8 md:space-y-12">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
             {[
               { step: "01", title: "Solicite um Orçamento", description: "Entre em contato. Respondemos em até 2 horas.", icon: Phone },
               { step: "02", title: "Planejamento Personalizado", description: "Criamos uma solução sob medida para você.", icon: Target },
@@ -633,30 +633,30 @@ Aguardo retorno!`;
             ].map((item, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.15 }}
-                className="flex items-start gap-4 md:gap-6"
+                transition={{ delay: index * 0.1 }}
+                className="relative"
               >
-                <div className="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-2xl md:text-3xl font-bold shadow-lg">
-                  {item.step}
-                </div>
-                <div className="flex-1 bg-gradient-to-br from-gray-50 to-white p-6 md:p-8 rounded-2xl shadow-lg">
-                  <div className="flex items-start gap-4">
-                    <div className="bg-primary/10 p-3 md:p-4 rounded-xl">
-                      <item.icon className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-white to-gray-50">
+                  <CardContent className="p-6 md:p-8">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br from-blue-600 to-orange-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-lg">
+                        {item.step}
+                      </div>
+                      <div className="bg-primary/10 p-3 rounded-lg">
+                        <item.icon className="h-6 w-6 text-primary" />
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-xl md:text-2xl font-bold mb-2" style={{fontFamily: 'Poppins'}}>
-                        {item.title}
-                      </h3>
-                      <p className="text-sm md:text-base text-muted-foreground">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                    <h3 className="text-lg md:text-xl font-bold mb-2" style={{fontFamily: 'Poppins'}}>
+                      {item.title}
+                    </h3>
+                    <p className="text-sm md:text-base text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -673,7 +673,7 @@ Aguardo retorno!`;
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {[
               {
                 image: "/frota/van-executiva-1.jpg",
@@ -748,7 +748,7 @@ Aguardo retorno!`;
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {[
               { name: "Carlos Silva", company: "Grupo Itaeté", rating: 5, text: "Excelente serviço! Pontualidade e profissionalismo impressionantes." },
               { name: "Maria Santos", company: "VR Controls", rating: 5, text: "Utilizamos há mais de 3 anos. Frota moderna e equipe atenciosa!" },
@@ -800,7 +800,7 @@ Aguardo retorno!`;
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 max-w-6xl mx-auto">
             {[
               { name: "EFIT", logo: "/images/partners/efit.png" },
               { name: "Grupo Itaété", logo: "/images/partners/itaete.jpg" },
@@ -859,7 +859,7 @@ Aguardo retorno!`;
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12 max-w-6xl mx-auto">
             {[
               { 
                 name: "ANTT", 
@@ -906,7 +906,7 @@ Aguardo retorno!`;
             ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {[
               {
                 icon: Shield,

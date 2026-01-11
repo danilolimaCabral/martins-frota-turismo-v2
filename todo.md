@@ -449,3 +449,7 @@
 - [x] Adicionar editor de conteúdo para criar/editar artigos (formulário completo com HTML, SEO, tags, destaque)
 - [ ] Implementar upload de imagens para os posts
 - [ ] Criar 5-10 artigos iniciais sobre destinos turísticos do Brasil
+
+
+## CORREÇÃO URGENTE - LAYOUT
+-- [x] Corrigir seção de motivos/diferenciais que está baguçada (layout, espaçamento, alinhamento) - Melhorado grid de "Como Funciona" para 2 colunas, centralizado todas as seções com max-w-6xl
