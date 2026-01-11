@@ -483,6 +483,174 @@ export default function Admin() {
             </CardContent>
           </Card>
 
+          {/* Gráficos Interativos */}
+          {/* Gráfico de Despesas Mensais */}
+          <Card className="lg:col-span-2">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-blue-600" />
+                Tendência de Despesas Mensais
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64">
+                <Line
+                  data={{
+                    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                    datasets: [
+                      {
+                        label: "Despesas (R$)",
+                        data: [45200, 52300, 48900, 51200, 49800, 53400, 50100, 54200, 52800, 51500, 49300, 50700],
+                        borderColor: "rgb(59, 130, 246)",
+                        backgroundColor: "rgba(59, 130, 246, 0.1)",
+                        fill: true,
+                        tension: 0.4,
+                      },
+                    ],
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: (context: any) => `R$ ${context.parsed.y.toLocaleString("pt-BR")}`,
+                        },
+                      },
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          callback: (value: any) => `R$ ${(value / 1000).toFixed(0)}k`,
+                        },
+                      },
+                    },
+                  }}
+                />
+              </div>
+              <p className="text-xs text-slate-500 mt-3 text-center">
+                Média mensal: R$ 50.783 | Maior: R$ 54.200 (Agosto) | Menor: R$ 45.200 (Janeiro)
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Gráfico de Distribuição da Frota */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2">
+                <Bus className="h-5 w-5 text-orange-600" />
+                Distribuição da Frota
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 flex items-center justify-center">
+                <div className="w-48 h-48">
+                  <Doughnut
+                    data={{
+                      labels: ["Vans", "Micro-ônibus", "Ônibus"],
+                      datasets: [
+                        {
+                          data: [24, 7, 12],
+                          backgroundColor: [
+                            "rgba(59, 130, 246, 0.8)",
+                            "rgba(16, 185, 129, 0.8)",
+                            "rgba(249, 115, 22, 0.8)",
+                          ],
+                          borderColor: [
+                            "rgb(59, 130, 246)",
+                            "rgb(16, 185, 129)",
+                            "rgb(249, 115, 22)",
+                          ],
+                          borderWidth: 2,
+                        },
+                      ],
+                    }}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: true,
+                      plugins: {
+                        legend: {
+                          position: "bottom",
+                          labels: {
+                            padding: 15,
+                            font: {
+                              size: 11,
+                            },
+                          },
+                        },
+                        tooltip: {
+                          callbacks: {
+                            label: (context: any) => `${context.label}: ${context.parsed} veículos (${((context.parsed / 43) * 100).toFixed(1)}%)`,
+                          },
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 mt-3 text-center">
+                Total: 43 veículos | Vans: 55.8% | Micro: 16.3% | Ônibus: 27.9%
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Gráfico de Viagens por Mês */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2">
+                <Route className="h-5 w-5 text-green-600" />
+                Viagens por Mês
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64">
+                <Bar
+                  data={{
+                    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                    datasets: [
+                      {
+                        label: "Viagens",
+                        data: [45, 52, 48, 61, 58, 67, 72, 69, 64, 58, 51, 55],
+                        backgroundColor: "rgba(16, 185, 129, 0.8)",
+                        borderColor: "rgb(16, 185, 129)",
+                        borderWidth: 1,
+                      },
+                    ],
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: (context: any) => `${context.parsed.y} viagens`,
+                        },
+                      },
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          stepSize: 10,
+                        },
+                      },
+                    },
+                  }}
+                />
+              </div>
+              <p className="text-xs text-slate-500 mt-3 text-center">
+                Total anual: 700 viagens | Média mensal: 58 viagens | Pico: 72 (Julho)
+              </p>
+            </CardContent>
+          </Card>
+
           {/* Módulos do Sistema */}
           <Card>
             <CardHeader className="pb-3">

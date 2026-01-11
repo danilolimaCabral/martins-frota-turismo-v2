@@ -244,7 +244,9 @@
 
 ## 🆕 MELHORIAS DASHBOARD (NOVA SOLICITAÇÃO)
 
-- [ ] Corrigir queries dos cards para buscar dados reais
-- [ ] Adicionar gráficos Chart.js (despesas, viagens, ocupação)
+- [ ] Corrigir queries dos cards para buscar dados reais (funcionarios e vehicles)
+- [x] Adicionar gráfico de linha - Tendência de despesas mensais
+- [x] Adicionar gráfico de rosca - Distribuição da frota por tipo
+- [x] Adicionar gráfico de barras - Viagens por mês
 - [ ] Implementar notificações push em tempo real
 - [ ] Testar todas as funcionalidades
