@@ -140,6 +140,7 @@ export const localAuthRouter = router({
         nome: z.string().min(3),
         email: z.string().email(),
         role: z.enum(["admin", "user"]).default("user"),
+        permissions: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -165,6 +166,7 @@ export const localAuthRouter = router({
         email: input.email,
         role: input.role,
         ativo: true,
+        permissions: input.permissions || "{}",
       });
 
       return { message: "Usuário criado com sucesso" };
@@ -182,6 +184,7 @@ export const localAuthRouter = router({
         role: z.enum(["admin", "user"]).optional(),
         ativo: z.boolean().optional(),
         password: z.string().min(6).optional(),
+        permissions: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -191,6 +194,7 @@ export const localAuthRouter = router({
       if (input.email) updates.email = input.email;
       if (input.role) updates.role = input.role;
       if (input.ativo !== undefined) updates.ativo = input.ativo;
+      if (input.permissions) updates.permissions = input.permissions;
       if (input.password) {
         updates.password = await bcrypt.hash(input.password, 10);
       }

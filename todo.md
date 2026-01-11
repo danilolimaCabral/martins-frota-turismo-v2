@@ -270,3 +270,12 @@
 - [x] Conectar gráfico de despesas a dados reais
 - [x] Conectar gráfico de viagens a dados reais
 - [ ] Testar todas as funcionalidades
+
+
+## 🆕 SISTEMA DE PERMISSÕES GRANULARES
+
+- [x] Adicionar campo permissions à tabela local_users
+- [x] Criar middleware de verificação de permissões
+- [x] Atualizar AdminUsuarios com checkboxes de permissões
+- [ ] Aplicar verificação de permissões nos routers
+- [ ] Testar controle de acesso por módulo

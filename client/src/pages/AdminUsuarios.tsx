@@ -15,6 +15,14 @@ export default function AdminUsuarios() {
     nome: "",
     email: "",
     role: "user" as "admin" | "user",
+    permissions: {
+      rh: false,
+      financeiro: false,
+      frota: false,
+      agenda: false,
+      roteirizacao: false,
+      relatorios: false,
+    },
   });
 
   const { data: users, refetch } = trpc.localAuth.listUsers.useQuery();
@@ -27,14 +35,30 @@ export default function AdminUsuarios() {
 
     try {
       if (editingUser) {
-        await updateMutation.mutateAsync({
+        // Atualizar
+        const updateData: any = {
           id: editingUser.id,
-          ...formData,
-          password: formData.password || undefined,
-        });
+          username: formData.username,
+          nome: formData.nome,
+          email: formData.email,
+          role: formData.role,
+          permissions: JSON.stringify(formData.permissions),
+        };
+        if (formData.password) {
+          updateData.password = formData.password;
+        }
+        await updateMutation.mutateAsync(updateData);
         alert("Usuário atualizado com sucesso!");
       } else {
-        await createMutation.mutateAsync(formData);
+        // Criar
+        await createMutation.mutateAsync({
+          username: formData.username,
+          password: formData.password,
+          nome: formData.nome,
+          email: formData.email,
+          role: formData.role,
+          permissions: JSON.stringify(formData.permissions),
+        });
         alert("Usuário criado com sucesso!");
       }
 
@@ -46,6 +70,14 @@ export default function AdminUsuarios() {
         nome: "",
         email: "",
         role: "user",
+        permissions: {
+          rh: false,
+          financeiro: false,
+          frota: false,
+          agenda: false,
+          roteirizacao: false,
+          relatorios: false,
+        },
       });
       refetch();
     } catch (err: any) {
@@ -55,12 +87,28 @@ export default function AdminUsuarios() {
 
   const handleEdit = (user: any) => {
     setEditingUser(user);
+    let permissions = {
+      rh: false,
+      financeiro: false,
+      frota: false,
+      agenda: false,
+      roteirizacao: false,
+      relatorios: false,
+    };
+    if (user.permissions) {
+      try {
+        permissions = JSON.parse(user.permissions);
+      } catch (e) {
+        console.error("Erro ao parsear permissões", e);
+      }
+    }
     setFormData({
       username: user.username,
       password: "",
       nome: user.nome,
       email: user.email,
       role: user.role,
+      permissions,
     });
     setShowForm(true);
   };
@@ -108,6 +156,14 @@ export default function AdminUsuarios() {
             nome: "",
             email: "",
             role: "user",
+            permissions: {
+              rh: false,
+              financeiro: false,
+              frota: false,
+              agenda: false,
+              roteirizacao: false,
+              relatorios: false,
+            },
           });
         }}>
           <Plus className="mr-2 h-4 w-4" />
@@ -182,6 +238,42 @@ export default function AdminUsuarios() {
                   <option value="admin">Administrador</option>
                 </select>
               </div>
+
+              {/* Permissões Granulares (apenas para usuários não-admin) */}
+              {formData.role !== "admin" && (
+                <div className="border rounded-lg p-4 bg-slate-50">
+                  <Label className="text-base font-semibold mb-3 block">Permissões de Acesso</Label>
+                  <p className="text-sm text-slate-600 mb-4">Selecione os módulos que este usuário poderá acessar:</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { key: "rh", label: "RH" },
+                      { key: "financeiro", label: "Financeiro" },
+                      { key: "frota", label: "Frota" },
+                      { key: "agenda", label: "Agenda" },
+                      { key: "roteirizacao", label: "Roteirização" },
+                      { key: "relatorios", label: "Relatórios" },
+                    ].map((perm) => (
+                      <label key={perm.key} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={formData.permissions[perm.key as keyof typeof formData.permissions]}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              permissions: {
+                                ...formData.permissions,
+                                [perm.key]: e.target.checked,
+                              },
+                            })
+                          }
+                          className="w-4 h-4"
+                        />
+                        <span className="text-sm">{perm.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="flex gap-2">
                 <Button type="submit">

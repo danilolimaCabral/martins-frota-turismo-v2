@@ -1,4 +1,4 @@
-import { int, mysqlTable, text, timestamp, varchar, decimal, mysqlEnum, boolean, date } from "drizzle-orm/mysql-core";
+import { int, mysqlTable, text, timestamp, varchar, decimal, mysqlEnum, boolean, date, json } from "drizzle-orm/mysql-core";
 
 /**
  * Sistema de Gestão de Frotas - Martins Viagens e Turismo
@@ -1349,6 +1349,8 @@ export const localUsers = mysqlTable("local_users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   role: mysqlEnum("role", ["admin", "user"]).notNull().default("user"),
   ativo: boolean("ativo").notNull().default(true),
+  // Permissões granulares por módulo (JSON string)
+  permissions: text("permissions").default("{}"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
 });
