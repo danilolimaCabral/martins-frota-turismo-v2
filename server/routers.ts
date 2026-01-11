@@ -6,6 +6,8 @@ import { vehicleRouter } from "./vehicle-routers";
 import { driverRouter } from "./driver-routers";
 import { tripRouter } from "./trip-routers";
 import { expenseRouter } from "./expense-routers";
+import { reviewRouter } from "./review-routers";
+import { reportRouter } from "./report-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -16,13 +18,15 @@ export const appRouter = router({
   driver: driverRouter,
   trip: tripRouter,
   expense: expenseRouter,
+  review: reviewRouter,
+  report: reportRouter,
+});
 
-  // TODO: add feature routers here, e.g.
+// TODO: add feature routers here, e.g.
   // todo: router({
   //   list: protectedProcedure.query(({ ctx }) =>
   //     db.getUserTodos(ctx.user.id)
   //   ),
   // }),
-});
 
 export type AppRouter = typeof appRouter;

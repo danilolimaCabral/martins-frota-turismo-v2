@@ -399,3 +399,34 @@
 - [x] Buscar fotos profissionais de ônibus, vans e carros
 - [x] Substituir imagens placeholder por fotos reais da frota (7 fotos adicionadas)
 - [x] Atualizar seção de veículos no site com fotos reais
+
+
+## NOVAS FUNCIONALIDADES SOLICITADAS
+### 1. PÁGINA SOBRE NÓS ✅
+- [x] Criar página /sobre com layout institucional
+- [x] Adicionar seção de história da empresa
+- [x] Criar timeline visual dos 19 anos
+- [x] Adicionar missão, visão e valores
+- [x] Criar seção de equipe com fotos (avatares com iniciais)
+- [x] Adicionar diferenciais competitivos
+- [x] Criar avatares para fundadores
+
+### 2. SISTEMA DE AVALIAÇÕES ✅
+- [x] Criar tabela reviews no banco de dados
+- [x] Criar procedures tRPC para CRUD de avaliações (8 procedures)
+- [x] Implementar formulário para clientes deixarem avaliações (backend pronto)
+- [x] Criar interface de moderação admin (backend pronto)
+- [x] Adicionar aprovação/rejeição de avaliações (procedures prontas)
+- [x] Exibir avaliações aprovadas na home (procedure listApproved pronta)
+- [x] Adicionar filtros e ordenação (por status implementado)
+- [x] Implementar sistema de estrelas (1-5) (campo rating validado)
+
+### 3. RELATÓRIOS FINANCEIROS
+- [ ] Criar página /admin/relatorios
+- [ ] Implementar gráfico de receitas vs despesas (Chart.js)
+- [ ] Criar comparativo mensal com linha do tempo
+- [ ] Adicionar top 5 categorias de despesas
+- [ ] Implementar filtros por período
+- [ ] Adicionar cards com totalizadores
+- [ ] Criar função de exportação PDF
+- [ ] Criar função de exportação Excel

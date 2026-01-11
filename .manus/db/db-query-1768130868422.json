@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS reviews (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  customerName VARCHAR(200) NOT NULL,\n  customerEmail VARCHAR(320),\n  customerCompany VARCHAR(200),\n  rating INT NOT NULL,\n  comment TEXT NOT NULL,\n  tripId INT,\n  status ENUM('pendente', 'aprovada', 'recusada') DEFAULT 'pendente' NOT NULL,\n  moderatedBy INT,\n  moderatedAt TIMESTAMP NULL,\n  moderationNotes TEXT,\n  featured BOOLEAN DEFAULT FALSE NOT NULL,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,\n  FOREIGN KEY (moderatedBy) REFERENCES users(id)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute CREATE TABLE IF NOT EXISTS reviews (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  customerName VARCHAR(200) NOT NULL,\n  customerEmail VARCHAR(320),\n  customerCompany VARCHAR(200),\n  rating INT NOT NULL,\n  comment TEXT NOT NULL,\n  tripId INT,\n  status ENUM('pendente', 'aprovada', 'recusada') DEFAULT 'pendente' NOT NULL,\n  moderatedBy INT,\n  moderatedAt TIMESTAMP NULL,\n  moderationNotes TEXT,\n  featured BOOLEAN DEFAULT FALSE NOT NULL,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,\n  FOREIGN KEY (moderatedBy) REFERENCES users(id)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 347
+}

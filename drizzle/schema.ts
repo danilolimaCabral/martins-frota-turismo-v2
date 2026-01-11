@@ -356,3 +356,36 @@ export const chatMessages = mysqlTable("chatMessages", {
 
 export type ChatMessage = typeof chatMessages.$inferSelect;
 export type InsertChatMessage = typeof chatMessages.$inferInsert;
+
+// ==================== AVALIAÇÕES ====================
+
+export const reviews = mysqlTable("reviews", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Cliente
+  customerName: varchar("customerName", { length: 200 }).notNull(),
+  customerEmail: varchar("customerEmail", { length: 320 }),
+  customerCompany: varchar("customerCompany", { length: 200 }),
+  
+  // Avaliação
+  rating: int("rating").notNull(), // 1-5 estrelas
+  comment: text("comment").notNull(),
+  
+  // Viagem relacionada (opcional)
+  tripId: int("tripId").references(() => trips.id),
+  
+  // Moderação
+  status: mysqlEnum("status", ["pendente", "aprovada", "recusada"]).default("pendente").notNull(),
+  moderatedBy: int("moderatedBy").references(() => users.id),
+  moderatedAt: timestamp("moderatedAt"),
+  moderationNotes: text("moderationNotes"),
+  
+  // Destaque
+  featured: boolean("featured").default(false).notNull(),
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Review = typeof reviews.$inferSelect;
+export type InsertReview = typeof reviews.$inferInsert;
