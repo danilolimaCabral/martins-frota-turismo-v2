@@ -436,3 +436,16 @@
 - [x] Corrigir z-index do ticker para não sobrepor conteúdo (z-30 no ticker, z-40 no header)
 - [x] Ajustar espaçamento no mobile (top-8 no header para compensar ticker)
 - [x] Melhorar responsividade do ticker
+
+
+## BLOG DE VIAGENS E TICKER DE NOTÍCIAS (SOLICITADO)
+- [x] Substituir ticker de clima por ticker de notícias de viagens/turismo (5 notícias sobre destinos brasileiros)
+- [x] Criar tabela blog_posts no banco de dados (blogPosts com 18 campos)
+- [x] Criar procedures tRPC para CRUD de posts (10 procedures: list, listFeatured, getBySlug, listAll, getById, create, update, delete, toggleFeatured, getStats)
+- [x] Desenvolver página do blog (/blog) com listagem de artigos (grid, filtros, posts em destaque, paginação)
+- [x] Criar página de artigo individual (/blog/:slug) (imagem de capa, conteúdo HTML, botão compartilhar, CTA)
+- [x] Implementar sistema de categorias (8 categorias: Praias, Montanhas, Cidades Históricas, Ecoturismo, Cultura, Gastronomia, Aventura, Eventos)
+- [x] Criar interface de gerenciamento de posts no admin (/admin/blog com estatísticas, filtros, CRUD completo)
+- [x] Adicionar editor de conteúdo para criar/editar artigos (formulário completo com HTML, SEO, tags, destaque)
+- [ ] Implementar upload de imagens para os posts
+- [ ] Criar 5-10 artigos iniciais sobre destinos turísticos do Brasil

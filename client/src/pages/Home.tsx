@@ -189,33 +189,35 @@ Aguardo retorno!`;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Weather Ticker - Legenda de Clima */}
+      {/* News Ticker - Notícias de Viagens e Turismo */}
       <div className="fixed top-0 left-0 right-0 z-30 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-1.5 overflow-hidden">
         <div className="flex animate-scroll">
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {[
-              { city: "Curitiba", temp: "25°C", icon: "☀️" },
-              { city: "Araucária", temp: "24°C", icon: "⛅" },
-              { city: "São Paulo", temp: "28°C", icon: "☀️" },
-            ].map((weather, index) => (
+              { icon: "🏝️", text: "Conheça as praias paradisíacas de Fernando de Noronha" },
+              { icon: "⛰️", text: "Aventura na Chapada Diamantina: trilhas e cachoeiras incríveis" },
+              { icon: "🏛️", text: "Ouro Preto: história e cultura em Minas Gerais" },
+              { icon: "🌴", text: "Bonito/MS: ecoturismo e mergulho em águas cristalinas" },
+              { icon: "🏖️", text: "Lençóis Maranhenses: dunas e lagoas de tirar o fôlego" },
+            ].map((news, index) => (
               <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <span className="font-semibold">{weather.city}</span>
-                <span>{weather.temp}</span>
-                <span>{weather.icon}</span>
+                <span className="text-lg">{news.icon}</span>
+                <span>{news.text}</span>
               </div>
             ))}
           </div>
-          {/* Duplicar para efeito infinito */}
-          <div className="flex gap-8 md:gap-12 whitespace-nowrap ml-8 md:ml-12">
+          {/* Duplicar para efeito de loop infinito */}
+          <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {[
-              { city: "Curitiba", temp: "25°C", icon: "☀️" },
-              { city: "Araucária", temp: "24°C", icon: "⛅" },
-              { city: "São Paulo", temp: "28°C", icon: "☀️" },
-            ].map((weather, index) => (
+              { icon: "🏝️", text: "Conheça as praias paradisíacas de Fernando de Noronha" },
+              { icon: "⛰️", text: "Aventura na Chapada Diamantina: trilhas e cachoeiras incríveis" },
+              { icon: "🏛️", text: "Ouro Preto: história e cultura em Minas Gerais" },
+              { icon: "🌴", text: "Bonito/MS: ecoturismo e mergulho em águas cristalinas" },
+              { icon: "🏖️", text: "Lençóis Maranhenses: dunas e lagoas de tirar o fôlego" },
+            ].map((news, index) => (
               <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <span className="font-semibold">{weather.city}</span>
-                <span>{weather.temp}</span>
-                <span>{weather.icon}</span>
+                <span className="text-lg">{news.icon}</span>
+                <span>{news.text}</span>
               </div>
             ))}
           </div>
@@ -240,15 +242,18 @@ Aguardo retorno!`;
                 { label: "Serviços", href: "#servicos" },
                 { label: "Frota", href: "#frota" },
                 { label: "Depoimentos", href: "#depoimentos" },
-                { label: "Contato", href: "#contato" }
+                { label: "Contato", href: "#contato" },
+                { label: "Blog", href: "/blog", external: true }
               ].map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
                   className="text-sm font-medium hover:text-primary transition-colors"
                   onClick={(e) => {
-                    e.preventDefault();
-                    document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                    if (!(item as any).external) {
+                      e.preventDefault();
+                      document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                    }
                   }}
                 >
                   {item.label}
@@ -284,17 +289,22 @@ Aguardo retorno!`;
                   { label: "Serviços", href: "#servicos" },
                   { label: "Frota", href: "#frota" },
                   { label: "Depoimentos", href: "#depoimentos" },
-                  { label: "Contato", href: "#contato" }
+                  { label: "Contato", href: "#contato" },
+                  { label: "Blog", href: "/blog", external: true }
                 ].map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
                     onClick={(e) => {
-                      e.preventDefault();
-                      setMobileMenuOpen(false);
-                      setTimeout(() => {
-                        document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
-                      }, 300);
+                      if (!(item as any).external) {
+                        e.preventDefault();
+                        setMobileMenuOpen(false);
+                        setTimeout(() => {
+                          document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                      } else {
+                        setMobileMenuOpen(false);
+                      }
                     }}
                     className="text-sm font-medium hover:text-primary transition-colors py-2"
                   >
@@ -1084,6 +1094,7 @@ Aguardo retorno!`;
                 <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
                 <li><a href="#frota" className="hover:text-white transition-colors">Nossa Frota</a></li>
                 <li><a href="#contato" className="hover:text-white transition-colors">Contato</a></li>
+                <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
               </ul>
             </div>
 

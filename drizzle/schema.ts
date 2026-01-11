@@ -389,3 +389,55 @@ export const reviews = mysqlTable("reviews", {
 
 export type Review = typeof reviews.$inferSelect;
 export type InsertReview = typeof reviews.$inferInsert;
+
+// ==================== BLOG ====================
+
+export const blogPosts = mysqlTable("blogPosts", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Conteúdo
+  title: varchar("title", { length: 300 }).notNull(),
+  slug: varchar("slug", { length: 300 }).notNull().unique(),
+  excerpt: text("excerpt").notNull(), // Resumo/descrição curta
+  content: text("content").notNull(), // Conteúdo completo em HTML/Markdown
+  
+  // Imagens
+  coverImage: text("coverImage"), // URL da imagem de capa
+  
+  // Categorização
+  category: mysqlEnum("category", [
+    "praias",
+    "montanhas",
+    "cidades-historicas",
+    "ecoturismo",
+    "cultura",
+    "gastronomia",
+    "aventura",
+    "eventos"
+  ]).notNull(),
+  
+  // Tags (separadas por vírgula)
+  tags: text("tags"),
+  
+  // Autor
+  authorId: int("authorId").references(() => users.id).notNull(),
+  authorName: varchar("authorName", { length: 200 }).notNull(),
+  
+  // SEO
+  metaDescription: text("metaDescription"),
+  metaKeywords: text("metaKeywords"),
+  
+  // Status
+  status: mysqlEnum("status", ["rascunho", "publicado", "arquivado"]).default("rascunho").notNull(),
+  publishedAt: timestamp("publishedAt"),
+  
+  // Estatísticas
+  views: int("views").default(0).notNull(),
+  featured: boolean("featured").default(false).notNull(), // Destaque na home
+  
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type InsertBlogPost = typeof blogPosts.$inferInsert;

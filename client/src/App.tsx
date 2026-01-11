@@ -15,6 +15,9 @@ import AdminDespesas from "./pages/AdminDespesas";
 import Rastreamento from "./pages/Rastreamento";
 import Sobre from "./pages/Sobre";
 import Motorista from "./pages/Motorista";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import AdminBlog from "./pages/AdminBlog";
 import ChatbotMV from "./components/ChatbotMV";
 
 function Router() {
@@ -32,6 +35,9 @@ function Router() {
         <Route path="/rastreamento" component={Rastreamento} />
         <Route path="/sobre" component={Sobre} />
         <Route path="/motorista" component={Motorista} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/blog/:slug" component={BlogPost} />
+        <Route path="/admin/blog" component={AdminBlog} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
