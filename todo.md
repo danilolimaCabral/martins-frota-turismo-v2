@@ -261,3 +261,12 @@
 - [ ] Atualizar routers para não usar Manus OAuth
 - [ ] Criar página de login local
 - [ ] Testar acesso sem autenticação Manus
+
+
+## 🆕 GESTÃO DE USUÁRIOS E GRÁFICOS REAIS
+
+- [x] Criar router de gestão de usuários (CRUD)
+- [x] Criar página AdminUsuarios com listagem e formulários
+- [x] Conectar gráfico de despesas a dados reais
+- [x] Conectar gráfico de viagens a dados reais
+- [ ] Testar todas as funcionalidades

@@ -117,6 +117,7 @@ export default function Admin() {
     { icon: Receipt, label: "Despesas", path: "/admin/despesas" },
     { icon: Wrench, label: "Manutenção", path: "/admin/manutencao" },
     { icon: FileText, label: "Relatórios", path: "/admin/relatorios" },
+    { icon: Users, label: "Usuários", path: "/admin/usuarios" },
   ];
 
   // Cards clicáveis do dashboard
@@ -501,7 +502,7 @@ export default function Admin() {
                     datasets: [
                       {
                         label: "Despesas (R$)",
-                        data: [45200, 52300, 48900, 51200, 49800, 53400, 50100, 54200, 52800, 51500, 49300, 50700],
+                        data: despesasData?.map((d: any) => d.total) || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         borderColor: "rgb(59, 130, 246)",
                         backgroundColor: "rgba(59, 130, 246, 0.1)",
                         fill: true,
@@ -534,7 +535,7 @@ export default function Admin() {
                 />
               </div>
               <p className="text-xs text-slate-500 mt-3 text-center">
-                Média mensal: R$ 50.783 | Maior: R$ 54.200 (Agosto) | Menor: R$ 45.200 (Janeiro)
+                {despesasData ? `Total anual: R$ ${despesasData.reduce((sum: number, d: any) => sum + d.total, 0).toLocaleString("pt-BR")}` : "Carregando dados..."}
               </p>
             </CardContent>
           </Card>
@@ -615,7 +616,7 @@ export default function Admin() {
                     datasets: [
                       {
                         label: "Viagens",
-                        data: [45, 52, 48, 61, 58, 67, 72, 69, 64, 58, 51, 55],
+                        data: viagensData?.map((d: any) => d.total) || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         backgroundColor: "rgba(16, 185, 129, 0.8)",
                         borderColor: "rgb(16, 185, 129)",
                         borderWidth: 1,

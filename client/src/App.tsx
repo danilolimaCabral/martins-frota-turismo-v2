@@ -32,6 +32,7 @@ import AdminRoteirizacao from "./pages/AdminRoteirizacao";
 import AdminPonto from "./pages/AdminPonto";
 import AdminRelatorios from "./pages/AdminRelatorios";
 import AdminFerias from "./pages/AdminFerias";
+import AdminUsuarios from "./pages/AdminUsuarios";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -110,6 +111,11 @@ function Router() {
         <Route path="/admin/relatorios">
           <ProtectedRoute requireAdmin>
             <AdminRelatorios />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/usuarios">
+          <ProtectedRoute requireAdmin>
+            <AdminUsuarios />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/ponto">

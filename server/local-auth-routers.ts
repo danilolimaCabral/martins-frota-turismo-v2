@@ -108,4 +108,108 @@ export const localAuthRouter = router({
     const users = await db.select().from(localUsers).limit(1);
     return { needsSetup: users.length === 0 };
   }),
+
+  /**
+   * Listar todos os usuários
+   */
+  listUsers: publicProcedure.query(async () => {
+    const users = await db
+      .select({
+        id: localUsers.id,
+        username: localUsers.username,
+        nome: localUsers.nome,
+        email: localUsers.email,
+        role: localUsers.role,
+        ativo: localUsers.ativo,
+        createdAt: localUsers.createdAt,
+      })
+      .from(localUsers)
+      .orderBy(localUsers.createdAt);
+
+    return users;
+  }),
+
+  /**
+   * Criar novo usuário
+   */
+  createUser: publicProcedure
+    .input(
+      z.object({
+        username: z.string().min(3),
+        password: z.string().min(6),
+        nome: z.string().min(3),
+        email: z.string().email(),
+        role: z.enum(["admin", "user"]).default("user"),
+      })
+    )
+    .mutation(async ({ input }) => {
+      // Verificar se username já existe
+      const existing = await db
+        .select()
+        .from(localUsers)
+        .where(eq(localUsers.username, input.username))
+        .limit(1);
+
+      if (existing[0]) {
+        throw new Error("Usuário já existe");
+      }
+
+      // Hash da senha
+      const hashedPassword = await bcrypt.hash(input.password, 10);
+
+      // Criar usuário
+      await db.insert(localUsers).values({
+        username: input.username,
+        password: hashedPassword,
+        nome: input.nome,
+        email: input.email,
+        role: input.role,
+        ativo: true,
+      });
+
+      return { message: "Usuário criado com sucesso" };
+    }),
+
+  /**
+   * Atualizar usuário
+   */
+  updateUser: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        nome: z.string().min(3).optional(),
+        email: z.string().email().optional(),
+        role: z.enum(["admin", "user"]).optional(),
+        ativo: z.boolean().optional(),
+        password: z.string().min(6).optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const updates: any = {};
+
+      if (input.nome) updates.nome = input.nome;
+      if (input.email) updates.email = input.email;
+      if (input.role) updates.role = input.role;
+      if (input.ativo !== undefined) updates.ativo = input.ativo;
+      if (input.password) {
+        updates.password = await bcrypt.hash(input.password, 10);
+      }
+
+      await db
+        .update(localUsers)
+        .set(updates)
+        .where(eq(localUsers.id, input.id));
+
+      return { message: "Usuário atualizado com sucesso" };
+    }),
+
+  /**
+   * Deletar usuário
+   */
+  deleteUser: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      await db.delete(localUsers).where(eq(localUsers.id, input.id));
+      return { message: "Usuário deletado com sucesso" };
+    }),
 });
