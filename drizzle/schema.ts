@@ -857,3 +857,412 @@ export const planosManutencaoPreventiva = mysqlTable("planos_manutencao_preventi
 
 export type PlanoManutencaoPreventiva = typeof planosManutencaoPreventiva.$inferSelect;
 export type InsertPlanoManutencaoPreventiva = typeof planosManutencaoPreventiva.$inferInsert;
+
+
+// ============================================
+// MÓDULO: CONTROLE DE PONTO
+// ============================================
+
+export const registrosPonto = mysqlTable("registros_ponto", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  data: date("data").notNull(),
+  
+  // Horários
+  entradaManha: varchar("entrada_manha", { length: 5 }), // HH:MM
+  saidaManha: varchar("saida_manha", { length: 5 }),
+  entradaTarde: varchar("entrada_tarde", { length: 5 }),
+  saidaTarde: varchar("saida_tarde", { length: 5 }),
+  
+  // Horas calculadas
+  horasTrabalhadas: decimal("horas_trabalhadas", { precision: 5, scale: 2 }).default("0"),
+  horasExtras50: decimal("horas_extras_50", { precision: 5, scale: 2 }).default("0"),
+  horasExtras100: decimal("horas_extras_100", { precision: 5, scale: 2 }).default("0"),
+  horasNoturnas: decimal("horas_noturnas", { precision: 5, scale: 2 }).default("0"),
+  
+  // Status
+  atraso: boolean("atraso").default(false).notNull(),
+  minutosAtraso: int("minutos_atraso").default(0),
+  falta: boolean("falta").default(false).notNull(),
+  justificativa: text("justificativa"),
+  
+  // Aprovação
+  aprovado: boolean("aprovado").default(false).notNull(),
+  aprovadoPor: int("aprovado_por").references(() => users.id),
+  dataAprovacao: timestamp("data_aprovacao"),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RegistroPonto = typeof registrosPonto.$inferSelect;
+export type InsertRegistroPonto = typeof registrosPonto.$inferInsert;
+
+// Banco de Horas
+export const bancoHoras = mysqlTable("banco_horas", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  mesReferencia: int("mes_referencia").notNull(), // 1-12
+  anoReferencia: int("ano_referencia").notNull(), // 2026
+  
+  saldoAnterior: decimal("saldo_anterior", { precision: 6, scale: 2 }).default("0"),
+  horasExtras: decimal("horas_extras", { precision: 6, scale: 2 }).default("0"),
+  horasCompensadas: decimal("horas_compensadas", { precision: 6, scale: 2 }).default("0"),
+  saldoAtual: decimal("saldo_atual", { precision: 6, scale: 2 }).default("0"),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BancoHoras = typeof bancoHoras.$inferSelect;
+export type InsertBancoHoras = typeof bancoHoras.$inferInsert;
+
+// ============================================
+// MÓDULO: FÉRIAS
+// ============================================
+
+export const ferias = mysqlTable("ferias", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  
+  // Período aquisitivo
+  periodoAquisitivoInicio: date("periodo_aquisitivo_inicio").notNull(),
+  periodoAquisitivoFim: date("periodo_aquisitivo_fim").notNull(),
+  
+  // Período de gozo
+  dataInicio: date("data_inicio").notNull(),
+  dataFim: date("data_fim").notNull(),
+  diasCorridos: int("dias_corridos").notNull(),
+  diasUteis: int("dias_uteis").notNull(),
+  
+  // Abono pecuniário (venda de férias)
+  abonoPecuniario: boolean("abono_pecuniario").default(false).notNull(),
+  diasAbono: int("dias_abono").default(0),
+  
+  // Adiantamento 13º
+  adiantamento13: boolean("adiantamento_13").default(false).notNull(),
+  
+  // Status
+  status: mysqlEnum("status", ["solicitado", "aprovado", "reprovado", "em_gozo", "concluido", "cancelado"]).default("solicitado").notNull(),
+  
+  // Aprovação
+  solicitadoEm: timestamp("solicitado_em").defaultNow().notNull(),
+  aprovadoPor: int("aprovado_por").references(() => users.id),
+  dataAprovacao: timestamp("data_aprovacao"),
+  motivoReprovacao: text("motivo_reprovacao"),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Ferias = typeof ferias.$inferSelect;
+export type InsertFerias = typeof ferias.$inferInsert;
+
+// Saldo de Férias
+export const saldoFerias = mysqlTable("saldo_ferias", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  
+  // Período aquisitivo
+  periodoAquisitivoInicio: date("periodo_aquisitivo_inicio").notNull(),
+  periodoAquisitivoFim: date("periodo_aquisitivo_fim").notNull(),
+  
+  // Dias
+  diasDireito: int("dias_direito").default(30).notNull(), // 30 dias padrão
+  diasGozados: int("dias_gozados").default(0).notNull(),
+  diasAbono: int("dias_abono").default(0).notNull(),
+  diasDisponiveis: int("dias_disponiveis").default(30).notNull(),
+  
+  // Status
+  vencido: boolean("vencido").default(false).notNull(),
+  dataVencimento: date("data_vencimento").notNull(),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SaldoFerias = typeof saldoFerias.$inferSelect;
+export type InsertSaldoFerias = typeof saldoFerias.$inferInsert;
+
+
+// ============================================
+// MÓDULO: LANÇAMENTOS RH (CRÉDITOS E DÉBITOS)
+// ============================================
+
+export const lancamentosRH = mysqlTable("lancamentos_rh", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  folhaPagamentoId: int("folha_pagamento_id").references(() => folhasPagamento.id, { onDelete: "set null" }),
+  
+  // Tipo de lançamento
+  tipo: mysqlEnum("tipo", ["credito", "debito"]).notNull(),
+  
+  // Categoria
+  categoria: mysqlEnum("categoria", [
+    // Créditos
+    "salario",
+    "hora_extra_50",
+    "hora_extra_100",
+    "adicional_noturno",
+    "adicional_periculosidade",
+    "adicional_insalubridade",
+    "comissao",
+    "bonus",
+    "gratificacao",
+    "ferias",
+    "decimo_terceiro",
+    "vale_transporte",
+    "vale_alimentacao",
+    "vale_refeicao",
+    "auxilio_creche",
+    "plano_saude",
+    "seguro_vida",
+    "outros_creditos",
+    // Débitos
+    "adiantamento_salarial",
+    "desconto_falta",
+    "desconto_atraso",
+    "inss",
+    "irrf",
+    "vale_transporte_desc",
+    "vale_alimentacao_desc",
+    "plano_saude_desc",
+    "emprestimo",
+    "pensao_alimenticia",
+    "outros_debitos"
+  ]).notNull(),
+  
+  // Descrição e valor
+  descricao: text("descricao").notNull(),
+  valor: decimal("valor", { precision: 10, scale: 2 }).notNull(),
+  
+  // Referência
+  mesReferencia: int("mes_referencia").notNull(), // 1-12
+  anoReferencia: int("ano_referencia").notNull(), // 2026
+  dataLancamento: date("data_lancamento").notNull(),
+  
+  // Observações
+  observacoes: text("observacoes"),
+  
+  // Comprovante
+  comprovanteUrl: varchar("comprovante_url", { length: 500 }),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdBy: int("created_by").references(() => users.id),
+});
+
+export type LancamentoRH = typeof lancamentosRH.$inferSelect;
+export type InsertLancamentoRH = typeof lancamentosRH.$inferInsert;
+
+// ============================================
+// MÓDULO: ALERTAS DE DOCUMENTOS
+// ============================================
+
+export const alertasDocumentos = mysqlTable("alertas_documentos", {
+  id: int("id").autoincrement().primaryKey(),
+  funcionarioId: int("funcionario_id").references(() => funcionarios.id, { onDelete: "cascade" }).notNull(),
+  
+  // Tipo de documento
+  tipoDocumento: mysqlEnum("tipo_documento", [
+    "cnh",
+    "exame_medico",
+    "certificado_curso",
+    "contrato_trabalho",
+    "seguro_vida",
+    "outro"
+  ]).notNull(),
+  
+  // Datas
+  dataVencimento: date("data_vencimento").notNull(),
+  dataAlerta: date("data_alerta").notNull(), // Data para começar a alertar (ex: 30 dias antes)
+  
+  // Status
+  status: mysqlEnum("status", ["pendente", "alertado", "renovado", "vencido"]).default("pendente").notNull(),
+  
+  // Descrição
+  descricao: text("descricao").notNull(),
+  observacoes: text("observacoes"),
+  
+  // Notificações
+  notificadoEm: timestamp("notificado_em"),
+  notificadoPara: text("notificado_para"), // Emails separados por vírgula
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AlertaDocumento = typeof alertasDocumentos.$inferSelect;
+export type InsertAlertaDocumento = typeof alertasDocumentos.$inferInsert;
+
+
+// ============================================
+// MÓDULO: FINANCEIRO
+// ============================================
+
+// Categorias Financeiras
+export const categoriasFinanceiras = mysqlTable("categorias_financeiras", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 100 }).notNull(),
+  tipo: mysqlEnum("tipo", ["receita", "despesa"]).notNull(),
+  cor: varchar("cor", { length: 7 }).default("#3B82F6"), // Hex color
+  icone: varchar("icone", { length: 50 }),
+  ativo: boolean("ativo").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type CategoriaFinanceira = typeof categoriasFinanceiras.$inferSelect;
+export type InsertCategoriaFinanceira = typeof categoriasFinanceiras.$inferInsert;
+
+// Contas a Pagar
+export const contasPagar = mysqlTable("contas_pagar", {
+  id: int("id").autoincrement().primaryKey(),
+  categoriaId: int("categoria_id").references(() => categoriasFinanceiras.id),
+  
+  // Dados da conta
+  descricao: text("descricao").notNull(),
+  fornecedor: varchar("fornecedor", { length: 255 }),
+  numeroDocumento: varchar("numero_documento", { length: 100 }),
+  
+  // Valores
+  valorOriginal: decimal("valor_original", { precision: 10, scale: 2 }).notNull(),
+  valorPago: decimal("valor_pago", { precision: 10, scale: 2 }).default("0"),
+  valorDesconto: decimal("valor_desconto", { precision: 10, scale: 2 }).default("0"),
+  valorJuros: decimal("valor_juros", { precision: 10, scale: 2 }).default("0"),
+  valorMulta: decimal("valor_multa", { precision: 10, scale: 2 }).default("0"),
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }).notNull(),
+  
+  // Datas
+  dataEmissao: date("data_emissao").notNull(),
+  dataVencimento: date("data_vencimento").notNull(),
+  dataPagamento: date("data_pagamento"),
+  
+  // Status
+  status: mysqlEnum("status", ["pendente", "paga", "vencida", "cancelada"]).default("pendente").notNull(),
+  
+  // Recorrência
+  recorrente: boolean("recorrente").default(false).notNull(),
+  frequencia: mysqlEnum("frequencia", ["mensal", "bimestral", "trimestral", "semestral", "anual"]),
+  
+  // Comprovante
+  comprovanteUrl: varchar("comprovante_url", { length: 500 }),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ContaPagar = typeof contasPagar.$inferSelect;
+export type InsertContaPagar = typeof contasPagar.$inferInsert;
+
+// Contas a Receber
+export const contasReceber = mysqlTable("contas_receber", {
+  id: int("id").autoincrement().primaryKey(),
+  categoriaId: int("categoria_id").references(() => categoriasFinanceiras.id),
+  
+  // Dados da conta
+  descricao: text("descricao").notNull(),
+  cliente: varchar("cliente", { length: 255 }),
+  numeroDocumento: varchar("numero_documento", { length: 100 }),
+  
+  // Valores
+  valorOriginal: decimal("valor_original", { precision: 10, scale: 2 }).notNull(),
+  valorRecebido: decimal("valor_recebido", { precision: 10, scale: 2 }).default("0"),
+  valorDesconto: decimal("valor_desconto", { precision: 10, scale: 2 }).default("0"),
+  valorJuros: decimal("valor_juros", { precision: 10, scale: 2 }).default("0"),
+  valorMulta: decimal("valor_multa", { precision: 10, scale: 2 }).default("0"),
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }).notNull(),
+  
+  // Datas
+  dataEmissao: date("data_emissao").notNull(),
+  dataVencimento: date("data_vencimento").notNull(),
+  dataRecebimento: date("data_recebimento"),
+  
+  // Status
+  status: mysqlEnum("status", ["pendente", "recebida", "vencida", "cancelada"]).default("pendente").notNull(),
+  
+  // Recorrência
+  recorrente: boolean("recorrente").default(false).notNull(),
+  frequencia: mysqlEnum("frequencia", ["mensal", "bimestral", "trimestral", "semestral", "anual"]),
+  
+  // Comprovante
+  comprovanteUrl: varchar("comprovante_url", { length: 500 }),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ContaReceber = typeof contasReceber.$inferSelect;
+export type InsertContaReceber = typeof contasReceber.$inferInsert;
+
+// Movimentações de Caixa
+export const movimentacoesCaixa = mysqlTable("movimentacoes_caixa", {
+  id: int("id").autoincrement().primaryKey(),
+  categoriaId: int("categoria_id").references(() => categoriasFinanceiras.id),
+  
+  // Tipo de movimentação
+  tipo: mysqlEnum("tipo", ["entrada", "saida"]).notNull(),
+  
+  // Dados
+  descricao: text("descricao").notNull(),
+  valor: decimal("valor", { precision: 10, scale: 2 }).notNull(),
+  data: date("data").notNull(),
+  
+  // Forma de pagamento
+  formaPagamento: mysqlEnum("forma_pagamento", [
+    "dinheiro",
+    "cartao_credito",
+    "cartao_debito",
+    "pix",
+    "transferencia",
+    "boleto",
+    "cheque"
+  ]).notNull(),
+  
+  // Relacionamento (opcional)
+  contaPagarId: int("conta_pagar_id").references(() => contasPagar.id),
+  contaReceberId: int("conta_receber_id").references(() => contasReceber.id),
+  
+  // Comprovante
+  comprovanteUrl: varchar("comprovante_url", { length: 500 }),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdBy: int("created_by").references(() => users.id),
+});
+
+export type MovimentacaoCaixa = typeof movimentacoesCaixa.$inferSelect;
+export type InsertMovimentacaoCaixa = typeof movimentacoesCaixa.$inferInsert;
+
+// Extratos Bancários
+export const extratosBancarios = mysqlTable("extratos_bancarios", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Dados bancários
+  banco: varchar("banco", { length: 100 }).notNull(),
+  agencia: varchar("agencia", { length: 20 }).notNull(),
+  conta: varchar("conta", { length: 30 }).notNull(),
+  
+  // Movimentação
+  data: date("data").notNull(),
+  descricao: text("descricao").notNull(),
+  documento: varchar("documento", { length: 100 }),
+  
+  // Valores
+  valor: decimal("valor", { precision: 10, scale: 2 }).notNull(),
+  tipo: mysqlEnum("tipo", ["credito", "debito"]).notNull(),
+  saldo: decimal("saldo", { precision: 10, scale: 2 }),
+  
+  // Conciliação
+  conciliado: boolean("conciliado").default(false).notNull(),
+  dataConciliacao: timestamp("data_conciliacao"),
+  movimentacaoCaixaId: int("movimentacao_caixa_id").references(() => movimentacoesCaixa.id),
+  
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type ExtratoBancario = typeof extratosBancarios.$inferSelect;
+export type InsertExtratoBancario = typeof extratosBancarios.$inferInsert;

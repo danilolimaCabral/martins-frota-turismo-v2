@@ -18,6 +18,10 @@ import { manutencaoRouter } from "./manutencao-routers";
 import { templatesRouter } from "./templates-routers";
 import { funcionarioRouter } from "./funcionario-routers";
 import { folhaRouter } from "./folha-routers";
+import { pontoRouter } from "./ponto-routers";
+import { feriasRouter } from "./ferias-routers";
+import { lancamentosRHRouter } from "./lancamentos-rh-routers";
+import { alertasRouter } from "./alertas-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -40,6 +44,10 @@ export const appRouter = router({
   templates: templatesRouter,
   funcionario: funcionarioRouter,
   folha: folhaRouter,
+  ponto: pontoRouter,
+  ferias: feriasRouter,
+  lancamentosRH: lancamentosRHRouter,
+  alertas: alertasRouter,
 });
 
 // TODO: add feature routers here, e.g.

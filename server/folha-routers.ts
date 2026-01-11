@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { db } from "./db";
+import { CNABGenerator } from "./cnab-generator";
 import { folhasPagamento, itensFolha, funcionarios, horasExtras } from "../drizzle/schema";
 import { eq, and, desc, sql } from "drizzle-orm";
 
@@ -394,5 +395,83 @@ export const folhaRouter = router({
       }).where(eq(horasExtras.id, input.id));
 
       return { success: true };
+    }),
+
+  /**
+   * Gerar arquivo CNAB 240 para pagamento bancário
+   */
+  gerarCNAB: protectedProcedure
+    .input(
+      z.object({
+        folhaId: z.number(),
+        dadosBancarios: z.object({
+          codigoBanco: z.string(),
+          agencia: z.string(),
+          conta: z.string(),
+          digitoConta: z.string(),
+        }),
+        dadosEmpresa: z.object({
+          cnpj: z.string(),
+          razaoSocial: z.string(),
+          endereco: z.string(),
+          cidade: z.string(),
+          uf: z.string(),
+          cep: z.string(),
+        }),
+      })
+    )
+    .mutation(async ({ input }) => {
+      // Buscar folha e itens
+      const folha = await db
+        .select()
+        .from(folhasPagamento)
+        .where(eq(folhasPagamento.id, input.folhaId))
+        .limit(1);
+
+      if (folha.length === 0) {
+        throw new Error("Folha de pagamento não encontrada");
+      }
+
+      if (folha[0].status !== "fechada") {
+        throw new Error("Folha de pagamento deve estar fechada para gerar CNAB");
+      }
+
+      // Buscar itens com dados bancários dos funcionários
+      const itens = await db
+        .select({
+          item: itensFolha,
+          funcionario: funcionarios,
+        })
+        .from(itensFolha)
+        .leftJoin(funcionarios, eq(itensFolha.funcionarioId, funcionarios.id))
+        .where(eq(itensFolha.folhaId, input.folhaId));
+
+      // Preparar dados para CNAB
+      const pagamentos = itens.map(i => ({
+        nome: i.funcionario?.nome || "",
+        cpf: i.funcionario?.cpf || "",
+        agencia: i.funcionario?.agencia || "",
+        conta: i.funcionario?.conta || "",
+        digitoConta: i.funcionario?.conta?.slice(-1) || "0",
+        valor: parseFloat(String(i.item.salarioLiquido || "0")),
+        tipoConta: (i.funcionario?.tipoConta as "CC" | "CP" | "CS") || "CC",
+      }));
+
+      // Gerar arquivo CNAB
+      const cnabGenerator = new CNABGenerator();
+      const arquivoCNAB = cnabGenerator.gerarArquivo(
+        input.dadosBancarios,
+        input.dadosEmpresa,
+        pagamentos
+      );
+
+      // Retornar arquivo como string (frontend pode fazer download)
+      return {
+        success: true,
+        arquivo: arquivoCNAB,
+        nomeArquivo: `CNAB_${folha[0].mesReferencia}_${folha[0].anoReferencia}.txt`,
+        totalPagamentos: pagamentos.length,
+        valorTotal: pagamentos.reduce((acc, p) => acc + p.valor, 0).toFixed(2),
+      };
     }),
 });
