@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router, createPermissionProcedure } from "./_core/trpc";
+
+const rhProcedure = createPermissionProcedure("rh");
 import { db } from "./db";
 import { funcionarios, dependentes } from "../drizzle/schema";
 import { eq, and, desc, sql, like } from "drizzle-orm";
@@ -24,7 +26,7 @@ export const funcionarioRouter = router({
   /**
    * Listar funcionários com filtros
    */
-  list: protectedProcedure
+  list: rhProcedure
     .input(
       z.object({
         status: z.enum(["ativo", "ferias", "afastado", "demitido", "todos"]).optional(),

@@ -112,7 +112,7 @@ export const authRouter = router({
         username: ctx.user.username,
         name: ctx.user.name,
         email: ctx.user.email,
-        phone: ctx.user.phone,
+        phone: ctx.user.phone || null,
         role: ctx.user.role as "admin" | "funcionario" | "motorista",
         active: ctx.user.active ?? true,
       };

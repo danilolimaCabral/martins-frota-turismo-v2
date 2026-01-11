@@ -277,5 +277,10 @@
 - [x] Adicionar campo permissions à tabela local_users
 - [x] Criar middleware de verificação de permissões
 - [x] Atualizar AdminUsuarios com checkboxes de permissões
-- [ ] Aplicar verificação de permissões nos routers
+- [ ] Aplicar middleware requirePermission nos routers de RH
+- [ ] Aplicar middleware requirePermission nos routers de Financeiro
+- [ ] Aplicar middleware requirePermission nos routers de Frota
+- [ ] Criar usuário de teste com permissões limitadas
+- [ ] Validar bloqueio de acesso nos módulos restritos
+- [ ] Implementar menu dinâmico baseado em permissões
 - [ ] Testar controle de acesso por módulo
