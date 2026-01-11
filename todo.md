@@ -39,3 +39,35 @@
 - [ ] Remover campos IPVA, Seguro e Licenciamento do schema
 
 - [x] Atualizar landing page para mostrar apenas ANTT, DER e Cadastur
+
+
+## 🆕 MÓDULO RH FINANCEIRO (NOVA SOLICITAÇÃO)
+
+### 📊 Schema do Banco de Dados
+- [x] Criar tabela employees (funcionários completa) - EXISTENTE
+- [x] Criar tabela dependents (dependentes) - EXISTENTE
+- [x] Criar tabela payroll (folhas de pagamento) - EXISTENTE
+- [x] Criar tabela time_records (registros de ponto) - EXISTENTE
+- [x] Criar tabela vacations (férias) - EXISTENTE
+- [x] Criar tabela absences (afastamentos) - EXISTENTE
+- [ ] Executar migrations
+
+### 🔧 Routers tRPC
+- [x] Criar employee-routers.ts (CRUD funcionários)
+- [x] Criar payroll-routers.ts (folha de pagamento)
+- [ ] Criar timerecord-routers.ts (controle de ponto)
+- [ ] Criar vacation-routers.ts (férias e afastamentos)
+- [x] Integrar routers no servidor
+
+### 🖥️ Interfaces Administrativas
+- [x] Criar página AdminFuncionarios (/admin/funcionarios)
+- [x] Criar página AdminFolhaPagamento (/admin/folha)
+- [ ] Criar página AdminPonto (/admin/ponto)
+- [ ] Criar página AdminFerias (/admin/ferias)
+- [x] Adicionar links no menu do admin
+
+### 📈 Relatórios Financeiros
+- [ ] Relatório de custos com pessoal
+- [ ] Relatório de encargos mensais
+- [ ] Relatório de horas trabalhadas
+- [ ] Dashboard RH com KPIs

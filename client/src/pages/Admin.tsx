@@ -54,6 +54,8 @@ export default function Admin() {
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
     { icon: Bus, label: "Veículos", path: "/admin/veiculos" },
     { icon: Users, label: "Motoristas", path: "/admin/motoristas" },
+    { icon: Users, label: "Funcionários", path: "/admin/funcionarios" },
+    { icon: DollarSign, label: "Folha de Pagamento", path: "/admin/folha" },
     { icon: Receipt, label: "Despesas", path: "/admin/despesas" },
     { icon: Wrench, label: "Manutenção", path: "/admin/manutencao" },
     { icon: FileText, label: "Relatórios", path: "/admin/relatorios" },
