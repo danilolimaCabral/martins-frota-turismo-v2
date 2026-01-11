@@ -19,6 +19,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import AdminBlog from "./pages/AdminBlog";
 import AdminOrcamentos from "./pages/AdminOrcamentos";
+import MotoristaChecklist from "./pages/MotoristaChecklist";
 import ChatbotMV from "./components/ChatbotMV";
 
 function Router() {
@@ -40,6 +41,7 @@ function Router() {
         <Route path="/blog/:slug" component={BlogPost} />
         <Route path="/admin/blog" component={AdminBlog} />
         <Route path="/admin/orcamentos" component={AdminOrcamentos} />
+        <Route path="/motorista/checklist" component={MotoristaChecklist} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>

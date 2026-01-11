@@ -1,21 +1,18 @@
 # Martins Turismo - Sistema ERP Modular
 
-## PRIORIDADE: Sistema Integrado Check-list + Manutenção + Financeiro
+## EM DESENVOLVIMENTO: Routers tRPC + Interface Mobile
 
 ### Fase 1: Tabelas ✅
-- [x] Criar 11 tabelas: checklist_templates, checklist_itens, checklists, checklist_respostas, ordens_servico, os_itens, pecas, fornecedores_pecas, custos_veiculo, contas_pagar
+- [x] 11 tabelas criadas
 
-### Fase 2: Backend
-- [ ] Criar routers tRPC para check-list e manutenção
+### Fase 2: Backend (Em andamento)
+- [x] Criar checklist-routers.ts
+- [x] Criar manutencao-routers.ts  
+- [x] Implementar lógica de criação automática de OS
 
-### Fase 3: Interface Mobile
-- [ ] Check-list para motoristas
+### Fase 3: Interface Mobile (Em andamento)
+- [x] Criar página /motorista/checklist
+- [x] Design mobile-first
 
-### Fase 4: Interface Admin
-- [ ] Gestão de OS
-
-### Fase 5: Integração Financeira
-- [ ] Contas a pagar automático
-
-### Fase 6: Dashboards
-- [ ] Relatórios de custos
+### Fase 4: GitHub
+- [ ] Push para repositório
