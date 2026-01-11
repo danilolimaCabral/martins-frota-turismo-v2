@@ -56,3 +56,25 @@
 
 ### GitHub
 - [x] Repositório: https://github.com/danilolimaCabral/martins-turismo
+
+
+## PAINEL ADMINISTRATIVO DE ORÇAMENTOS
+- [x] Criar página AdminOrcamentos.tsx (completa com 300+ linhas)
+- [x] Implementar listagem de orçamentos com paginação (tabela responsiva)
+- [x] Adicionar filtros por status (pendente, em análise, aprovado, recusado)
+- [x] Implementar ações de gerenciamento (visualizar detalhes em dialog, alterar status inline, deletar com confirmação)
+- [x] Adicionar rota /admin/orcamentos no App.tsx
+- [x] Adicionar link no menu administrativo (botões Orçamentos e Blog no dashboard)
+- [ ] Testar todas as funcionalidades (aguardando teste final)
+
+
+## RASTREAMENTO DA FROTA - IMPLEMENTAÇÃO COMPLETA
+- [x] Analisar página Rastreamento.tsx existente (302 linhas, totalmente funcional)
+- [x] Verificar APIs disponíveis no backend (usando dados simulados com 60 veículos)
+- [x] Implementar mapa com localização em tempo real dos veículos (Google Maps integrado)
+- [x] Adicionar marcadores para cada veículo ativo (marcadores coloridos por status)
+- [x] Implementar painel lateral com lista de veículos (sidebar com scroll)
+- [x] Adicionar filtros por status (em viagem, parado, manutenção, alerta) e tipo (onibus, van, carro)
+- [x] Implementar histórico de rotas (atualização a cada 5 segundos)
+- [x] Adicionar informações detalhadas de cada veículo (motorista, destino, velocidade, placa, última atualização)
+- [x] Testar todas as funcionalidades (100% funcional)

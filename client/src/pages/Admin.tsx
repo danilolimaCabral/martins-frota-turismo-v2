@@ -197,6 +197,20 @@ export default function Admin() {
                 <MapPin className="h-4 w-4 mr-2" />
                 Rastreamento
               </Button>
+              <Button
+                onClick={() => window.location.href = '/admin/orcamentos'}
+                className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:shadow-xl"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Orçamentos
+              </Button>
+              <Button
+                onClick={() => window.location.href = '/admin/blog'}
+                className="bg-gradient-to-r from-pink-500 to-pink-600 hover:shadow-xl"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                Blog
+              </Button>
             </div>
           </div>
 
