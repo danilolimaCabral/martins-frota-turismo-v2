@@ -197,31 +197,31 @@ Aguardo retorno!`;
     <div className="min-h-screen bg-background">
       {/* Weather Ticker - Previsão do Tempo */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white py-2.5 overflow-hidden">
-        <div className="flex animate-scroll">
+        <div className="flex animate-scroll" style={{ minWidth: 'max-content' }}>
           <div className="flex gap-8 md:gap-12 whitespace-nowrap">
             {weatherData ? (
-              // Dados reais da API
+              // Dados reais da API - Apenas dados essenciais
               [
                 // Curitiba - Atual
                 { city: weatherData.curitiba.city, temp: `${weatherData.curitiba.current.temperature}°C`, condition: `${weatherData.curitiba.current.icon} ${weatherData.curitiba.current.description}`, day: "Agora" },
                 // Araucária - Atual
                 { city: weatherData.araucaria.city, temp: `${weatherData.araucaria.current.temperature}°C`, condition: `${weatherData.araucaria.current.icon} ${weatherData.araucaria.current.description}`, day: "Agora" },
-                // Previsões de Curitiba
-                ...weatherData.curitiba.forecast.map((f: any) => ({
+                // Apenas próximos 2 dias de Curitiba
+                ...weatherData.curitiba.forecast.slice(1, 3).map((f: any) => ({
                   city: weatherData.curitiba.city,
                   temp: `${f.maxTemp}°C`,
                   condition: `${f.icon} ${f.description}`,
                   day: f.day
                 })),
-                // Previsões de Araucária
-                ...weatherData.araucaria.forecast.map((f: any) => ({
+                // Apenas próximos 2 dias de Araucária
+                ...weatherData.araucaria.forecast.slice(1, 3).map((f: any) => ({
                   city: weatherData.araucaria.city,
                   temp: `${f.maxTemp}°C`,
                   condition: `${f.icon} ${f.description}`,
                   day: f.day
                 })),
               ].map((weather, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium">
+                <div key={index} className="flex items-center gap-2 text-sm md:text-base font-medium px-4">
                   <span className="font-bold">{weather.city}</span>
                   <span>•</span>
                   <span className="text-lg">{weather.condition}</span>
@@ -251,20 +251,20 @@ Aguardo retorno!`;
               [
                 { city: weatherData.curitiba.city, temp: `${weatherData.curitiba.current.temperature}°C`, condition: `${weatherData.curitiba.current.icon} ${weatherData.curitiba.current.description}`, day: "Agora" },
                 { city: weatherData.araucaria.city, temp: `${weatherData.araucaria.current.temperature}°C`, condition: `${weatherData.araucaria.current.icon} ${weatherData.araucaria.current.description}`, day: "Agora" },
-                ...weatherData.curitiba.forecast.map((f: any) => ({
+                ...weatherData.curitiba.forecast.slice(1, 3).map((f: any) => ({
                   city: weatherData.curitiba.city,
                   temp: `${f.maxTemp}°C`,
                   condition: `${f.icon} ${f.description}`,
                   day: f.day
                 })),
-                ...weatherData.araucaria.forecast.map((f: any) => ({
+                ...weatherData.araucaria.forecast.slice(1, 3).map((f: any) => ({
                   city: weatherData.araucaria.city,
                   temp: `${f.maxTemp}°C`,
                   condition: `${f.icon} ${f.description}`,
                   day: f.day
                 })),
               ].map((weather, index) => (
-                <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium">
+                <div key={`dup-${index}`} className="flex items-center gap-2 text-sm md:text-base font-medium px-4">
                   <span className="font-bold">{weather.city}</span>
                   <span>•</span>
                   <span className="text-lg">{weather.condition}</span>

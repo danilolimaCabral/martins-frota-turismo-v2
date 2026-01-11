@@ -67,3 +67,9 @@
 - [x] Criar repositório no GitHub (danilolimaCabral/martins-turismo)
 - [x] Fazer push do código (545 objetos, 24.57 MiB)
 - [x] Repositório: https://github.com/danilolimaCabral/martins-turismo
+
+
+## CORREÇÃO URGENTE - TICKER DE TEMPERATURA
+- [x] Analisar problema de sobreposição no ticker (10 itens x 2 = 20 itens causando sobreposição)
+- [x] Corrigir CSS e layout para evitar texto sobreposto (reduzido para 6 itens: 2 atuais + 4 previsões)
+- [x] Testar ticker com dados reais da API (funcionando perfeitamente com scroll suave)
