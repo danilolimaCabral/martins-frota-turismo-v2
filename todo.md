@@ -189,3 +189,13 @@
 - [x] Corrigir erro de tipo em AdminBlog.tsx (role)
 - [x] Verificar compilação TypeScript
 - [x] Testar build de produção
+
+
+---
+
+## 🔐 AUTENTICAÇÃO JWT
+
+- [x] Implementar verificação de token JWT no contexto tRPC
+- [x] Atualizar auth.me para retornar usuário do token
+- [x] Criar middleware de autenticação
+- [x] Testar login e acesso protegido
