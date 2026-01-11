@@ -353,3 +353,27 @@
 
 - [x] Criar ícone 3D com letras "MV" para o botão do chatbot
 - [x] Substituir ícone de mensagem genérico pelo ícone personalizado MV
+
+- [x] Remover borda do botão flutuante MV do chatbot
+- [x] Mudar botão MV para gradiente laranja puro (sem azul)
+
+- [ ] Adicionar galeria de fotos reais da frota na home
+- [ ] Criar página institucional "Sobre Nós" (/sobre)
+- [ ] Adicionar timeline visual dos 19 anos de história
+
+
+## DESENVOLVIMENTO COMPLETO DA ÁREA ADMIN
+- [x] Criar procedures tRPC para CRUD de veículos
+- [x] Implementar interface de gestão de veículos (listar, adicionar, editar, excluir)
+- [ ] Criar procedures tRPC para CRUD de motoristas
+- [ ] Implementar interface de gestão de motoristas
+- [ ] Criar procedures tRPC para CRUD de clientes
+- [ ] Implementar interface de gestão de clientes
+- [ ] Criar procedures tRPC para gestão de viagens
+- [ ] Implementar interface de criação e acompanhamento de viagens
+- [ ] Criar procedures tRPC para aprovação de despesas
+- [ ] Implementar interface de aprovação/rejeição de despesas
+- [ ] Criar procedures tRPC para relatórios financeiros
+- [ ] Implementar dashboards com gráficos de receitas/despesas
+- [ ] Adicionar filtros por período nos relatórios
+- [ ] Implementar exportação de relatórios em PDF/Excel

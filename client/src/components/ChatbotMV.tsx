@@ -85,7 +85,7 @@ export default function ChatbotMV() {
           >
             <Button
               onClick={() => setIsOpen(true)}
-              className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 relative overflow-hidden"
+              className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 relative overflow-hidden border-0"
               size="icon"
             >
               <span 
