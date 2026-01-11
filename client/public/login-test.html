@@ -123,8 +123,8 @@
           messageDiv.style.display = 'block';
           
           setTimeout(() => {
-            window.location.href = '/admin';
-          }, 1000);
+            window.location.replace('/admin');
+          }, 500);
         } else {
           messageDiv.className = 'error';
           messageDiv.textContent = data.error || 'Erro ao fazer login';

@@ -1,6 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
 import { Loader2 } from "lucide-react";
 
 interface ProtectedRouteProps {
@@ -10,17 +9,38 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const [, setLocation] = useLocation();
-  const { data: user, isLoading } = trpc.auth.me.useQuery();
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      // Usuário não autenticado, redireciona para login
+    // Ler token e dados do usuário do localStorage
+    const token = localStorage.getItem("martins_auth_token");
+    const userData = localStorage.getItem("martins_user_data");
+
+    if (!token || !userData) {
+      // Não autenticado, redireciona para login
       setLocation("/login");
-    } else if (!isLoading && user && requireAdmin && user.role !== "admin") {
-      // Usuário autenticado mas não é admin
-      setLocation("/");
+      return;
     }
-  }, [user, isLoading, setLocation, requireAdmin]);
+
+    try {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      
+      // Verificar se requer admin
+      if (requireAdmin && parsedUser.role !== "admin") {
+        setLocation("/");
+        return;
+      }
+      
+      setIsLoading(false);
+    } catch (error) {
+      // Erro ao parsear dados, redireciona para login
+      localStorage.removeItem("martins_auth_token");
+      localStorage.removeItem("martins_user_data");
+      setLocation("/login");
+    }
+  }, [setLocation, requireAdmin]);
 
   if (isLoading) {
     return (

@@ -1,51 +1,31 @@
 # TODO - Sistema Martins Turismo
 
-## ✅ LOGIN FUNCIONANDO!
+## ✅ CONCLUÍDO
+- [x] Login funcionando
+- [x] Acesso ao sistema completo
+- [x] Dashboard administrativo
 
-- [x] Backend 100% funcional
-- [x] Endpoint REST /api/login criado
-- [x] Página HTML pura funcionando
-- [x] Login testado e aprovado pelo usuário
+## 🎯 CRIAR NOVOS MÓDULOS
 
-## 🗄️ POPULAR BANCO DE DADOS
+### 📄 Certificados (ANTT/DER/Cadastur)
+- [ ] Adicionar campos no schema de veículos
+- [ ] Atualizar interface de cadastro
+- [ ] Criar alertas de vencimento
 
-- [ ] Criar script de seed
-- [ ] Adicionar 5 veículos de exemplo
-- [ ] Adicionar 3 motoristas de exemplo
-- [ ] Adicionar 10 viagens de exemplo
-- [ ] Adicionar 3 clientes de exemplo
-- [ ] Executar script de seed
+### 👥 Módulo RH
+- [ ] Criar schema de funcionários
+- [ ] Criar schema de folha de pagamento
+- [ ] Criar schema de férias/afastamentos
+- [ ] Criar interface AdminRH
+- [ ] Criar routers tRPC para RH
 
-## 🧪 TESTAR TODOS OS MÓDULOS ADMIN
+### 🗺️ Módulo Roteirização  
+- [ ] Criar schema de rotas
+- [ ] Integrar Google Maps API
+- [ ] Criar interface de planejamento
+- [ ] Criar routers tRPC para roteirização
 
-### Acesso
-- [ ] Fazer login e acessar /admin
-- [ ] Verificar se dashboard carrega
-
-### Módulo RH
-- [ ] Listar motoristas
-- [ ] Cadastrar novo motorista
-- [ ] Editar motorista
-- [ ] Validar dados salvos
-
-### Módulo de Serviços
-- [ ] Listar veículos
-- [ ] Cadastrar novo veículo
-- [ ] Editar veículo
-- [ ] Listar viagens
-- [ ] Cadastrar nova viagem
-- [ ] Editar viagem
-
-### Módulo de Manutenção
-- [ ] Listar check-lists
-- [ ] Criar check-list
-- [ ] Validar fluxo completo
-
-### Módulo de Clientes
-- [ ] Listar clientes
-- [ ] Cadastrar novo cliente
-- [ ] Editar cliente
-
-## 🔧 CORREÇÕES
-
-- [ ] Corrigir problemas encontrados durante testes
+### 📱 Layout Mobile
+- [ ] Menu lateral colapsável
+- [ ] Ajustar cards do dashboard
+- [ ] Melhorar botões touch
