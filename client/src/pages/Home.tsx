@@ -30,6 +30,7 @@ import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { motion, useInView } from "framer-motion";
 import CountUp from "react-countup";
+import { toast } from "sonner";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -52,6 +53,37 @@ function AnimatedNumber({ end, suffix = "" }: { end: number; suffix?: string }) 
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Estado do formulário de contato
+  const [contactForm, setContactForm] = useState({
+    nome: "",
+    email: "",
+    telefone: "",
+    empresa: "",
+    mensagem: ""
+  });
+  
+  // Mutations tRPC
+  const createOrcamento = trpc.orcamento.create.useMutation({
+    onSuccess: () => {
+      toast.success("Orçamento enviado com sucesso! Entraremos em contato em breve.");
+    },
+    onError: (error) => {
+      toast.error("Erro ao enviar orçamento. Tente novamente.");
+      console.error(error);
+    }
+  });
+  
+  const createContato = trpc.contato.create.useMutation({
+    onSuccess: () => {
+      toast.success("Mensagem enviada com sucesso! Responderemos em breve.");
+      setContactForm({ nome: "", email: "", telefone: "", empresa: "", mensagem: "" });
+    },
+    onError: (error) => {
+      toast.error("Erro ao enviar mensagem. Tente novamente.");
+      console.error(error);
+    }
+  });
   
   // Buscar dados de clima real
   const { data: weatherData } = trpc.weather.getWeather.useQuery(undefined, {
@@ -149,26 +181,55 @@ export default function Home() {
     });
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = async () => {
+    // Validar campos
+    if (!searchForm.origem || !searchForm.destino) {
+      toast.error("Por favor, selecione origem e destino");
+      return;
+    }
+    
+    if (!searchForm.dataIda) {
+      toast.error("Por favor, selecione a data de ida");
+      return;
+    }
+    
     calculateRoute();
     
-    const routeInfo = routeSimulation ? `
+    // Extrair número de passageiros
+    const passageirosNum = parseInt(searchForm.passageiros.split('-')[0]) || 1;
+    
+    // Salvar orçamento no banco
+    try {
+      await createOrcamento.mutateAsync({
+        origem: searchForm.origem,
+        destino: searchForm.destino,
+        dataIda: searchForm.dataIda,
+        passageiros: passageirosNum,
+        tipoVeiculo: routeSimulation?.vehicleType,
+        custoEstimado: routeSimulation?.estimatedCost,
+      });
+      
+      // Abrir WhatsApp após salvar
+      const routeInfo = routeSimulation ? `
 📏 Distância: ${routeSimulation.distance} km
 ⏱️ Tempo estimado: ${routeSimulation.duration}
 🚐 Veículo sugerido: ${routeSimulation.vehicleType}
 💰 Custo estimado: ${routeSimulation.estimatedCost}
 ` : '';
-    
-    const message = `Olá! Gostaria de solicitar um orçamento:
+      
+      const message = `Olá! Gostaria de solicitar um orçamento:
 
 📍 Origem: ${searchForm.origem}
 🎯 Destino: ${searchForm.destino}
-📅 Data: ${searchForm.dataIda || "A definir"}
+📅 Data: ${searchForm.dataIda}
 👥 Passageiros: ${searchForm.passageiros}${routeInfo}
 Aguardo retorno!`;
-    
-    const whatsappUrl = `https://wa.me/5541991021445?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
+      
+      const whatsappUrl = `https://wa.me/5541991021445?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
+    } catch (error) {
+      // Erro já tratado no onError da mutation
+    }
   };
   
   // Recalcular rota quando origem ou destino mudar
@@ -1052,19 +1113,64 @@ Aguardo retorno!`;
                 <h3 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900" style={{fontFamily: 'Poppins'}}>
                   Solicite um Orçamento
                 </h3>
-                <form className="space-y-4">
-                  <Input placeholder="Nome completo" className="h-12 text-base" />
+                <form className="space-y-4" onSubmit={async (e) => {
+                  e.preventDefault();
+                  
+                  // Validar campos
+                  if (!contactForm.nome || !contactForm.email || !contactForm.mensagem) {
+                    toast.error("Por favor, preencha todos os campos obrigatórios");
+                    return;
+                  }
+                  
+                  try {
+                    await createContato.mutateAsync(contactForm);
+                  } catch (error) {
+                    // Erro já tratado no onError
+                  }
+                }}>
+                  <Input 
+                    placeholder="Nome completo" 
+                    className="h-12 text-base"
+                    value={contactForm.nome}
+                    onChange={(e) => setContactForm({...contactForm, nome: e.target.value})}
+                    required
+                  />
                   <div className="grid md:grid-cols-2 gap-4">
-                    <Input placeholder="E-mail" type="email" className="h-12 text-base" />
-                    <Input placeholder="Telefone" type="tel" className="h-12 text-base" />
+                    <Input 
+                      placeholder="E-mail" 
+                      type="email" 
+                      className="h-12 text-base"
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                      required
+                    />
+                    <Input 
+                      placeholder="Telefone" 
+                      type="tel" 
+                      className="h-12 text-base"
+                      value={contactForm.telefone}
+                      onChange={(e) => setContactForm({...contactForm, telefone: e.target.value})}
+                    />
                   </div>
-                  <Input placeholder="Empresa" className="h-12 text-base" />
+                  <Input 
+                    placeholder="Empresa" 
+                    className="h-12 text-base"
+                    value={contactForm.empresa}
+                    onChange={(e) => setContactForm({...contactForm, empresa: e.target.value})}
+                  />
                   <Textarea 
                     placeholder="Descreva suas necessidades..." 
                     className="min-h-32 text-base"
+                    value={contactForm.mensagem}
+                    onChange={(e) => setContactForm({...contactForm, mensagem: e.target.value})}
+                    required
                   />
-                  <Button className="w-full h-12 md:h-14 text-base gradient-primary text-white border-0 shadow-xl">
-                    Enviar Solicitação
+                  <Button 
+                    type="submit"
+                    disabled={createContato.isPending}
+                    className="w-full h-12 md:h-14 text-base gradient-primary text-white border-0 shadow-xl"
+                  >
+                    {createContato.isPending ? "Enviando..." : "Enviar Solicitação"}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </form>

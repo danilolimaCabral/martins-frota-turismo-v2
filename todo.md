@@ -1,75 +1,58 @@
 # Martins Turismo - TODO
 
-## FASE ATUAL: INTEGRAÇÃO API CLIMA + ANÁLISE + ADMIN
+## TESTES E CORREÇÕES DA LANDING PAGE - PRIORIDADE MÁXIMA
 
-### API de Clima Real (Open-Meteo - Gratuita)
-- [x] Criar procedure tRPC para buscar clima de Curitiba e Araucária (weather-routers.ts)
-- [x] Integrar Open-Meteo API (sem necessidade de chave) - 100% gratuita
-- [x] Atualizar ticker no frontend para consumir dados reais (Home.tsx)
-- [x] Implementar cache de 10 minutos para evitar excesso de requisições (backend + frontend)
+### 1. Testar Todos os Botões e Links
+- [x] Testar botão "Solicitar Orçamento" (hero section) - Conectado com backend
+- [ ] Testar botão "Sistema" (header)
+- [ ] Testar links do menu (Início, Serviços, Frota, Depoimentos, Contato, Blog)
+- [ ] Testar botão de telefone "(41) 99102-1445"
+- [ ] Testar botões "Saiba Mais" dos serviços
+- [ ] Testar navegação do carrossel de imagens
+- [ ] Testar links do footer
 
-### Análise Completa do Sistema
-- [x] Revisar todas as páginas e funcionalidades existentes (16 páginas, 10 routers)
-- [x] Identificar bugs e problemas de UX (3 erros TypeScript, páginas admin incompletas)
-- [x] Listar funcionalidades faltantes na área administrativa (dashboard, upload, relatórios)
+### 2. Formulário de Orçamento (Hero Section)
+- [x] Criar tabela `orcamentos` no banco de dados
+- [x] Criar procedure tRPC para salvar orçamento (5 procedures: create, list, updateStatus, getById, delete)
+- [x] Conectar formulário com backend (salva no banco + abre WhatsApp)
+- [x] Adicionar validações (origem, destino, data, passageiros)
+- [x] Implementar feedback visual (loading, sucesso, erro com toasts)
+- [x] Testar envio de orçamento (funcional - validações OK, salva no banco, abre WhatsApp)
+
+### 3. Formulário de Contato
+- [x] Criar tabela `contatos` no banco de dados
+- [x] Criar procedure tRPC para salvar contato (5 procedures: create, list, updateStatus, getById, delete)
+- [x] Conectar formulário com backend (limpa formulário após envio)
+- [x] Adicionar validações (nome, email, telefone, mensagem)
+- [x] Implementar feedback visual (loading, sucesso, erro com toasts)
+- [x] Testar envio de mensagem (funcional - validações OK, limpa formulário)
+
+### 4. Roteirização
+- [ ] Verificar se funcionalidade de roteirização existe
+- [ ] Testar busca de rotas
+- [ ] Corrigir se necessário
+
+### 5. Funcionalidades Gerais
 - [ ] Verificar responsividade mobile
+- [ ] Testar menu hamburguer (mobile)
+- [ ] Verificar scroll suave para seções
+- [ ] Testar todos os CTAs (Call-to-Actions)
 
-### Completar Área Administrativa
-- [ ] Dashboard com estatísticas gerais (TODO: implementar gráficos e métricas)
-- [ ] CRUD completo de veículos (estrutura criada, precisa testar)
-- [ ] CRUD completo de motoristas (estrutura criada, precisa testar)
-- [ ] CRUD completo de viagens (estrutura criada, precisa testar)
-- [ ] CRUD completo de manutenções (TODO: criar tabela e routers)
-- [ ] Relatórios e exportação de dados (TODO: implementar)
-- [ ] Gestão de usuários (TODO: criar interface admin)
+## CONCLUÍDO ✅
 
-### Testes
-- [ ] Testar todas as funcionalidades administrativas
-- [ ] Testar blog (criar, editar, excluir posts)
-- [ ] Testar responsividade
-- [ ] Testar fluxos de usuário
+### Blog
+- [x] Criar tabela blog_posts no banco de dados
+- [x] Popular blog com 8 artigos reais
+- [x] Interface administrativa completa
 
-## CONCLUÍDO
+### API de Clima
+- [x] Integrar Open-Meteo API
+- [x] Ticker funcionando perfeitamente
 
-### Blog Completo ✅
-- [x] Criar tabela blog_posts no banco de dados (blogPosts com 18 campos)
-- [x] Criar procedures tRPC para CRUD de posts (10 procedures)
-- [x] Desenvolver página do blog (/blog) com listagem de artigos
-- [x] Criar página de artigo individual (/blog/:slug)
-- [x] Implementar sistema de categorias (8 categorias)
-- [x] Criar interface de gerenciamento de posts no admin
-- [x] Adicionar editor de conteúdo para criar/editar artigos
+### Layout e Design
+- [x] Corrigir sobreposição do ticker
+- [x] Trocar cores para laranja
+- [x] Ajustar responsividade geral
 
-### Conteúdo do Blog ✅
-- [x] Criar artigo sobre Gramado/RS (Natal Luz, parques temáticos)
-- [x] Criar artigo sobre Beto Carrero World
-- [x] Criar artigo sobre praias de Santa Catarina
-- [x] Criar artigo sobre Aparecida/SP (Santuário Nacional)
-- [x] Criar artigo sobre cidades históricas de Minas
-- [x] Criar artigo sobre Fernando de Noronha
-- [x] Criar artigo sobre Foz do Iguaçu
-- [x] Criar artigo sobre Bonito/MS
-
-### Correções de Layout ✅
-- [x] Corrigir seção de motivos/diferenciais (layout, espaçamento)
-- [x] Corrigir ticker de notícias sobrepondo conteúdo
-- [x] Ajustar altura e padding do ticker
-
-### Identidade Visual ✅
-- [x] Trocar botão "Solicitar Orçamento" para laranja
-- [x] Trocar todos os elementos azuis para laranja
-
-### Ticker de Clima ✅
-- [x] Remover ticker de notícias de viagens
-- [x] Implementar ticker de clima com previsão de 4 dias
-
-### GitHub ✅
-- [x] Criar repositório no GitHub (danilolimaCabral/martins-turismo)
-- [x] Fazer push do código (545 objetos, 24.57 MiB)
+### GitHub
 - [x] Repositório: https://github.com/danilolimaCabral/martins-turismo
-
-
-## CORREÇÃO URGENTE - TICKER DE TEMPERATURA
-- [x] Analisar problema de sobreposição no ticker (10 itens x 2 = 20 itens causando sobreposição)
-- [x] Corrigir CSS e layout para evitar texto sobreposto (reduzido para 6 itens: 2 atuais + 4 previsões)
-- [x] Testar ticker com dados reais da API (funcionando perfeitamente com scroll suave)

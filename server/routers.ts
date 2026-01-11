@@ -10,6 +10,8 @@ import { reviewRouter } from "./review-routers";
 import { reportRouter } from "./report-routers";
 import { blogRouter } from "./blog-routers";
 import { weatherRouter } from "./weather-routers";
+import { orcamentoRouter } from "./orcamento-routers";
+import { contatoRouter } from "./contato-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -24,6 +26,8 @@ export const appRouter = router({
   report: reportRouter,
   blog: blogRouter,
   weather: weatherRouter,
+  orcamento: orcamentoRouter,
+  contato: contatoRouter,
 });
 
 // TODO: add feature routers here, e.g.
