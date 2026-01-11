@@ -685,3 +685,172 @@ export const horasExtras = mysqlTable("horas_extras", {
 
 export type HoraExtra = typeof horasExtras.$inferSelect;
 export type InsertHoraExtra = typeof horasExtras.$inferInsert;
+
+// ============================================
+// MÓDULO: CHECK-LIST E MANUTENÇÃO
+// ============================================
+
+// Templates de Check-list
+export const templatesChecklist = mysqlTable("templates_checklist", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 100 }).notNull(),
+  tipoVeiculo: mysqlEnum("tipo_veiculo", ["van", "onibus", "micro-onibus", "carro"]).notNull(),
+  ativo: boolean("ativo").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type TemplateChecklist = typeof templatesChecklist.$inferSelect;
+export type InsertTemplateChecklist = typeof templatesChecklist.$inferInsert;
+
+// Itens do Template
+export const itensTemplateChecklist = mysqlTable("itens_template_checklist", {
+  id: int("id").autoincrement().primaryKey(),
+  templateId: int("template_id").references(() => templatesChecklist.id, { onDelete: "cascade" }).notNull(),
+  categoria: varchar("categoria", { length: 50 }).notNull(),
+  descricao: text("descricao").notNull(),
+  ordem: int("ordem").notNull(),
+  obrigatorio: boolean("obrigatorio").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type ItemTemplateChecklist = typeof itensTemplateChecklist.$inferSelect;
+export type InsertItemTemplateChecklist = typeof itensTemplateChecklist.$inferInsert;
+
+// Check-lists Realizados
+export const checklists = mysqlTable("checklists", {
+  id: int("id").autoincrement().primaryKey(),
+  veiculoId: int("veiculo_id").references(() => vehicles.id, { onDelete: "cascade" }).notNull(),
+  motoristaId: int("motorista_id").references(() => drivers.id, { onDelete: "cascade" }).notNull(),
+  templateId: int("template_id").references(() => templatesChecklist.id).notNull(),
+  kmAtual: int("km_atual").notNull(),
+  dataRealizacao: timestamp("data_realizacao").defaultNow().notNull(),
+  observacoes: text("observacoes"),
+  status: mysqlEnum("status", ["em_andamento", "concluido", "cancelado"]).default("em_andamento").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Checklist = typeof checklists.$inferSelect;
+export type InsertChecklist = typeof checklists.$inferInsert;
+
+// Respostas do Check-list
+export const respostasChecklist = mysqlTable("respostas_checklist", {
+  id: int("id").autoincrement().primaryKey(),
+  checklistId: int("checklist_id").references(() => checklists.id, { onDelete: "cascade" }).notNull(),
+  itemId: int("item_id").references(() => itensTemplateChecklist.id).notNull(),
+  resposta: mysqlEnum("resposta", ["ok", "problema", "nao_aplicavel"]).notNull(),
+  observacao: text("observacao"),
+  fotoUrl: varchar("foto_url", { length: 500 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type RespostaChecklist = typeof respostasChecklist.$inferSelect;
+export type InsertRespostaChecklist = typeof respostasChecklist.$inferInsert;
+
+// Fornecedores de Peças
+export const fornecedoresPecas = mysqlTable("fornecedores_pecas", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 200 }).notNull(),
+  cnpj: varchar("cnpj", { length: 18 }),
+  telefone: varchar("telefone", { length: 20 }),
+  email: varchar("email", { length: 100 }),
+  endereco: text("endereco"),
+  ativo: boolean("ativo").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type FornecedorPecas = typeof fornecedoresPecas.$inferSelect;
+export type InsertFornecedorPecas = typeof fornecedoresPecas.$inferInsert;
+
+// Peças (Estoque)
+export const pecas = mysqlTable("pecas", {
+  id: int("id").autoincrement().primaryKey(),
+  codigo: varchar("codigo", { length: 50 }).notNull().unique(),
+  nome: varchar("nome", { length: 200 }).notNull(),
+  descricao: text("descricao"),
+  categoria: varchar("categoria", { length: 100 }),
+  fornecedorId: int("fornecedor_id").references(() => fornecedoresPecas.id),
+  quantidadeEstoque: int("quantidade_estoque").default(0).notNull(),
+  estoqueMinimo: int("estoque_minimo").default(0).notNull(),
+  precoUnitario: decimal("preco_unitario", { precision: 10, scale: 2 }).default("0"),
+  localizacao: varchar("localizacao", { length: 100 }),
+  ativo: boolean("ativo").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Peca = typeof pecas.$inferSelect;
+export type InsertPeca = typeof pecas.$inferInsert;
+
+// Movimentações de Estoque
+export const movimentacoesEstoque = mysqlTable("movimentacoes_estoque", {
+  id: int("id").autoincrement().primaryKey(),
+  pecaId: int("peca_id").references(() => pecas.id, { onDelete: "cascade" }).notNull(),
+  tipo: mysqlEnum("tipo", ["entrada", "saida", "ajuste"]).notNull(),
+  quantidade: int("quantidade").notNull(),
+  motivo: text("motivo"),
+  ordemServicoId: int("ordem_servico_id"),
+  usuarioId: int("usuario_id").references(() => users.id),
+  dataMovimentacao: timestamp("data_movimentacao").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type MovimentacaoEstoque = typeof movimentacoesEstoque.$inferSelect;
+export type InsertMovimentacaoEstoque = typeof movimentacoesEstoque.$inferInsert;
+
+// Ordens de Serviço
+export const ordensServico = mysqlTable("ordens_servico", {
+  id: int("id").autoincrement().primaryKey(),
+  numero: varchar("numero", { length: 20 }).notNull().unique(),
+  veiculoId: int("veiculo_id").references(() => vehicles.id, { onDelete: "cascade" }).notNull(),
+  checklistId: int("checklist_id").references(() => checklists.id),
+  tipo: mysqlEnum("tipo", ["preventiva", "corretiva", "emergencial"]).notNull(),
+  prioridade: mysqlEnum("prioridade", ["baixa", "media", "alta", "urgente"]).default("media").notNull(),
+  descricaoProblema: text("descricao_problema").notNull(),
+  descricaoServico: text("descricao_servico"),
+  status: mysqlEnum("status", ["pendente", "em_andamento", "aguardando_pecas", "concluida", "cancelada"]).default("pendente").notNull(),
+  mecanicoResponsavel: varchar("mecanico_responsavel", { length: 100 }),
+  dataAbertura: timestamp("data_abertura").defaultNow().notNull(),
+  dataInicio: timestamp("data_inicio"),
+  dataConclusao: timestamp("data_conclusao"),
+  kmVeiculo: int("km_veiculo"),
+  valorMaoObra: decimal("valor_mao_obra", { precision: 10, scale: 2 }).default("0"),
+  valorPecas: decimal("valor_pecas", { precision: 10, scale: 2 }).default("0"),
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }).default("0"),
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type OrdemServico = typeof ordensServico.$inferSelect;
+export type InsertOrdemServico = typeof ordensServico.$inferInsert;
+
+// Peças Utilizadas na OS
+export const pecasOrdemServico = mysqlTable("pecas_ordem_servico", {
+  id: int("id").autoincrement().primaryKey(),
+  ordemServicoId: int("ordem_servico_id").references(() => ordensServico.id, { onDelete: "cascade" }).notNull(),
+  pecaId: int("peca_id").references(() => pecas.id).notNull(),
+  quantidade: int("quantidade").notNull(),
+  precoUnitario: decimal("preco_unitario", { precision: 10, scale: 2 }).notNull(),
+  subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type PecaOrdemServico = typeof pecasOrdemServico.$inferSelect;
+export type InsertPecaOrdemServico = typeof pecasOrdemServico.$inferInsert;
+
+// Planos de Manutenção Preventiva
+export const planosManutencaoPreventiva = mysqlTable("planos_manutencao_preventiva", {
+  id: int("id").autoincrement().primaryKey(),
+  veiculoId: int("veiculo_id").references(() => vehicles.id, { onDelete: "cascade" }).notNull(),
+  tipoManutencao: varchar("tipo_manutencao", { length: 100 }).notNull(),
+  descricao: text("descricao"),
+  intervaloKm: int("intervalo_km"),
+  intervaloDias: int("intervalo_dias"),
+  ultimaExecucaoKm: int("ultima_execucao_km"),
+  ultimaExecucaoData: date("ultima_execucao_data"),
+  proximaExecucaoKm: int("proxima_execucao_km"),
+  proximaExecucaoData: date("proxima_execucao_data"),
+  ativo: boolean("ativo").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type PlanoManutencaoPreventiva = typeof planosManutencaoPreventiva.$inferSelect;
+export type InsertPlanoManutencaoPreventiva = typeof planosManutencaoPreventiva.$inferInsert;
