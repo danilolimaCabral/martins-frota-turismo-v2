@@ -456,3 +456,17 @@
 
 ## CORREÇÃO URGENTE - TICKER
 - [x] Corrigir ticker de notícias que está sobrepondo o conteúdo (z-index aumentado para z-50)
+
+## CRIAÇÃO DE CONTEÚDO - BLOG
+- [ ] Criar artigo sobre Fernando de Noronha
+- [ ] Criar artigo sobre Chapada Diamantina
+- [ ] Criar artigo sobre Ouro Preto
+- [ ] Criar artigo sobre Bonito/MS
+- [ ] Criar artigo sobre Lençóis Maranhenses
+- [ ] Criar artigo sobre Gramado/RS
+- [ ] Criar artigo sobre Foz do Iguaçu
+- [ ] Criar artigo sobre Florianópolis
+
+## AJUSTE DE CORES - IDENTIDADE VISUAL
+- [x] Trocar botão "Solicitar Orçamento" de azul/gradiente para laranja (gradient-primary agora é laranja sólido)
+- [x] Verificar e trocar todos os elementos azuis para laranja (títulos, números de passos, backgrounds)

@@ -642,7 +642,7 @@ Aguardo retorno!`;
                 <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-white to-gray-50">
                   <CardContent className="p-6 md:p-8">
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br from-blue-600 to-orange-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-lg">
+                      <div className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl bg-orange-600 flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-lg">
                         {item.step}
                       </div>
                       <div className="bg-primary/10 p-3 rounded-lg">
@@ -669,7 +669,7 @@ Aguardo retorno!`;
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{fontFamily: 'Poppins'}}>
-              Nossos <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400">Serviços</span>
+              Nossos <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">Serviços</span>
             </h2>
           </div>
 
@@ -848,7 +848,7 @@ Aguardo retorno!`;
       </motion.section>
 
       {/* Certificações e Qualidade Premium */}
-      <motion.section {...fadeInUp} className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-orange-50">
+      <motion.section {...fadeInUp} className="py-16 md:py-24 bg-gradient-to-br from-orange-50 to-orange-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{fontFamily: 'Poppins'}}>
@@ -956,7 +956,7 @@ Aguardo retorno!`;
           <div className="grid lg:grid-cols-2 gap-12 md:gap-16">
             <div>
               <h2 className="text-3xl md:text-5xl font-bold mb-6" style={{fontFamily: 'Poppins'}}>
-                Vamos <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400">Conversar</span>?
+                Vamos <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">Conversar</span>?
               </h2>
               <p className="text-base md:text-lg text-gray-300 mb-8">
                 Solicite um orçamento personalizado ou tire suas dúvidas.
