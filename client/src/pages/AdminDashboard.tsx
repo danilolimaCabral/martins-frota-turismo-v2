@@ -1,4 +1,5 @@
-import { Link } from "wouter";
+import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import {
   Users,
@@ -7,243 +8,305 @@ import {
   MessageSquare,
   Calendar,
   Settings,
-  Zap,
+  Truck,
+  Home,
+  LogOut,
+  Menu,
+  X,
+  ChevronRight,
   ArrowRight,
 } from "lucide-react";
+
+const sidebarItems = [
+  { id: "home", icon: Home, label: "Home", path: "/" },
+  { id: "rh", icon: Users, label: "RH", color: "hover:bg-blue-50 hover:text-blue-600" },
+  { id: "financeiro", icon: DollarSign, label: "Financeiro", color: "hover:bg-green-50 hover:text-green-600" },
+  { id: "rotas", icon: MapPin, label: "Rotas", color: "hover:bg-purple-50 hover:text-purple-600" },
+  { id: "atendimento", icon: MessageSquare, label: "Atendimento", color: "hover:bg-orange-50 hover:text-orange-600" },
+  { id: "agenda", icon: Calendar, label: "Agenda", color: "hover:bg-red-50 hover:text-red-600" },
+  { id: "veiculos", icon: Truck, label: "Veículos", color: "hover:bg-indigo-50 hover:text-indigo-600" },
+  { id: "admin", icon: Settings, label: "Admin", color: "hover:bg-gray-50 hover:text-gray-600" },
+];
 
 const modules = [
   {
     id: "rh",
-    title: "RH - Recursos Humanos",
-    description: "Gestão de funcionários, folha de pagamento e documentos",
+    title: "RH",
+    description: "Gestão de Recursos Humanos",
     icon: Users,
     color: "from-blue-500 to-blue-600",
     bgColor: "bg-blue-50",
+    textColor: "text-blue-600",
     borderColor: "border-blue-200",
-    hoverColor: "hover:shadow-blue-200",
-    stats: [
-      { label: "Funcionários", value: "25" },
-      { label: "Folhas Processadas", value: "12" },
-    ],
-    links: [
-      { label: "Funcionários", path: "/admin/funcionarios" },
-      { label: "Folha Pagamento", path: "/admin/folhapagamento" },
-      { label: "Lançamentos", path: "/admin/lancamentosrh" },
-      { label: "Férias", path: "/admin/ferias" },
-      { label: "CNAB", path: "/admin/cnab" },
+    items: [
+      { label: "Funcionários", path: "/admin/funcionarios", icon: Users },
+      { label: "Folha Pagamento", path: "/admin/folhapagamento", icon: DollarSign },
+      { label: "Lançamentos", path: "/admin/lancamentosrh", icon: ChevronRight },
+      { label: "Férias", path: "/admin/ferias", icon: Calendar },
+      { label: "CNAB", path: "/admin/cnab", icon: ChevronRight },
+      { label: "CNAB240", path: "/admin/cnab240", icon: ChevronRight },
     ],
   },
   {
     id: "financeiro",
     title: "Financeiro",
-    description: "Contas a pagar, receber e fluxo de caixa",
+    description: "Gestão Financeira",
     icon: DollarSign,
     color: "from-green-500 to-green-600",
     bgColor: "bg-green-50",
+    textColor: "text-green-600",
     borderColor: "border-green-200",
-    hoverColor: "hover:shadow-green-200",
-    stats: [
-      { label: "Contas Pendentes", value: "8" },
-      { label: "Saldo Mês", value: "R$ 45.2K" },
-    ],
-    links: [
-      { label: "Contas a Pagar", path: "/admin/financeiro" },
-      { label: "Conciliação", path: "/admin/conciliacao" },
-      { label: "Fluxo de Caixa", path: "/admin/fluxocaixa" },
-      { label: "DRE", path: "/admin/dre" },
-      { label: "Relatórios", path: "/admin/relatoriofinanceiro" },
+    items: [
+      { label: "Contas a Pagar", path: "/admin/financeiro", icon: DollarSign },
+      { label: "Conciliação", path: "/admin/conciliacao", icon: ChevronRight },
+      { label: "Fluxo de Caixa", path: "/admin/fluxocaixa", icon: ChevronRight },
+      { label: "DRE", path: "/admin/dre", icon: ChevronRight },
+      { label: "Relatórios", path: "/admin/relatoriofinanceiro", icon: ChevronRight },
     ],
   },
   {
     id: "rotas",
     title: "Roteirização",
-    description: "Otimização de rotas com Google Maps",
+    description: "Otimização de Rotas",
     icon: MapPin,
     color: "from-purple-500 to-purple-600",
     bgColor: "bg-purple-50",
+    textColor: "text-purple-600",
     borderColor: "border-purple-200",
-    hoverColor: "hover:shadow-purple-200",
-    stats: [
-      { label: "Rotas Ativas", value: "5" },
-      { label: "Distância Média", value: "45 km" },
-    ],
-    links: [
-      { label: "Roteirização", path: "/admin/roteirizacao" },
-      { label: "Exportação GPS", path: "/admin/exportacaogps" },
-      { label: "Histórico", path: "/admin/historicorotas" },
-      { label: "Otimização", path: "/admin/otimizacaoavancada" },
+    items: [
+      { label: "Roteirização", path: "/admin/roteirizacao", icon: MapPin },
+      { label: "Exportação GPS", path: "/admin/exportacaogps", icon: ChevronRight },
+      { label: "Histórico", path: "/admin/historicorotas", icon: ChevronRight },
+      { label: "Otimização", path: "/admin/otimizacaoavancada", icon: ChevronRight },
     ],
   },
   {
     id: "atendimento",
     title: "Atendimento",
-    description: "Tickets, chat e orçamentos de clientes",
+    description: "Gestão de Clientes",
     icon: MessageSquare,
     color: "from-orange-500 to-orange-600",
     bgColor: "bg-orange-50",
+    textColor: "text-orange-600",
     borderColor: "border-orange-200",
-    hoverColor: "hover:shadow-orange-200",
-    stats: [
-      { label: "Tickets Abertos", value: "12" },
-      { label: "Satisfação", value: "4.8/5" },
-    ],
-    links: [
-      { label: "Atendimento", path: "/admin/atendimento" },
-      { label: "Chatbot IA", path: "/admin/chatbotia" },
-      { label: "Gestão Tickets", path: "/admin/gestaotickets" },
-      { label: "Orçamentos", path: "/admin/orcamentos" },
-      { label: "NPS", path: "/admin/nps" },
+    items: [
+      { label: "Atendimento", path: "/admin/atendimento", icon: MessageSquare },
+      { label: "Chatbot IA", path: "/admin/chatbotia", icon: ChevronRight },
+      { label: "Gestão Tickets", path: "/admin/gestaotickets", icon: ChevronRight },
+      { label: "Orçamentos", path: "/admin/orcamentos", icon: ChevronRight },
+      { label: "NPS", path: "/admin/nps", icon: ChevronRight },
     ],
   },
   {
     id: "agenda",
     title: "Agenda",
-    description: "Calendário de eventos e compromissos",
+    description: "Calendário e Eventos",
     icon: Calendar,
     color: "from-red-500 to-red-600",
     bgColor: "bg-red-50",
+    textColor: "text-red-600",
     borderColor: "border-red-200",
-    hoverColor: "hover:shadow-red-200",
-    stats: [
-      { label: "Eventos Mês", value: "18" },
-      { label: "Ocupação", value: "85%" },
+    items: [
+      { label: "Agenda", path: "/admin/agenda", icon: Calendar },
+      { label: "Calendário", path: "/admin/calendarioavancado", icon: ChevronRight },
+      { label: "Notificações", path: "/admin/notificacoes", icon: ChevronRight },
+      { label: "Relatórios", path: "/admin/relatoriosagenda", icon: ChevronRight },
     ],
-    links: [
-      { label: "Agenda", path: "/admin/agenda" },
-      { label: "Calendário", path: "/admin/calendarioavancado" },
-      { label: "Eventos", path: "/admin/detalhesevento" },
-      { label: "Notificações", path: "/admin/notificacoes" },
+  },
+  {
+    id: "veiculos",
+    title: "Veículos",
+    description: "Gestão de Frota",
+    icon: Truck,
+    color: "from-indigo-500 to-indigo-600",
+    bgColor: "bg-indigo-50",
+    textColor: "text-indigo-600",
+    borderColor: "border-indigo-200",
+    items: [
+      { label: "Frota", path: "/admin/veiculos", icon: Truck },
+      { label: "Manutenção", path: "/admin/manutencao", icon: ChevronRight },
+      { label: "Rastreamento", path: "/admin/rastreamento", icon: ChevronRight },
+      { label: "Documentos", path: "/admin/documentos", icon: ChevronRight },
     ],
   },
   {
     id: "admin",
-    title: "Administrativo",
-    description: "Configurações, integrações e ferramentas",
+    title: "Administração",
+    description: "Configurações do Sistema",
     icon: Settings,
     color: "from-gray-500 to-gray-600",
     bgColor: "bg-gray-50",
+    textColor: "text-gray-600",
     borderColor: "border-gray-200",
-    hoverColor: "hover:shadow-gray-200",
-    stats: [
-      { label: "Sistemas", value: "5" },
-      { label: "Integrações", value: "3" },
-    ],
-    links: [
-      { label: "Checklist", path: "/admin/checklist" },
-      { label: "Manutenção", path: "/admin/manutencao" },
-      { label: "Rastreamento", path: "/admin/rastreamento" },
-      { label: "Integrações", path: "/admin/integracoes" },
-      { label: "Configurações", path: "/admin/configuracoesgerais" },
+    items: [
+      { label: "Usuários", path: "/admin/usuarios", icon: Users },
+      { label: "Auditoria", path: "/admin/auditoria", icon: ChevronRight },
+      { label: "Backup", path: "/admin/backup", icon: ChevronRight },
+      { label: "Configurações", path: "/admin/configuracoes", icon: Settings },
     ],
   },
 ];
 
 export function AdminDashboard() {
+  const [, setLocation] = useLocation();
+  const [selectedModule, setSelectedModule] = useState<string | null>(null);
+
+  const handleNavigate = (path: string) => {
+    setLocation(path);
+  };
+
+  const currentModule = modules.find((m) => m.id === selectedModule);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto mb-12">
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-white mb-3">
-            Painel Administrativo
-          </h1>
-          <p className="text-xl text-gray-300">
-            Acesse todos os módulos do sistema Martins Viagens e Turismo
-          </p>
+    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Sidebar Vertical */}
+      <div className="w-20 bg-white/5 backdrop-blur-md border-r border-white/10 flex flex-col items-center py-4 gap-2 shadow-xl">
+        {/* Logo/Home */}
+        <button
+          onClick={() => handleNavigate("/")}
+          className="p-3 rounded-lg hover:bg-white/10 transition-all text-white mb-2"
+          title="Home"
+        >
+          <Home className="h-5 w-5" />
+        </button>
+
+        {/* Divider */}
+        <div className="w-12 h-px bg-white/10" />
+
+        {/* Sidebar Icons */}
+        <div className="flex flex-col gap-2 w-full px-2">
+          {sidebarItems.slice(1).map((item) => {
+            const Icon = item.icon;
+            const isSelected = selectedModule === item.id;
+
+            return (
+              <button
+                key={item.id}
+                onClick={() => setSelectedModule(isSelected ? null : item.id)}
+                className={`w-full p-3 rounded-lg transition-all flex items-center justify-center ${
+                  isSelected
+                    ? "bg-white/20 text-white shadow-lg"
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                }`}
+                title={item.label}
+              >
+                <Icon className="h-5 w-5" />
+              </button>
+            );
+          })}
         </div>
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Logout */}
+        <button className="w-full p-3 rounded-lg hover:bg-white/10 transition-colors text-white/60 hover:text-white">
+          <LogOut className="h-5 w-5 mx-auto" />
+        </button>
       </div>
 
-      {/* Modules Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {modules.map((module) => {
-          const Icon = module.icon;
-          return (
-            <div
-              key={module.id}
-              className={`${module.bgColor} rounded-2xl border-2 ${module.borderColor} overflow-hidden transition-all duration-300 ${module.hoverColor} hover:shadow-2xl hover:scale-105 cursor-pointer group`}
-            >
-              {/* Header com Gradient */}
-              <div
-                className={`bg-gradient-to-r ${module.color} p-6 text-white relative overflow-hidden`}
-              >
-                <div className="absolute top-0 right-0 opacity-10">
-                  <Icon className="w-32 h-32" />
-                </div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Icon className="w-8 h-8" />
-                    <h2 className="text-2xl font-bold">{module.title}</h2>
-                  </div>
-                  <p className="text-sm text-white/90">{module.description}</p>
-                </div>
-              </div>
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto">
+        <div className="p-8">
+          {currentModule ? (
+            // Module Details
+            <div className="animate-in fade-in duration-300">
+              {/* Header */}
+              <div className="mb-8">
+                <button
+                  onClick={() => setSelectedModule(null)}
+                  className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors"
+                >
+                  <X className="h-4 w-4" />
+                  Voltar
+                </button>
 
-              {/* Stats */}
-              <div className="px-6 py-4 border-b border-gray-200">
-                <div className="grid grid-cols-2 gap-4">
-                  {module.stats.map((stat, idx) => (
-                    <div key={idx} className="text-center">
-                      <p className="text-2xl font-bold text-gray-900">
-                        {stat.value}
-                      </p>
-                      <p className="text-xs text-gray-600">{stat.label}</p>
+                <div className={`bg-gradient-to-r ${currentModule.color} rounded-lg p-6 text-white shadow-xl mb-8`}>
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-white/20 rounded-lg">
+                      {currentModule.icon && <currentModule.icon className="h-8 w-8" />}
                     </div>
-                  ))}
+                    <div>
+                      <h1 className="text-3xl font-bold">{currentModule.title}</h1>
+                      <p className="text-white/80">{currentModule.description}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Links */}
-              <div className="px-6 py-4">
-                <div className="space-y-2 mb-4">
-                  {module.links.map((link, idx) => (
-                    <Link key={idx} href={link.path}>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-between text-left hover:bg-gray-100 group/btn"
-                      >
-                        <span className="text-sm">{link.label}</span>
-                        <ArrowRight className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-                      </Button>
-                    </Link>
-                  ))}
-                </div>
-
-                {/* CTA Button */}
-                <Link href={module.links[0].path}>
-                  <Button
-                    className={`w-full bg-gradient-to-r ${module.color} text-white hover:shadow-lg transition-all`}
-                  >
-                    <Zap className="w-4 h-4 mr-2" />
-                    Acessar Módulo
-                  </Button>
-                </Link>
+              {/* Module Links Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {currentModule.items.map((item) => {
+                  const ItemIcon = item.icon;
+                  return (
+                    <button
+                      key={item.path}
+                      onClick={() => handleNavigate(item.path)}
+                      className={`p-5 rounded-lg border transition-all hover:shadow-lg hover:scale-105 ${currentModule.bgColor} ${currentModule.borderColor} border-2 group`}
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className={`p-2 rounded-lg ${currentModule.bgColor}`}>
+                          <ItemIcon className={`h-5 w-5 ${currentModule.textColor}`} />
+                        </div>
+                        <ArrowRight className={`h-4 w-4 ${currentModule.textColor} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                      </div>
+                      <p className="font-semibold text-slate-900 text-left">{item.label}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-          );
-        })}
-      </div>
+          ) : (
+            // Main Grid View
+            <div className="animate-in fade-in duration-300">
+              <div className="mb-12">
+                <h1 className="text-4xl font-bold text-white mb-2">
+                  Painel Administrativo
+                </h1>
+                <p className="text-white/60 text-lg">
+                  Selecione um módulo para gerenciar sua operação
+                </p>
+              </div>
 
-      {/* Footer Stats */}
-      <div className="max-w-7xl mx-auto mt-16 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <p className="text-3xl font-bold text-white">53</p>
-            <p className="text-gray-300 text-sm">Páginas</p>
-          </div>
-          <div>
-            <p className="text-3xl font-bold text-white">6</p>
-            <p className="text-gray-300 text-sm">Módulos</p>
-          </div>
-          <div>
-            <p className="text-3xl font-bold text-white">100%</p>
-            <p className="text-gray-300 text-sm">Funcional</p>
-          </div>
-          <div>
-            <p className="text-3xl font-bold text-white">∞</p>
-            <p className="text-gray-300 text-sm">Escalável</p>
-          </div>
+              {/* Modules Grid 2x4 */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {modules.map((module) => {
+                  const Icon = module.icon;
+                  return (
+                    <button
+                      key={module.id}
+                      onClick={() => setSelectedModule(module.id)}
+                      className={`group relative overflow-hidden rounded-xl border border-white/10 hover:border-white/20 transition-all hover:shadow-2xl hover:scale-105 ${module.bgColor}`}
+                    >
+                      {/* Gradient Overlay */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${module.color} opacity-0 group-hover:opacity-10 transition-opacity`} />
+
+                      {/* Content */}
+                      <div className="relative p-6 text-center">
+                        <div className={`inline-flex p-3 rounded-lg ${module.bgColor} mb-4 group-hover:scale-110 transition-transform`}>
+                          <Icon className={`h-8 w-8 ${module.textColor}`} />
+                        </div>
+                        <h3 className="font-bold text-slate-900 text-lg mb-1">
+                          {module.title}
+                        </h3>
+                        <p className="text-sm text-slate-600 mb-4">
+                          {module.description}
+                        </p>
+                        <div className="flex items-center justify-center gap-2 text-sm font-medium">
+                          <span className={module.textColor}>Acessar</span>
+                          <ChevronRight className={`h-4 w-4 ${module.textColor} group-hover:translate-x-1 transition-transform`} />
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
+export default AdminDashboard;
