@@ -44,6 +44,7 @@ import { AdminAnaliseRotatividade } from "./pages/AdminAnaliseRotatividade";
 import { AdminAvisosDocumentos } from "./pages/AdminAvisosDocumentos";
 import { AdminBackupRestore } from "./pages/AdminBackupRestore";
 import { AdminCNAB } from "./pages/AdminCNAB";
+import AdminCNAB240 from "./pages/AdminCNAB240";
 import { AdminCalendarioAvancado } from "./pages/AdminCalendarioAvancado";
 import { AdminChatbotIA } from "./pages/AdminChatbotIA";
 import { AdminConciliacao } from "./pages/AdminConciliacao";
@@ -113,6 +114,11 @@ function Router() {
         <Route path="/admin/folha">
           <ProtectedRoute>
             <AdminFolhaPagamento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/cnab240">
+          <ProtectedRoute>
+            <AdminCNAB240 />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/lancamentos-rh">

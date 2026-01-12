@@ -33,6 +33,7 @@ const menuModules = [
       { label: "Lançamentos RH", path: "/admin/lancamentosrh", icon: Zap },
       { label: "Férias", path: "/admin/ferias", icon: Calendar },
       { label: "CNAB", path: "/admin/cnab", icon: FileText },
+      { label: "CNAB240", path: "/admin/cnab240", icon: FileText },
       { label: "Avisos Documentos", path: "/admin/avisosdocumentos", icon: AlertCircle },
       { label: "Relatórios RH", path: "/admin/relatoriosrh", icon: BarChart3 },
     ],
