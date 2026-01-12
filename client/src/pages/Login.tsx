@@ -76,16 +76,14 @@ export function Login() {
         <CardHeader className="space-y-4 text-center pb-6">
           {/* Logo */}
           <div className="flex justify-center mb-4">
-            <div className="bg-white/20 rounded-lg p-4">
-              <img
-                src="/logo.png"
-                alt="Martins Turismo"
-                className="h-16 w-16 object-contain"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                }}
-              />
-            </div>
+            <img
+              src="/logo-martins-clean.png"
+              alt="Martins Turismo"
+              className="h-20 w-auto object-contain"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/logo-martins-clean.webp";
+              }}
+            />
           </div>
 
           <div>

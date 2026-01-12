@@ -199,7 +199,7 @@ export default function Admin() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 lg:flex">
+    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row">
       {/* Header Mobile */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50 lg:hidden">
         <div className="flex items-center justify-between p-4">
@@ -240,8 +240,8 @@ export default function Admin() {
 
       {/* Sidebar */}
       <aside className={`
-        fixed top-0 left-0 h-full w-72 bg-gradient-to-b from-blue-600 to-blue-700 text-white z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto
-        lg:translate-x-0 lg:static lg:block
+        fixed top-16 left-0 h-[calc(100vh-64px)] w-72 bg-gradient-to-b from-blue-600 to-blue-700 text-white z-40 transform transition-transform duration-300 ease-in-out overflow-y-auto
+        lg:translate-x-0 lg:static lg:top-0 lg:h-screen lg:block
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         {/* Header Desktop */}
@@ -320,7 +320,7 @@ export default function Admin() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-4 lg:p-6">
+      <main className="flex-1 w-full lg:ml-0">
         {/* Dashboard Header */}
         <div className="mb-6">
           <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-1">

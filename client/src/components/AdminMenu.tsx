@@ -172,20 +172,25 @@ const menuModules: MenuModule[] = [
 export function AdminMenu() {
   const [, setLocation] = useLocation();
   const [expandedModule, setExpandedModule] = useState<string | null>("Dashboard");
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(window.innerWidth > 768);
 
   const handleNavigation = (path: string) => {
     setLocation(path);
   };
 
   return (
-    <div className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white transition-all duration-300 ${isOpen ? "w-80" : "w-20"} overflow-y-auto border-r border-slate-700 shadow-2xl`}>
+    <div className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white transition-all duration-300 z-40 ${isOpen ? "w-80 md:w-80" : "w-20"} overflow-y-auto border-r border-slate-700 shadow-2xl md:relative md:z-auto`}>
       {/* Header */}
-      <div className="sticky top-0 bg-gradient-to-r from-orange-500 to-red-600 p-4 flex items-center justify-between z-50">
+      <div className="sticky top-0 bg-gradient-to-r from-orange-500 to-red-600 p-3 md:p-4 flex items-center justify-between z-50">
         {isOpen && (
-          <div>
+          <div className="hidden md:block">
             <h1 className="text-2xl font-bold">MV</h1>
             <p className="text-xs opacity-90">Martins Turismo</p>
+          </div>
+        )}
+        {isOpen && (
+          <div className="md:hidden">
+            <h1 className="text-lg font-bold">MV</h1>
           </div>
         )}
         <Button
