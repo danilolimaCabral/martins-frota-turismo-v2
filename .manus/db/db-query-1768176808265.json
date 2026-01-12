@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO local_users (username, password, email, name, role, permissions, active) \nVALUES ('teste', '$2b$10$YourHashedPasswordHere', 'teste@martins.com', 'Usuário Teste', 'user', '{\"frota\":true}', TRUE);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute INSERT INTO local_users (username, password, email, name, role, permissions, active) \nVALUES ('teste', '$2b$10$YourHashedPasswordHere', 'teste@martins.com', 'Usuário Teste', 'user', '{\"frota\":true}', TRUE);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 201
+}

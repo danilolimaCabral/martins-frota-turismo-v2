@@ -283,3 +283,27 @@
 - [x] Criar script de inicialização para admin padrão (admin/admin123)
 - [x] Implementar menu dinâmico que oculta links sem permissão
 - [ ] Testar login e controle de acesso por módulo
+
+
+## 🆕 TESTES E MELHORIAS FINAIS
+
+### Testes de Permissões
+- [x] Criar usuário de teste com permissões limitadas (apenas Frota)
+- [ ] Testar login com usuário limitado
+- [ ] Verificar bloqueio de acesso aos módulos RH e Financeiro
+- [ ] Validar menu dinâmico ocultando links sem permissão
+- [ ] Testar erro 403 ao tentar acessar endpoint sem permissão
+
+### Página de Perfil
+- [x] Criar router profile-routers.ts
+- [x] Implementar endpoint de alteração de senha
+- [x] Implementar endpoint de atualização de dados pessoais
+- [x] Criar página AdminPerfil.tsx
+- [x] Adicionar link no menu do usuário
+
+### Logs de Auditoria
+- [x] Criar tabela audit_logs no banco
+- [x] Criar middleware de auditoria (helper logAudit)
+- [ ] Aplicar auditoria em ações críticas (create, update, delete)
+- [x] Criar página AdminAuditoria.tsx para visualizar logs
+- [x] Adicionar filtros por usuário, ação e data

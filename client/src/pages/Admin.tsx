@@ -26,6 +26,7 @@ import {
   Fuel,
   Route,
   FileBarChart,
+  Shield,
 } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
@@ -128,6 +129,7 @@ export default function Admin() {
     { icon: Wrench, label: "Manutenção", path: "/admin/manutencao", module: "frota" },
     { icon: FileText, label: "Relatórios", path: "/admin/relatorios", module: "relatorios" },
     { icon: Users, label: "Usuários", path: "/admin/usuarios", module: null }, // Admin only
+    { icon: Shield, label: "Auditoria", path: "/admin/auditoria", module: null }, // Admin only
   ];
 
   // Filtrar menu baseado em permissões
@@ -272,6 +274,18 @@ export default function Admin() {
               <p className="text-sm text-blue-200 capitalize">{user.role}</p>
             </div>
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full mt-3 justify-start text-white/80 hover:bg-white/10 hover:text-white text-xs"
+            onClick={() => {
+              setLocation("/admin/perfil");
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            <User className="w-3 h-3 mr-2" />
+            Ver Meu Perfil
+          </Button>
         </div>
 
         {/* Menu Items */}

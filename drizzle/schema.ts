@@ -1354,3 +1354,26 @@ export const localUsers = mysqlTable("local_users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
 });
+
+// ============================================
+// LOGS DE AUDITORIA
+// ============================================
+
+export const auditLogs = mysqlTable("audit_logs", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").references(() => localUsers.id),
+  username: varchar("username", { length: 100 }).notNull(),
+  action: mysqlEnum("action", ["create", "update", "delete", "login", "logout", "approve", "reject"]).notNull(),
+  module: varchar("module", { length: 50 }).notNull(), // rh, financeiro, frota, agenda, etc.
+  entity: varchar("entity", { length: 100 }).notNull(), // funcionarios, veiculos, despesas, etc.
+  entityId: int("entity_id"), // ID do registro afetado
+  description: text("description").notNull(), // Descrição detalhada da ação
+  oldValues: text("old_values"), // JSON com valores antigos (para updates)
+  newValues: text("new_values"), // JSON com valores novos (para creates/updates)
+  ipAddress: varchar("ip_address", { length: 45 }), // IPv4 ou IPv6
+  userAgent: text("user_agent"), // Navegador/dispositivo
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export type AuditLog = typeof auditLogs.$inferSelect;
+export type InsertAuditLog = typeof auditLogs.$inferInsert;
