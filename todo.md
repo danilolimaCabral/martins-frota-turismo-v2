@@ -277,10 +277,9 @@
 - [x] Adicionar campo permissions à tabela local_users
 - [x] Criar middleware de verificação de permissões
 - [x] Atualizar AdminUsuarios com checkboxes de permissões
-- [ ] Aplicar middleware requirePermission nos routers de RH
-- [ ] Aplicar middleware requirePermission nos routers de Financeiro
-- [ ] Aplicar middleware requirePermission nos routers de Frota
-- [ ] Criar usuário de teste com permissões limitadas
-- [ ] Validar bloqueio de acesso nos módulos restritos
-- [ ] Implementar menu dinâmico baseado em permissões
-- [ ] Testar controle de acesso por módulo
+- [x] Aplicar rhProcedure em todos os endpoints de funcionario-routers.ts
+- [x] Criar financeiroProcedure e aplicar em financeiro-routers.ts
+- [x] Criar frotaProcedure e aplicar em vehicle-routers.ts
+- [x] Criar script de inicialização para admin padrão (admin/admin123)
+- [x] Implementar menu dinâmico que oculta links sem permissão
+- [ ] Testar login e controle de acesso por módulo

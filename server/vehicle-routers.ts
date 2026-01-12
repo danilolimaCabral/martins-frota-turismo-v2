@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router, createPermissionProcedure } from "./_core/trpc";
+
+const frotaProcedure = createPermissionProcedure("frota");
 import { db } from "./db";
 import { vehicles } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -7,12 +9,12 @@ import { TRPCError } from "@trpc/server";
 
 export const vehicleRouter = router({
   // Listar todos os veículos
-  list: protectedProcedure.query(async () => {
+  list: frotaProcedure.query(async () => {
     return await db.select().from(vehicles).orderBy(vehicles.createdAt);
   }),
 
   // Buscar veículo por ID
-  getById: protectedProcedure
+  getById: frotaProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
       const vehicle = await db
@@ -32,7 +34,7 @@ export const vehicleRouter = router({
     }),
 
   // Criar novo veículo
-  create: protectedProcedure
+  create: frotaProcedure
     .input(
       z.object({
         plate: z.string().min(7).max(10),
@@ -57,7 +59,7 @@ export const vehicleRouter = router({
     }),
 
   // Atualizar veículo
-  update: protectedProcedure
+  update: frotaProcedure
     .input(
       z.object({
         id: z.number(),
@@ -88,7 +90,7 @@ export const vehicleRouter = router({
     }),
 
   // Deletar veículo
-  delete: protectedProcedure
+  delete: frotaProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
       await db.delete(vehicles).where(eq(vehicles.id, input.id));

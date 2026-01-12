@@ -68,7 +68,7 @@ export const funcionarioRouter = router({
   /**
    * Buscar funcionário por ID com dependentes
    */
-  getById: protectedProcedure
+  getById: rhProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
       const funcionario = await db
@@ -96,7 +96,7 @@ export const funcionarioRouter = router({
   /**
    * Criar novo funcionário
    */
-  create: protectedProcedure
+  create: rhProcedure
     .input(
       z.object({
         userId: z.number().optional(),
@@ -168,7 +168,7 @@ export const funcionarioRouter = router({
   /**
    * Atualizar funcionário
    */
-  update: protectedProcedure
+  update: rhProcedure
     .input(
       z.object({
         id: z.number(),
@@ -236,7 +236,7 @@ export const funcionarioRouter = router({
   /**
    * Deletar funcionário
    */
-  delete: protectedProcedure
+  delete: rhProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
       await db.delete(funcionarios).where(eq(funcionarios.id, input.id));
@@ -246,7 +246,7 @@ export const funcionarioRouter = router({
   /**
    * Atualizar status do funcionário
    */
-  updateStatus: protectedProcedure
+  updateStatus: rhProcedure
     .input(
       z.object({
         id: z.number(),
@@ -264,7 +264,7 @@ export const funcionarioRouter = router({
   /**
    * Listar dependentes de um funcionário
    */
-  listDependentes: protectedProcedure
+  listDependentes: rhProcedure
     .input(z.object({ funcionarioId: z.number() }))
     .query(async ({ input }) => {
       const results = await db
@@ -277,7 +277,7 @@ export const funcionarioRouter = router({
   /**
    * Adicionar dependente
    */
-  addDependente: protectedProcedure
+  addDependente: rhProcedure
     .input(
       z.object({
         funcionarioId: z.number(),
@@ -297,7 +297,7 @@ export const funcionarioRouter = router({
   /**
    * Remover dependente
    */
-  deleteDependente: protectedProcedure
+  deleteDependente: rhProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
       await db.delete(dependentes).where(eq(dependentes.id, input.id));
@@ -307,7 +307,7 @@ export const funcionarioRouter = router({
   /**
    * Estatísticas de RH
    */
-  getStats: protectedProcedure.query(async ({ input }: { input?: undefined }) => {
+  getStats: rhProcedure.query(async ({ input }: { input?: undefined }) => {
     // Total de funcionários ativos
     const totalAtivos = await db
       .select({ count: sql<number>`count(*)` })

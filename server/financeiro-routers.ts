@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "./_core/trpc";
+import { protectedProcedure, router, createPermissionProcedure } from "./_core/trpc";
+
+const financeiroProcedure = createPermissionProcedure("financeiro");
 import { db } from "./db";
 import { contasPagar, contasReceber, movimentacoesCaixa, categoriasFinanceiras } from "../drizzle/schema";
 import { eq, and, desc, sql, between } from "drizzle-orm";
@@ -7,7 +9,7 @@ import { eq, and, desc, sql, between } from "drizzle-orm";
 export const financeiroRouter = router({
   // ========== CONTAS A PAGAR ==========
   contasPagar: router({
-    list: protectedProcedure
+    list: financeiroProcedure
       .input(z.object({ status: z.enum(["pendente", "paga", "vencida", "cancelada", "todos"]).optional() }).optional())
       .query(async ({ input }) => {
         const conditions = [];
@@ -19,7 +21,7 @@ export const financeiroRouter = router({
           .orderBy(desc(contasPagar.dataVencimento));
       }),
 
-    create: protectedProcedure
+    create: financeiroProcedure
       .input(z.object({
         descricao: z.string(),
         fornecedor: z.string().optional(),
@@ -37,7 +39,7 @@ export const financeiroRouter = router({
         return { success: true, id: result[0].insertId };
       }),
 
-    pagar: protectedProcedure
+    pagar: financeiroProcedure
       .input(z.object({ id: z.number(), dataPagamento: z.string(), valorPago: z.number() }))
       .mutation(async ({ input }) => {
         await db.update(contasPagar).set({
@@ -51,7 +53,7 @@ export const financeiroRouter = router({
 
   // ========== CONTAS A RECEBER ==========
   contasReceber: router({
-    list: protectedProcedure
+    list: financeiroProcedure
       .input(z.object({ status: z.enum(["pendente", "recebida", "vencida", "cancelada", "todos"]).optional() }).optional())
       .query(async ({ input }) => {
         const conditions = [];
@@ -63,7 +65,7 @@ export const financeiroRouter = router({
           .orderBy(desc(contasReceber.dataVencimento));
       }),
 
-    create: protectedProcedure
+    create: financeiroProcedure
       .input(z.object({
         descricao: z.string(),
         cliente: z.string().optional(),
@@ -81,7 +83,7 @@ export const financeiroRouter = router({
         return { success: true, id: result[0].insertId };
       }),
 
-    receber: protectedProcedure
+    receber: financeiroProcedure
       .input(z.object({ id: z.number(), dataRecebimento: z.string(), valorRecebido: z.number() }))
       .mutation(async ({ input }) => {
         await db.update(contasReceber).set({
@@ -95,7 +97,7 @@ export const financeiroRouter = router({
 
   // ========== MOVIMENTAÇÕES CAIXA ==========
   caixa: router({
-    list: protectedProcedure
+    list: financeiroProcedure
       .input(z.object({
         dataInicio: z.string().optional(),
         dataFim: z.string().optional(),
@@ -106,7 +108,7 @@ export const financeiroRouter = router({
           .orderBy(desc(movimentacoesCaixa.data));
       }),
 
-    registrar: protectedProcedure
+    registrar: financeiroProcedure
       .input(z.object({
         tipo: z.enum(["entrada", "saida"]),
         descricao: z.string(),
@@ -124,7 +126,7 @@ export const financeiroRouter = router({
         return { success: true, id: result[0].insertId };
       }),
 
-    getSaldo: protectedProcedure
+     resumo: financeiroProcedure
       .query(async () => {
         const movimentacoes = await db.select().from(movimentacoesCaixa);
         const entradas = movimentacoes.filter(m => m.tipo === "entrada")

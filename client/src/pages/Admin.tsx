@@ -100,25 +100,43 @@ export default function Admin() {
   const alertasCriticos = alertasData?.criticos || 0;
   const alertasAltos = alertasData?.altos || 0;
 
-  const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
-    { icon: Bus, label: "Veículos", path: "/admin/veiculos" },
-    { icon: Users, label: "Motoristas", path: "/admin/motoristas" },
-    { icon: Users, label: "Funcionários", path: "/admin/funcionarios" },
-    { icon: DollarSign, label: "Folha de Pagamento", path: "/admin/folha" },
-    { icon: DollarSign, label: "Lançamentos RH", path: "/admin/lancamentos-rh" },
-    { icon: AlertTriangle, label: "Alertas Documentos", path: "/admin/alertas" },
-    { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro" },
-    { icon: Calendar, label: "Agenda", path: "/admin/agenda" },
-    { icon: MapPin, label: "Roteirização", path: "/admin/roteirizacao" },
-    { icon: Clock, label: "Controle de Ponto", path: "/admin/ponto" },
-    { icon: Calendar, label: "Férias", path: "/admin/ferias" },
-    { icon: Receipt, label: "Importar Dados", path: "/admin/importar" },
-    { icon: Receipt, label: "Despesas", path: "/admin/despesas" },
-    { icon: Wrench, label: "Manutenção", path: "/admin/manutencao" },
-    { icon: FileText, label: "Relatórios", path: "/admin/relatorios" },
-    { icon: Users, label: "Usuários", path: "/admin/usuarios" },
+  // Parse permissions
+  const permissions = user.permissions ? (typeof user.permissions === 'string' ? JSON.parse(user.permissions) : user.permissions) : {};
+  const isAdmin = user.role === 'admin';
+
+  // Helper para verificar permissão
+  const hasPermission = (module: string) => {
+    return isAdmin || permissions[module] === true;
+  };
+
+  // Menu items com filtro de permissões
+  const allMenuItems = [
+    { icon: LayoutDashboard, label: "Dashboard", path: "/admin", module: null }, // Sempre visível
+    { icon: Bus, label: "Veículos", path: "/admin/veiculos", module: "frota" },
+    { icon: Users, label: "Motoristas", path: "/admin/motoristas", module: "frota" },
+    { icon: Users, label: "Funcionários", path: "/admin/funcionarios", module: "rh" },
+    { icon: DollarSign, label: "Folha de Pagamento", path: "/admin/folha", module: "rh" },
+    { icon: DollarSign, label: "Lançamentos RH", path: "/admin/lancamentos-rh", module: "rh" },
+    { icon: AlertTriangle, label: "Alertas Documentos", path: "/admin/alertas", module: "rh" },
+    { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro", module: "financeiro" },
+    { icon: Calendar, label: "Agenda", path: "/admin/agenda", module: "agenda" },
+    { icon: MapPin, label: "Roteirização", path: "/admin/roteirizacao", module: "roteirizacao" },
+    { icon: Clock, label: "Controle de Ponto", path: "/admin/ponto", module: "rh" },
+    { icon: Calendar, label: "Férias", path: "/admin/ferias", module: "rh" },
+    { icon: Receipt, label: "Importar Dados", path: "/admin/importar", module: null }, // Admin only via isAdmin check
+    { icon: Receipt, label: "Despesas", path: "/admin/despesas", module: "financeiro" },
+    { icon: Wrench, label: "Manutenção", path: "/admin/manutencao", module: "frota" },
+    { icon: FileText, label: "Relatórios", path: "/admin/relatorios", module: "relatorios" },
+    { icon: Users, label: "Usuários", path: "/admin/usuarios", module: null }, // Admin only
   ];
+
+  // Filtrar menu baseado em permissões
+  const menuItems = allMenuItems.filter(item => {
+    // Dashboard sempre visível
+    if (!item.module) return item.path === "/admin" || isAdmin;
+    // Verificar permissão do módulo
+    return hasPermission(item.module);
+  });
 
   // Cards clicáveis do dashboard
   const dashboardCards = [
