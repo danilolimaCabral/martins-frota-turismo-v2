@@ -364,3 +364,21 @@
 - [ ] Aplicar logAudit() em financeiro-routers.ts (create, update, delete)
 - [ ] Aplicar logAudit() em folha-routers.ts (aprovar, rejeitar)
 - [ ] Testar logs de auditoria no painel AdminAuditoria
+
+
+## 🐛 DEBUG E DADOS DE TESTE
+
+### Debug Carregamento de Veículos
+- [x] Adicionar console.log no endpoint vehicle.list
+- [x] Adicionar console.log no frotaProcedure middleware
+- [x] Testar carregamento e verificar logs
+- [x] Identificar e corrigir erro (colunas faltantes no banco)
+- [x] Adicionar colunas anttNumber, derNumber, cadasturNumber
+- [x] Remover logs de debug
+
+### Dados de Teste
+- [x] Criar script seed-data.mjs
+- [x] Popular veículos (48 veículos reais já existentes)
+- [x] Popular funcionários (8 funcionários de teste)
+- [ ] Popular despesas (tabela expenses tem estrutura diferente)
+- [x] Validar dados no painel administrativo

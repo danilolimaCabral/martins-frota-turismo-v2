@@ -65,6 +65,7 @@ export const createPermissionProcedure = (permission: string) => {
       // Verificar permissão do usuário (apenas LocalUser tem permissions)
       let permissions: any = {};
       const localUser = ctx.user as any;
+      
       if (localUser.permissions) {
         try {
           permissions = JSON.parse(localUser.permissions);

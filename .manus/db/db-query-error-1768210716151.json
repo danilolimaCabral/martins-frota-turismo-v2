@@ -1,0 +1,8 @@
+{
+  "query": "ALTER TABLE vehicles \nADD COLUMN anttNumber VARCHAR(50) AFTER renavam,\nADD COLUMN anttExpiry DATE AFTER anttNumber,\nADD COLUMN derNumber VARCHAR(50) AFTER anttExpiry,\nADD COLUMN derExpiry DATE AFTER derNumber,\nADD COLUMN cadasturNumber VARCHAR(50) AFTER derExpiry,\nADD COLUMN cadasturExpiry DATE AFTER cadasturNumber;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute ALTER TABLE vehicles \nADD COLUMN anttNumber VARCHAR(50) AFTER renavam,\nADD COLUMN anttExpiry DATE AFTER anttNumber,\nADD COLUMN derNumber VARCHAR(50) AFTER anttExpiry,\nADD COLUMN derExpiry DATE AFTER derNumber,\nADD COLUMN cadasturNumber VARCHAR(50) AFTER derExpiry,\nADD COLUMN cadasturExpiry DATE AFTER cadasturNumber;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'anttnumber' in 'vehicles'"
+  ]
+}

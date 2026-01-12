@@ -1,0 +1,9 @@
+{
+  "query": "ALTER TABLE vehicles \nADD COLUMN anttExpiry DATE NULL,\nADD COLUMN derNumber VARCHAR(50) NULL,\nADD COLUMN derExpiry DATE NULL,\nADD COLUMN cadasturNumber VARCHAR(50) NULL,\nADD COLUMN cadasturExpiry DATE NULL;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute ALTER TABLE vehicles \nADD COLUMN anttExpiry DATE NULL,\nADD COLUMN derNumber VARCHAR(50) NULL,\nADD COLUMN derExpiry DATE NULL,\nADD COLUMN cadasturNumber VARCHAR(50) NULL,\nADD COLUMN cadasturExpiry DATE NULL;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1503
+}

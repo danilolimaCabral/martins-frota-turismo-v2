@@ -1,0 +1,9 @@
+{
+  "query": "SHOW COLUMNS FROM vehicles WHERE Field LIKE '%antt%' OR Field LIKE '%der%' OR Field LIKE '%cadastur%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SHOW COLUMNS FROM vehicles WHERE Field LIKE '%antt%' OR Field LIKE '%der%' OR Field LIKE '%cadastur%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 47
+}
