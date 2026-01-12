@@ -161,20 +161,28 @@ export function AdminDashboard() {
     <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Sidebar Vertical */}
       <div className="w-20 bg-white/5 backdrop-blur-md border-r border-white/10 flex flex-col items-center py-4 gap-2 shadow-xl">
-        {/* Logo/Home */}
-        <button
-          onClick={() => handleNavigate("/")}
-          className="p-3 rounded-lg hover:bg-white/10 transition-all text-white mb-2"
-          title="Home"
-        >
-          <Home className="h-5 w-5" />
-        </button>
+        {/* Logo e Nome da Empresa */}
+        <div className="w-full px-2 mb-6 text-center">
+          <div className="bg-white/10 rounded-lg p-3 mb-2">
+            <img
+              src="/logo.png"
+              alt="Martins Turismo"
+              className="h-10 w-10 mx-auto object-contain"
+              onError={(e) => {
+                // Fallback se a logo não existir
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+          <p className="text-white text-xs font-bold">Martins</p>
+          <p className="text-white/60 text-xs">Turismo</p>
+        </div>
 
         {/* Divider */}
-        <div className="w-12 h-px bg-white/10" />
+        <div className="w-12 h-px bg-white/10 mb-4" />
 
         {/* Sidebar Icons */}
-        <div className="flex flex-col gap-2 w-full px-2">
+        <div className="flex flex-col gap-1 w-full px-2">
           {sidebarItems.slice(1).map((item) => {
             const Icon = item.icon;
             const isSelected = selectedModule === item.id;
@@ -199,8 +207,15 @@ export function AdminDashboard() {
         {/* Spacer */}
         <div className="flex-1" />
 
+        {/* Divider */}
+        <div className="w-12 h-px bg-white/10 mb-4" />
+
         {/* Logout */}
-        <button className="w-full p-3 rounded-lg hover:bg-white/10 transition-colors text-white/60 hover:text-white">
+        <button
+          onClick={() => handleNavigate("/")}
+          className="w-full p-3 rounded-lg hover:bg-white/10 transition-colors text-white/60 hover:text-white"
+          title="Logout"
+        >
           <LogOut className="h-5 w-5 mx-auto" />
         </button>
       </div>

@@ -1396,3 +1396,109 @@ export const cnabArquivos = mysqlTable("cnab_arquivos", {
 
 export type CNABArquivo = typeof cnabArquivos.$inferSelect;
 export type InsertCNABArquivo = typeof cnabArquivos.$inferInsert;
+
+
+// ==================== GESTÃO DE ROLES E PERMISSÕES ====================
+
+/**
+ * Tabela de Roles (Papéis/Cargos)
+ * Define os diferentes papéis disponíveis no sistema
+ */
+export const roles = mysqlTable("roles", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull().unique(), // Ex: Gerente, Supervisor, Manutenção, Diretor, RH, Financeiro
+  description: text("description"),
+  color: varchar("color", { length: 20 }), // Cor para UI
+  icon: varchar("icon", { length: 50 }), // Ícone para UI
+  isSystemRole: boolean("is_system_role").default(false), // Se é um role do sistema (não pode deletar)
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Role = typeof roles.$inferSelect;
+export type InsertRole = typeof roles.$inferInsert;
+
+/**
+ * Tabela de Módulos
+ * Define os módulos/funcionalidades disponíveis no sistema
+ */
+export const modules = mysqlTable("modules", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull().unique(), // Ex: RH, Financeiro, Roteirização, etc
+  description: text("description"),
+  icon: varchar("icon", { length: 50 }), // Ícone do módulo
+  path: varchar("path", { length: 200 }), // Rota da página
+  color: varchar("color", { length: 20 }), // Cor para UI
+  order: int("order").default(0), // Ordem de exibição
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Module = typeof modules.$inferSelect;
+export type InsertModule = typeof modules.$inferInsert;
+
+/**
+ * Tabela de Permissões de Módulos por Role
+ * Define quais módulos cada role pode acessar
+ */
+export const roleModulePermissions = mysqlTable("role_module_permissions", {
+  id: int("id").autoincrement().primaryKey(),
+  roleId: int("role_id")
+    .notNull()
+    .references(() => roles.id, { onDelete: "cascade" }),
+  moduleId: int("module_id")
+    .notNull()
+    .references(() => modules.id, { onDelete: "cascade" }),
+  canView: boolean("can_view").default(true), // Pode visualizar
+  canCreate: boolean("can_create").default(false), // Pode criar
+  canEdit: boolean("can_edit").default(false), // Pode editar
+  canDelete: boolean("can_delete").default(false), // Pode deletar
+  canExport: boolean("can_export").default(false), // Pode exportar
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RoleModulePermission = typeof roleModulePermissions.$inferSelect;
+export type InsertRoleModulePermission = typeof roleModulePermissions.$inferInsert;
+
+/**
+ * Tabela de Atribuição de Roles aos Usuários
+ * Um usuário pode ter múltiplos roles
+ */
+export const userRoles = mysqlTable("user_roles", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  roleId: int("role_id")
+    .notNull()
+    .references(() => roles.id, { onDelete: "cascade" }),
+  assignedBy: int("assigned_by").references(() => users.id), // Quem atribuiu o role
+  assignedAt: timestamp("assigned_at").defaultNow().notNull(),
+  expiresAt: timestamp("expires_at"), // Data de expiração (opcional)
+});
+
+export type UserRole = typeof userRoles.$inferSelect;
+export type InsertUserRole = typeof userRoles.$inferInsert;
+
+/**
+ * Tabela de Auditoria de Permissões
+ * Registra todas as mudanças de permissões
+ */
+export const permissionAuditLog = mysqlTable("permission_audit_log", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id")
+    .notNull()
+    .references(() => users.id),
+  action: varchar("action", { length: 50 }).notNull(), // create, update, delete, assign, revoke
+  entityType: varchar("entity_type", { length: 50 }).notNull(), // role, module, permission, user_role
+  entityId: int("entity_id"),
+  changes: text("changes"), // JSON com as mudanças
+  ipAddress: varchar("ip_address", { length: 50 }),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PermissionAuditLog = typeof permissionAuditLog.$inferSelect;
+export type InsertPermissionAuditLog = typeof permissionAuditLog.$inferInsert;
