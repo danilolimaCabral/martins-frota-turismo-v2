@@ -1,192 +1,163 @@
-import React from "react";
-import { trpc } from "../lib/trpc";
+import { useState } from "react";
+import { useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertCircle, Eye, EyeOff, Loader } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
-export default function Login() {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+export function Login() {
+  const [, setLocation] = useLocation();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const loginMutation = trpc.localAuth.login.useMutation();
-  const { data: setupData } = trpc.localAuth.needsSetup.useQuery();
-  const createAdminMutation = trpc.localAuth.createDefaultAdmin.useMutation();
+  const loginMutation = trpc.localAuth.login.useMutation({
+    onSuccess: (data) => {
+      // Salvar token no localStorage
+      localStorage.setItem("martins_auth_token", data.token);
+      localStorage.setItem("martins_user_data", JSON.stringify(data.user));
+      
+      // Redirecionar para o dashboard
+      setLocation("/admin");
+    },
+    onError: (error) => {
+      setError(error.message || "Erro ao fazer login");
+      setIsLoading(false);
+    },
+  });
 
-  const handleCreateAdmin = async () => {
-    setLoading(true);
-    try {
-      const result = await createAdminMutation.mutateAsync();
-      alert(`Admin criado!\nUsuário: ${result.username}\nSenha: ${result.password}`);
-      setUsername("admin");
-      setPassword("admin123");
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setError("");
+    setIsLoading(true);
+
     if (!username || !password) {
-      setError("Preencha todos os campos");
+      setError("Usuário e senha são obrigatórios");
+      setIsLoading(false);
       return;
     }
-    
-    setError("");
-    setLoading(true);
 
-    try {
-      const result = await loginMutation.mutateAsync({
-        username,
-        password,
-      });
-
-      localStorage.setItem("martins_auth_token", result.token);
-      localStorage.setItem("martins_user_data", JSON.stringify(result.user));
-      
-      window.location.href = "/admin";
-    } catch (err: any) {
-      setError(err.message || "Erro ao fazer login");
-      setLoading(false);
-    }
+    loginMutation.mutate({ username, password });
   };
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "linear-gradient(135deg, #EBF4FF 0%, #FFE5D9 100%)",
-      padding: "1rem"
-    }}>
-      <div style={{
-        background: "white",
-        borderRadius: "12px",
-        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-        padding: "2rem",
-        width: "100%",
-        maxWidth: "400px"
-      }}>
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <img
-            src="/logo-martins-clean.webp"
-            alt="Martins"
-            style={{ height: "64px", marginBottom: "1rem" }}
-          />
-          <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
-            Sistema Martins
-          </h1>
-          <p style={{ color: "#666" }}>
-            Entre com suas credenciais
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
+      </div>
 
-        {setupData?.needsSetup && (
-          <div style={{
-            background: "#FEF3C7",
-            border: "1px solid #FDE047",
-            borderRadius: "6px",
-            padding: "1rem",
-            marginBottom: "1rem"
-          }}>
-            <p style={{ fontSize: "0.875rem", color: "#92400E", marginBottom: "0.5rem" }}>
-              Nenhum usuário cadastrado. Clique abaixo para criar o admin padrão:
-            </p>
-            <button
-              onClick={handleCreateAdmin}
-              disabled={loading}
-              style={{
-                width: "100%",
-                padding: "0.5rem",
-                background: loading ? "#E5E7EB" : "white",
-                color: "#1F2937",
-                border: "1px solid #D1D5DB",
-                borderRadius: "6px",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                cursor: loading ? "not-allowed" : "pointer"
-              }}
-            >
-              {loading ? "Criando..." : "Criar Usuário Admin"}
-            </button>
-          </div>
-        )}
-
-        <form onSubmit={handleLogin}>
-          <div style={{ marginBottom: "1rem" }}>
-            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
-              Usuário
-            </label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Digite seu usuário"
-              disabled={loading}
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-                fontSize: "1rem"
-              }}
-            />
+      {/* Login Card */}
+      <Card className="relative w-full max-w-md bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
+        <CardHeader className="space-y-4 text-center pb-6">
+          {/* Logo */}
+          <div className="flex justify-center mb-4">
+            <div className="bg-white/20 rounded-lg p-4">
+              <img
+                src="/logo.png"
+                alt="Martins Turismo"
+                className="h-16 w-16 object-contain"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
+            </div>
           </div>
 
-          <div style={{ marginBottom: "1rem" }}>
-            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>
-              Senha
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Digite sua senha"
-              disabled={loading}
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-                fontSize: "1rem"
-              }}
-            />
+          <div>
+            <CardTitle className="text-3xl font-bold text-white mb-2">
+              Martins Turismo
+            </CardTitle>
+            <p className="text-white/60">Sistema de Gestão</p>
           </div>
+        </CardHeader>
 
+        <CardContent className="space-y-6">
+          {/* Error Message */}
           {error && (
-            <div style={{
-              background: "#FEE2E2",
-              color: "#DC2626",
-              padding: "0.75rem",
-              borderRadius: "6px",
-              marginBottom: "1rem",
-              fontSize: "0.875rem"
-            }}>
-              {error}
+            <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <p className="text-red-200 text-sm">{error}</p>
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              width: "100%",
-              padding: "0.75rem",
-              background: loading ? "#93C5FD" : "#2563EB",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              fontSize: "1rem",
-              fontWeight: "500",
-              cursor: loading ? "not-allowed" : "pointer"
-            }}
-          >
-            {loading ? "Entrando..." : "Entrar"}
-          </button>
-        </form>
-      </div>
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Username Field */}
+            <div className="space-y-2">
+              <label className="text-white text-sm font-medium">Usuário</label>
+              <Input
+                type="text"
+                placeholder="Digite seu usuário"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-blue-500"
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label className="text-white text-sm font-medium">Senha</label>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Digite sua senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-blue-500 pr-10"
+                  disabled={isLoading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 rounded-lg transition-all"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader className="h-4 w-4 mr-2 animate-spin" />
+                  Entrando...
+                </>
+              ) : (
+                "Entrar"
+              )}
+            </Button>
+          </form>
+
+          {/* Demo Credentials */}
+          <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+            <p className="text-white/60 text-xs font-semibold mb-2">
+              Credenciais de Teste:
+            </p>
+            <div className="space-y-1 text-white/50 text-xs">
+              <p>👤 Usuário: <span className="text-white/70 font-mono">admin</span></p>
+              <p>🔑 Senha: <span className="text-white/70 font-mono">admin123</span></p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
+
+export default Login;

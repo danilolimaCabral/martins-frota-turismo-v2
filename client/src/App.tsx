@@ -49,6 +49,7 @@ import { AdminCalendarioAvancado } from "./pages/AdminCalendarioAvancado";
 import { AdminChatbotIA } from "./pages/AdminChatbotIA";
 import { AdminConciliacao } from "./pages/AdminConciliacao";
 import { AdminConfiguracoesGerais } from "./pages/AdminConfiguracoesGerais";
+import { DashboardPersonalizado } from "./pages/DashboardPersonalizado";
 import { AdminControleFerias } from "./pages/AdminControleFerias";
 import { AdminDRE } from "./pages/AdminDRE";
 import { AdminDetalhesEvento } from "./pages/AdminDetalhesEvento";
@@ -79,6 +80,11 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/login">
         <Login />
+      </Route>
+      <Route path="/dashboard">
+        <ProtectedRoute>
+          <DashboardPersonalizado />
+        </ProtectedRoute>
       </Route>
       <Route path="/funcionario" component={Funcionario} />
         <Route path="/admin">
