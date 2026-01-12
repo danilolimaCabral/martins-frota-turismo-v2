@@ -1378,3 +1378,21 @@ export const auditLogs = mysqlTable("audit_logs", {
 export type AuditLog = typeof auditLogs.$inferSelect;
 export type InsertAuditLog = typeof auditLogs.$inferInsert;
 
+// ==================== MÓDULO FINANCEIRO - CNAB ====================
+
+export const cnabArquivos = mysqlTable("cnab_arquivos", {
+  id: int("id").autoincrement().primaryKey(),
+  folhaId: int("folha_id").references(() => folhasPagamento.id, { onDelete: "cascade" }).notNull(),
+  nomeArquivo: varchar("nome_arquivo", { length: 255 }).notNull(),
+  conteudo: text("conteudo").notNull(), // Conteúdo do arquivo CNAB240
+  status: mysqlEnum("status", ["gerado", "enviado", "processado", "erro"]).default("gerado").notNull(),
+  dataGeracao: timestamp("data_geracao").defaultNow().notNull(),
+  dataAtualizacao: timestamp("data_atualizacao").defaultNow().onUpdateNow(),
+  dataEnvio: timestamp("data_envio"),
+  dataProcessamento: timestamp("data_processamento"),
+  retorno: text("retorno"), // Retorno do banco (se houver)
+  observacoes: text("observacoes"),
+});
+
+export type CNABArquivo = typeof cnabArquivos.$inferSelect;
+export type InsertCNABArquivo = typeof cnabArquivos.$inferInsert;

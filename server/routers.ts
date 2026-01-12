@@ -1,5 +1,5 @@
-import { systemRouter } from "./_core/systemRouter";
 import { router } from "./_core/trpc";
+import { systemRouter } from "./_core/systemRouter";
 import { authRouter } from "./auth-routers";
 import { chatbotRouter } from "./chatbot-routers";
 import { vehicleRouter } from "./vehicle-routers";
@@ -32,6 +32,7 @@ import { profileRouter } from "./profile-routers";
 import { dashboardRouter } from "./dashboard-routers";
 import { localAuthRouter } from "./local-auth-routers";
 import { auditRouter } from "./audit-routers";
+import { cnabRouter } from "./cnab-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -68,6 +69,7 @@ export const appRouter = router({
   dashboard: dashboardRouter,
   localAuth: localAuthRouter,
   audit: auditRouter,
+  cnab: cnabRouter,
 });
 
 // TODO: add feature routers here, e.g.
