@@ -39,6 +39,7 @@ import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
 import { AdminMenu } from "./components/AdminMenu";
+import { AdminDashboard } from "./pages/AdminDashboard";
 import { AdminAnaliseRotatividade } from "./pages/AdminAnaliseRotatividade";
 import { AdminAvisosDocumentos } from "./pages/AdminAvisosDocumentos";
 import { AdminBackupRestore } from "./pages/AdminBackupRestore";
@@ -81,7 +82,7 @@ function Router() {
       <Route path="/funcionario" component={Funcionario} />
         <Route path="/admin">
           <ProtectedRoute>
-            <AdminMenu />
+            <AdminDashboard />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/veiculos">
