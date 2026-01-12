@@ -38,6 +38,35 @@ import AdminAuditoria from "./pages/AdminAuditoria";
 import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
+import { AdminMenu } from "./components/AdminMenu";
+import { AdminAnaliseRotatividade } from "./pages/AdminAnaliseRotatividade";
+import { AdminAvisosDocumentos } from "./pages/AdminAvisosDocumentos";
+import { AdminBackupRestore } from "./pages/AdminBackupRestore";
+import { AdminCNAB } from "./pages/AdminCNAB";
+import { AdminCalendarioAvancado } from "./pages/AdminCalendarioAvancado";
+import { AdminChatbotIA } from "./pages/AdminChatbotIA";
+import { AdminConciliacao } from "./pages/AdminConciliacao";
+import { AdminConfiguracoesGerais } from "./pages/AdminConfiguracoesGerais";
+import { AdminControleFerias } from "./pages/AdminControleFerias";
+import { AdminDRE } from "./pages/AdminDRE";
+import { AdminDetalhesEvento } from "./pages/AdminDetalhesEvento";
+import { AdminDocumentosRH } from "./pages/AdminDocumentosRH";
+import { AdminExportacaoGPS } from "./pages/AdminExportacaoGPS";
+import { AdminFluxoCaixa } from "./pages/AdminFluxoCaixa";
+import { AdminFolhaPagamentoAvancada } from "./pages/AdminFolhaPagamentoAvancada";
+import { AdminGestaoTickets } from "./pages/AdminGestaoTickets";
+import { AdminHistoricoRotas } from "./pages/AdminHistoricoRotas";
+import { AdminIntegracaoInterna } from "./pages/AdminIntegracaoInterna";
+import { AdminIntegracoes } from "./pages/AdminIntegracoes";
+import { AdminMetodosPagamento } from "./pages/AdminMetodosPagamento";
+import { AdminNPS } from "./pages/AdminNPS";
+import { AdminNotificacoes } from "./pages/AdminNotificacoes";
+import { AdminOrcamentosCompleto } from "./pages/AdminOrcamentosCompleto";
+import { AdminOtimizacaoAvancada } from "./pages/AdminOtimizacaoAvancada";
+import { AdminRastreamento } from "./pages/AdminRastreamento";
+import { AdminRelatorioFinanceiro } from "./pages/AdminRelatorioFinanceiro";
+import { AdminRelatoriosAgenda } from "./pages/AdminRelatoriosAgenda";
+import { AdminRelatoriosRH } from "./pages/AdminRelatoriosRH";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -52,7 +81,7 @@ function Router() {
       <Route path="/funcionario" component={Funcionario} />
         <Route path="/admin">
           <ProtectedRoute>
-            <Admin />
+            <AdminMenu />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/veiculos">
@@ -158,6 +187,146 @@ function Router() {
         <Route path="/admin/ferias">
           <ProtectedRoute>
             <AdminFerias />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/analiserotatividade">
+          <ProtectedRoute>
+            <AdminAnaliseRotatividade />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/avisosdocumentos">
+          <ProtectedRoute>
+            <AdminAvisosDocumentos />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/backuprestore">
+          <ProtectedRoute>
+            <AdminBackupRestore />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/cnab">
+          <ProtectedRoute>
+            <AdminCNAB />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/calendarioavancado">
+          <ProtectedRoute>
+            <AdminCalendarioAvancado />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/chatbotia">
+          <ProtectedRoute>
+            <AdminChatbotIA />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/conciliacao">
+          <ProtectedRoute>
+            <AdminConciliacao />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/configuracoesgerais">
+          <ProtectedRoute>
+            <AdminConfiguracoesGerais />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/controleferias">
+          <ProtectedRoute>
+            <AdminControleFerias />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/dre">
+          <ProtectedRoute>
+            <AdminDRE />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/detalhesevento">
+          <ProtectedRoute>
+            <AdminDetalhesEvento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/documentosrh">
+          <ProtectedRoute>
+            <AdminDocumentosRH />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/exportacaogps">
+          <ProtectedRoute>
+            <AdminExportacaoGPS />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/fluxocaixa">
+          <ProtectedRoute>
+            <AdminFluxoCaixa />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/folhapagamentoavancada">
+          <ProtectedRoute>
+            <AdminFolhaPagamentoAvancada />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/gestaotickets">
+          <ProtectedRoute>
+            <AdminGestaoTickets />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/historicorotas">
+          <ProtectedRoute>
+            <AdminHistoricoRotas />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/integracaointerna">
+          <ProtectedRoute>
+            <AdminIntegracaoInterna />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/integracoes">
+          <ProtectedRoute>
+            <AdminIntegracoes />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/metodospagamento">
+          <ProtectedRoute>
+            <AdminMetodosPagamento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/nps">
+          <ProtectedRoute>
+            <AdminNPS />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/notificacoes">
+          <ProtectedRoute>
+            <AdminNotificacoes />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/orcamentoscompleto">
+          <ProtectedRoute>
+            <AdminOrcamentosCompleto />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/otimizacaoavancada">
+          <ProtectedRoute>
+            <AdminOtimizacaoAvancada />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/rastreamento">
+          <ProtectedRoute>
+            <AdminRastreamento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/relatoriofinanceiro">
+          <ProtectedRoute>
+            <AdminRelatorioFinanceiro />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/relatoriosagenda">
+          <ProtectedRoute>
+            <AdminRelatoriosAgenda />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/relatoriosrh">
+          <ProtectedRoute>
+            <AdminRelatoriosRH />
           </ProtectedRoute>
         </Route>
         <Route path="/rastreamento" component={Rastreamento} />
