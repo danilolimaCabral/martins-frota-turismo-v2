@@ -35,6 +35,9 @@ import AdminFerias from "./pages/AdminFerias";
 import AdminUsuarios from "./pages/AdminUsuarios";
 import AdminPerfil from "./pages/AdminPerfil";
 import AdminAuditoria from "./pages/AdminAuditoria";
+import { AdminManutencao } from "./pages/AdminManutencao";
+import { AdminChecklist } from "./pages/AdminChecklist";
+import { AdminAtendimento } from "./pages/AdminAtendimento";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -130,6 +133,21 @@ function Router() {
         <Route path="/admin/auditoria">
           <ProtectedRoute requireAdmin>
             <AdminAuditoria />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/manutencao">
+          <ProtectedRoute>
+            <AdminManutencao />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/checklist">
+          <ProtectedRoute>
+            <AdminChecklist />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/atendimento">
+          <ProtectedRoute>
+            <AdminAtendimento />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/ponto">
