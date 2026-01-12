@@ -1,0 +1,19 @@
+{
+  "query": "SELECT id, username, nome, email, role, permissions, ativo FROM local_users WHERE username = 'teste';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT id, username, nome, email, role, permissions, ativo FROM local_users WHERE username = 'teste';",
+  "rows": [
+    {
+      "id": "4",
+      "username": "teste",
+      "nome": "Usuário Teste",
+      "email": "teste@martinsturismo.com.br",
+      "role": "user",
+      "permissions": "{\"frota\": true, \"rh\": false, \"financeiro\": false}",
+      "ativo": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tnome\temail\trole\tpermissions\tativo\n4\tteste\tUsuário Teste\tteste@martinsturismo.com.br\tuser\t{\"frota\": true, \"rh\": false, \"financeiro\": false}\t1\n",
+  "stderr": "",
+  "execution_time_ms": 127
+}

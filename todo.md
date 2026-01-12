@@ -307,3 +307,39 @@
 - [ ] Aplicar auditoria em ações críticas (create, update, delete)
 - [x] Criar página AdminAuditoria.tsx para visualizar logs
 - [x] Adicionar filtros por usuário, ação e data
+
+
+## 🔥 CORREÇÕES URGENTES (NOVA SOLICITAÇÃO)
+
+### Erro TypeScript
+- [x] Corrigir erro em AdminFinanceiro.tsx - Property 'getSaldo' does not exist
+- [x] Implementar endpoint getSaldo no financeiro-routers.ts
+
+### Sistema de Autenticação
+- [ ] Revisar lógica de redirecionamento em Login.tsx
+- [ ] Verificar salvamento de token JWT no localStorage
+- [ ] Validar ProtectedRoute em App.tsx
+- [ ] Testar login com usuário teste (teste/teste123)
+- [ ] Testar login com usuário admin
+
+### Schema do Banco de Dados
+- [ ] Executar pnpm db:push para sincronizar schema
+- [ ] Validar estrutura da tabela local_users
+- [ ] Validar estrutura da tabela audit_logs
+
+
+### Carregamento de Veículos
+- [ ] Investigar erro de carregamento infinito na página AdminVeiculos
+- [ ] Verificar endpoint vehicle.list no vehicle-routers.ts
+- [ ] Verificar permissões frotaProcedure
+- [ ] Testar query no banco de dados
+
+
+### Testes Completos do Sistema
+- [x] Corrigir validação JWT no context.ts
+- [x] Sincronizar schema do banco (pnpm db:push)
+- [x] Testar carregamento de todos os menus
+- [ ] Testar login com usuário admin
+- [x] Testar login com usuário teste (permissões limitadas)
+- [ ] Verificar logs de acesso na auditoria
+- [x] Validar bloqueio de acesso por permissões

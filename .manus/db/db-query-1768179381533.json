@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE local_users \nSET nome = 'Usuário Teste', \n    email = 'teste@martinsturismo.com.br',\n    role = 'user',\n    ativo = TRUE,\n    permissions = '{\"frota\": true, \"rh\": false, \"financeiro\": false}'\nWHERE username = 'teste';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute UPDATE local_users \nSET nome = 'Usuário Teste', \n    email = 'teste@martinsturismo.com.br',\n    role = 'user',\n    ativo = TRUE,\n    permissions = '{\"frota\": true, \"rh\": false, \"financeiro\": false}'\nWHERE username = 'teste';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 62
+}

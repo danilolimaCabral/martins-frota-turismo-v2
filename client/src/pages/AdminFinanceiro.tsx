@@ -79,7 +79,7 @@ export default function AdminFinanceiro() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-blue-600">R$ {saldoCaixa?.saldo || "0.00"}</div>
-            <p className="text-xs text-muted-foreground">Entradas: R$ {saldoCaixa?.entradas || "0.00"}</p>
+            <p className="text-xs text-muted-foreground">Saldo atual do caixa</p>
           </CardContent>
         </Card>
 

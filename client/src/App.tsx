@@ -5,7 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-// import Login from "./pages/Login"; // Usando HTML puro em /login-test.html
+import Login from "./pages/Login";
 import Funcionario from "./pages/Funcionario";
 import Admin from "./pages/Admin";
 import AdminVeiculos from "./pages/AdminVeiculos";
@@ -43,75 +43,77 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/login">{() => { window.location.href = "/login-test.html"; return null; }}</Route>
+      <Route path="/login">
+        <Login />
+      </Route>
       <Route path="/funcionario" component={Funcionario} />
         <Route path="/admin">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <Admin />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/veiculos">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminVeiculos />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/motoristas">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminMotoristas />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/viagens">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminViagens />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/despesas">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminDespesas />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/funcionarios">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminFuncionarios />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/folha">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminFolhaPagamento />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/lancamentos-rh">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminLancamentosRH />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/alertas">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminAlertas />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/financeiro">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminFinanceiro />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/importar">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminImportar />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/agenda">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminAgenda />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/roteirizacao">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminRoteirizacao />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/relatorios">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminRelatorios />
           </ProtectedRoute>
         </Route>
@@ -131,12 +133,12 @@ function Router() {
           </ProtectedRoute>
         </Route>
         <Route path="/admin/ponto">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminPonto />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/ferias">
-          <ProtectedRoute requireAdmin>
+          <ProtectedRoute>
             <AdminFerias />
           </ProtectedRoute>
         </Route>

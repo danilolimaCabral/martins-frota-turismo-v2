@@ -126,7 +126,7 @@ export const financeiroRouter = router({
         return { success: true, id: result[0].insertId };
       }),
 
-     resumo: financeiroProcedure
+    resumo: financeiroProcedure
       .query(async () => {
         const movimentacoes = await db.select().from(movimentacoesCaixa);
         const entradas = movimentacoes.filter(m => m.tipo === "entrada")
@@ -138,6 +138,17 @@ export const financeiroRouter = router({
           saidas: saidas.toFixed(2),
           saldo: (entradas - saidas).toFixed(2),
         };
+      }),
+
+    getSaldo: financeiroProcedure
+      .query(async () => {
+        const movimentacoes = await db.select().from(movimentacoesCaixa);
+        const entradas = movimentacoes.filter(m => m.tipo === "entrada")
+          .reduce((acc, m) => acc + parseFloat(String(m.valor)), 0);
+        const saidas = movimentacoes.filter(m => m.tipo === "saida")
+          .reduce((acc, m) => acc + parseFloat(String(m.valor)), 0);
+        const saldo = entradas - saidas;
+        return { saldo: saldo.toFixed(2) };
       }),
   }),
 

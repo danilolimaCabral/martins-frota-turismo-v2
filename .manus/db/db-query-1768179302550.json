@@ -1,0 +1,22 @@
+{
+  "query": "SELECT * FROM local_users WHERE username = 'teste';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT * FROM local_users WHERE username = 'teste';",
+  "rows": [
+    {
+      "id": "4",
+      "username": "teste",
+      "password": "$2b$10$m1vlIqIOhCMwBCLcuouet.QJ.Y7NQMHDudnkyQWm2g8Pog9SwheUS",
+      "email": "teste@martins.com",
+      "name": "Usuário Teste",
+      "role": "user",
+      "permissions": "{\"frota\":true}",
+      "active": "1",
+      "createdAt": "2026-01-12 00:14:08",
+      "updatedAt": "2026-01-12 00:14:08"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tpassword\temail\tname\trole\tpermissions\tactive\tcreatedAt\tupdatedAt\n4\tteste\t$2b$10$m1vlIqIOhCMwBCLcuouet.QJ.Y7NQMHDudnkyQWm2g8Pog9SwheUS\tteste@martins.com\tUsuário Teste\tuser\t{\"frota\":true}\t1\t2026-01-12 00:14:08\t2026-01-12 00:14:08\n",
+  "stderr": "",
+  "execution_time_ms": 239
+}

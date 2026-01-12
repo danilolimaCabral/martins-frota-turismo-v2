@@ -49,7 +49,7 @@ export const localAuthRouter = router({
       // Gerar token JWT
       const token = jwt.sign(
         {
-          id: user[0].id,
+          userId: user[0].id,
           username: user[0].username,
           nome: user[0].nome,
           email: user[0].email,
@@ -65,8 +65,10 @@ export const localAuthRouter = router({
           id: user[0].id,
           username: user[0].username,
           nome: user[0].nome,
+          name: user[0].nome,
           email: user[0].email,
           role: user[0].role,
+          permissions: user[0].permissions || "{}",
         },
       };
     }),
