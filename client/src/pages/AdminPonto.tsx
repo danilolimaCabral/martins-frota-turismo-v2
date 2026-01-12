@@ -163,7 +163,7 @@ export default function AdminPonto() {
                   <SelectValue placeholder="Todos os funcionários" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
+                  <SelectItem value="todos">Todos</SelectItem>
                   {funcionarios?.map((f: any) => (
                     <SelectItem key={f.id} value={f.id.toString()}>
                       {f.nome}
