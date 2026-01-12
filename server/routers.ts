@@ -34,6 +34,7 @@ import { localAuthRouter } from "./local-auth-routers";
 import { auditRouter } from "./audit-routers";
 import { cnabRouter } from "./cnab-routers";
 import { cnabHistoricoRouter } from "./cnab-historico-routers";
+import { fuelingRouter } from "./fueling-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -72,6 +73,7 @@ export const appRouter = router({
   audit: auditRouter,
   cnab: cnabRouter,
   cnabHistorico: cnabHistoricoRouter,
+  fueling: fuelingRouter,
 });
 
 // TODO: add feature routers here, e.g.

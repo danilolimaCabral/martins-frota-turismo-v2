@@ -12,7 +12,9 @@ import AdminVeiculos from "./pages/AdminVeiculos";
 import AdminMotoristas from "./pages/AdminMotoristas";
 import AdminViagens from "./pages/AdminViagens";
 import AdminDespesas from "./pages/AdminDespesas";
-import Rastreamento from "./pages/Rastreamento";
+import { AdminAbastecimento } from "./pages/AdminAbastecimento";
+import { Rastreamento } from "./pages/Rastreamento";
+import { Monitoramento } from "./pages/Monitoramento";
 import Sobre from "./pages/Sobre";
 import Motorista from "./pages/Motorista";
 import Blog from "./pages/Blog";
@@ -110,6 +112,11 @@ function Router() {
         <Route path="/admin/despesas">
           <ProtectedRoute>
             <AdminDespesas />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/abastecimento">
+          <ProtectedRoute>
+            <AdminAbastecimento />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/funcionarios">
@@ -343,6 +350,7 @@ function Router() {
           </ProtectedRoute>
         </Route>
         <Route path="/rastreamento" component={Rastreamento} />
+      <Route path="/monitoramento" component={Monitoramento} />
         <Route path="/sobre" component={Sobre} />
         <Route path="/motorista" component={Motorista} />
         <Route path="/blog" component={Blog} />

@@ -1,433 +1,572 @@
-import { useState, useEffect } from "react";
-import { useLocalAuth } from "@/hooks/useLocalAuth";
-import { Redirect } from "wouter";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   MapPin,
-  Navigation,
+  Phone,
   Clock,
   Gauge,
   AlertTriangle,
-  CheckCircle2,
-  Pause,
-  Filter,
+  Navigation,
   RefreshCw,
+  Filter,
+  LogOut,
+  Fuel,
+  Thermometer,
 } from "lucide-react";
-import { MapView } from "@/components/Map";
 
-// Tipo de dados do veículo rastreado
-interface VehicleTracking {
-  id: number;
+interface Vehicle {
+  id: string;
+  name: string;
+  type: "Van" | "Micro-ônibus" | "Ônibus";
   placa: string;
-  tipo: "onibus" | "van" | "carro";
-  motorista: string;
-  status: "em_viagem" | "parado" | "manutencao" | "alerta";
-  latitude: number;
-  longitude: number;
-  velocidade: number;
-  ultimaAtualizacao: Date;
-  destino?: string;
+  lat: number;
+  lng: number;
+  status: "Em Rota" | "Parado" | "Manutenção" | "Offline";
+  driver: string;
+  phone: string;
+  speed: number;
+  destination: string;
+  lastUpdate: Date;
+  fuel: number;
+  temperature: number;
 }
 
-export default function Rastreamento() {
-  const { user } = useLocalAuth();
-  const [vehicles, setVehicles] = useState<VehicleTracking[]>([]);
-  const [selectedVehicle, setSelectedVehicle] = useState<VehicleTracking | null>(null);
-  const [filterType, setFilterType] = useState<"todos" | "onibus" | "van" | "carro">("todos");
-  const [filterStatus, setFilterStatus] = useState<"todos" | "em_viagem" | "parado" | "manutencao" | "alerta">("todos");
+export function Rastreamento() {
+  const [, setLocation] = useLocation();
+  const [user, setUser] = useState<any>(null);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string>("todos");
+  const [filterType, setFilterType] = useState<string>("todos");
   const [mapReady, setMapReady] = useState(false);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const markersRef = useRef<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map());
 
-  // Redirecionar se não for admin
-  if (!user || user.role !== "admin") {
-    return <Redirect to="/login" />;
-  }
-
-  // Dados simulados com 50+ veículos (substituir por API real do rastreador)
+  // Verificar autenticação
   useEffect(() => {
-    const motoristas = [
-      "João Silva", "Maria Santos", "Pedro Costa", "Ana Oliveira", "Carlos Ferreira",
-      "Juliana Souza", "Roberto Lima", "Fernanda Alves", "Ricardo Martins", "Patrícia Rocha",
-      "Marcos Pereira", "Luciana Dias", "André Gomes", "Beatriz Cunha", "Felipe Araújo",
-      "Camila Barbosa", "Diego Monteiro", "Gabriela Cardoso", "Henrique Nunes", "Isabela Freitas",
-      "Leonardo Castro", "Mariana Pinto", "Otávio Ribeiro", "Priscila Moraes", "Rafael Teixeira",
-      "Sabrina Correia", "Thiago Mendes", "Vanessa Duarte", "Wellington Azevedo", "Yasmin Farias",
+    const userData = localStorage.getItem("martins_user_data");
+    if (!userData) {
+      setLocation("/login");
+      return;
+    }
+    setUser(JSON.parse(userData));
+  }, [setLocation]);
+
+  // Dados simulados de veículos
+  useEffect(() => {
+    const mockVehicles: Vehicle[] = [
+      {
+        id: "VAN001",
+        name: "Van Executiva 01",
+        type: "Van",
+        placa: "ABC-1234",
+        lat: -23.5505,
+        lng: -46.6333,
+        status: "Em Rota",
+        driver: "João Silva",
+        phone: "(11) 98765-4321",
+        speed: 65,
+        destination: "Av. Paulista, São Paulo",
+        lastUpdate: new Date(),
+        fuel: 85,
+        temperature: 92,
+      },
+      {
+        id: "VAN002",
+        name: "Van Executiva 02",
+        type: "Van",
+        placa: "DEF-5678",
+        lat: -23.5615,
+        lng: -46.6560,
+        status: "Em Rota",
+        driver: "Maria Santos",
+        phone: "(11) 98765-4322",
+        speed: 45,
+        destination: "Rua Augusta, São Paulo",
+        lastUpdate: new Date(),
+        fuel: 72,
+        temperature: 88,
+      },
+      {
+        id: "ONIBUS001",
+        name: "Ônibus Turismo 01",
+        type: "Ônibus",
+        placa: "GHI-9012",
+        lat: -23.5405,
+        lng: -46.6200,
+        status: "Parado",
+        driver: "Carlos Oliveira",
+        phone: "(11) 98765-4323",
+        speed: 0,
+        destination: "Terminal Rodoviário",
+        lastUpdate: new Date(),
+        fuel: 95,
+        temperature: 85,
+      },
+      {
+        id: "ONIBUS002",
+        name: "Ônibus Turismo 02",
+        type: "Ônibus",
+        placa: "JKL-3456",
+        lat: -23.5705,
+        lng: -46.6450,
+        status: "Em Rota",
+        driver: "Pedro Costa",
+        phone: "(11) 98765-4324",
+        speed: 55,
+        destination: "Guarulhos, SP",
+        lastUpdate: new Date(),
+        fuel: 60,
+        temperature: 90,
+      },
+      {
+        id: "MICRO001",
+        name: "Micro-ônibus 01",
+        type: "Micro-ônibus",
+        placa: "MNO-7890",
+        lat: -23.5305,
+        lng: -46.6100,
+        status: "Manutenção",
+        driver: "Ana Lima",
+        phone: "(11) 98765-4325",
+        speed: 0,
+        destination: "Oficina Autorizada",
+        lastUpdate: new Date(),
+        fuel: 30,
+        temperature: 75,
+      },
     ];
-
-    const destinos = [
-      "Florianópolis", "São Paulo", "Curitiba", "Araucária", "Foz do Iguaçu",
-      "Beto Carrero", "Camboriú", "Gramado", "Aparecida", "Rio de Janeiro",
-      "Ponta Grossa", "Londrina", "Maringá", "Cascavel", "Paranaguá",
-      "São José dos Pinhais", "Colombo", "Pinhais", "Guaratuba", "Morretes",
-    ];
-
-    const tipos: Array<"onibus" | "van" | "carro"> = ["onibus", "van", "carro"];
-    const statuses: Array<"em_viagem" | "parado" | "manutencao" | "alerta"> = [
-      "em_viagem", "em_viagem", "em_viagem", "em_viagem", "em_viagem",
-      "parado", "parado", "manutencao", "alerta",
-    ];
-
-    // Gerar 60 veículos espalhados pela região
-    const mockVehicles: VehicleTracking[] = Array.from({ length: 60 }, (_, i) => {
-      // Espalhar veículos em um raio maior ao redor de Curitiba
-      const baseLatCuritiba = -25.4284;
-      const baseLngCuritiba = -49.2733;
-      
-      // Variação de até 2 graus (aproximadamente 220km de raio)
-      const latVariation = (Math.random() - 0.5) * 4;
-      const lngVariation = (Math.random() - 0.5) * 4;
-
-      const tipo = tipos[Math.floor(Math.random() * tipos.length)];
-      const status = statuses[Math.floor(Math.random() * statuses.length)];
-      const motorista = motoristas[Math.floor(Math.random() * motoristas.length)];
-      const destino = destinos[Math.floor(Math.random() * destinos.length)];
-
-      // Velocidade baseada no status
-      let velocidade = 0;
-      if (status === "em_viagem") {
-        velocidade = Math.floor(Math.random() * 50) + 40; // 40-90 km/h
-      } else if (status === "alerta") {
-        velocidade = Math.floor(Math.random() * 30) + 90; // 90-120 km/h (excesso)
-      } else if (status === "parado") {
-        velocidade = 0;
-      } else {
-        velocidade = 0;
-      }
-
-      // Gerar placa aleatória
-      const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      const placa = `${letras[Math.floor(Math.random() * 26)]}${letras[Math.floor(Math.random() * 26)]}${letras[Math.floor(Math.random() * 26)]}-${Math.floor(1000 + Math.random() * 9000)}`;
-
-      return {
-        id: i + 1,
-        placa,
-        tipo,
-        motorista,
-        status,
-        latitude: baseLatCuritiba + latVariation,
-        longitude: baseLngCuritiba + lngVariation,
-        velocidade,
-        ultimaAtualizacao: new Date(Date.now() - Math.random() * 300000), // últimos 5 min
-        destino,
-      };
-    });
 
     setVehicles(mockVehicles);
 
-    // Simular atualização em tempo real a cada 5 segundos
+    // Simular atualização de posição a cada 5 segundos
     const interval = setInterval(() => {
-      setVehicles(prev => prev.map(v => ({
-        ...v,
-        // Pequena variação na posição (simula movimento)
-        latitude: v.latitude + (Math.random() - 0.5) * 0.001,
-        longitude: v.longitude + (Math.random() - 0.5) * 0.001,
-        // Pequena variação na velocidade
-        velocidade: v.status === "em_viagem" 
-          ? Math.max(0, v.velocidade + (Math.random() - 0.5) * 5)
-          : v.velocidade,
-        ultimaAtualizacao: new Date(),
-      })));
+      setVehicles((prev) =>
+        prev.map((v) => {
+          if (v.status === "Em Rota") {
+            return {
+              ...v,
+              lat: v.lat + (Math.random() - 0.5) * 0.01,
+              lng: v.lng + (Math.random() - 0.5) * 0.01,
+              speed: Math.max(0, v.speed + (Math.random() - 0.5) * 10),
+              fuel: Math.max(0, v.fuel - 0.1),
+              lastUpdate: new Date(),
+            };
+          }
+          return v;
+        })
+      );
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Atualizar mapa quando veículos mudarem
+  // Carregar Google Maps
   useEffect(() => {
-    if (!mapReady || !map) return;
+    const loadMapScript = async () => {
+      const API_KEY = import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
+      const FORGE_BASE_URL =
+        import.meta.env.VITE_FRONTEND_FORGE_API_URL ||
+        "https://forge.butterfly-effect.dev";
+      const MAPS_PROXY_URL = `${FORGE_BASE_URL}/v1/maps/proxy`;
 
-    // Limpar marcadores antigos
-    markers.forEach(marker => marker.setMap(null));
-
-    // Criar novos marcadores
-    const newMarkers = filteredVehicles.map(vehicle => {
-      const icon = {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 10,
-        fillColor: getStatusColor(vehicle.status),
-        fillOpacity: 1,
-        strokeColor: "#ffffff",
-        strokeWeight: 2,
+      const script = document.createElement("script");
+      script.src = `${MAPS_PROXY_URL}/maps/api/js?key=${API_KEY}&v=weekly&libraries=marker,places,geocoding,geometry`;
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.onload = () => {
+        initMap();
       };
+      document.head.appendChild(script);
+    };
 
-      const marker = new google.maps.Marker({
-        position: { lat: vehicle.latitude, lng: vehicle.longitude },
-        map: map,
-        title: `${vehicle.placa} - ${vehicle.motorista}`,
-        icon: icon,
+    const initMap = () => {
+      const mapContainer = document.getElementById("map-container");
+      if (!mapContainer || !window.google) return;
+
+      mapRef.current = new window.google.maps.Map(mapContainer, {
+        zoom: 13,
+        center: { lat: -23.5505, lng: -46.6333 },
+        mapTypeControl: true,
+        fullscreenControl: true,
+        zoomControl: true,
+        streetViewControl: false,
+      });
+
+      setMapReady(true);
+    };
+
+    loadMapScript();
+  }, []);
+
+  // Atualizar marcadores no mapa
+  useEffect(() => {
+    if (!mapReady || !mapRef.current || !window.google) return;
+
+    const filteredVehicles = vehicles.filter((v) => {
+      const statusMatch = filterStatus === "todos" || v.status === filterStatus;
+      const typeMatch = filterType === "todos" || v.type === filterType;
+      return statusMatch && typeMatch;
+    });
+
+    // Remover marcadores antigos
+    markersRef.current.forEach((marker) => {
+      marker.map = null;
+    });
+    markersRef.current.clear();
+
+    // Adicionar novos marcadores
+    filteredVehicles.forEach((vehicle) => {
+      const color = getStatusColor(vehicle.status);
+      const marker = new window.google.maps.marker.AdvancedMarkerElement({
+        map: mapRef.current,
+        position: { lat: vehicle.lat, lng: vehicle.lng },
+        title: vehicle.name,
+        content: createMarkerContent(vehicle, color),
       });
 
       marker.addListener("click", () => {
         setSelectedVehicle(vehicle);
       });
 
-      return marker;
+      markersRef.current.set(vehicle.id, marker);
     });
 
-    setMarkers(newMarkers);
-
-    // Ajustar zoom para mostrar todos os veículos
-    if (newMarkers.length > 0) {
-      const bounds = new google.maps.LatLngBounds();
-      filteredVehicles.forEach(vehicle => {
-        bounds.extend({ lat: vehicle.latitude, lng: vehicle.longitude });
+    // Ajustar zoom para mostrar todos os marcadores
+    if (filteredVehicles.length > 0) {
+      const bounds = new window.google.maps.LatLngBounds();
+      filteredVehicles.forEach((v) => {
+        bounds.extend({ lat: v.lat, lng: v.lng });
       });
-      map.fitBounds(bounds);
+      mapRef.current.fitBounds(bounds);
     }
-  }, [vehicles, mapReady, map, filterType, filterStatus]);
+  }, [vehicles, mapReady, filterStatus, filterType]);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): string => {
     switch (status) {
-      case "em_viagem":
-        return "#10b981"; // green
-      case "parado":
-        return "#f59e0b"; // orange
-      case "manutencao":
-        return "#6b7280"; // gray
-      case "alerta":
-        return "#ef4444"; // red
+      case "Em Rota":
+        return "#22c55e";
+      case "Parado":
+        return "#3b82f6";
+      case "Manutenção":
+        return "#f97316";
       default:
-        return "#3b82f6"; // blue
+        return "#6b7280";
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "em_viagem":
-        return <CheckCircle2 className="h-4 w-4" />;
-      case "parado":
-        return <Pause className="h-4 w-4" />;
-      case "manutencao":
-        return <Clock className="h-4 w-4" />;
-      case "alerta":
-        return <AlertTriangle className="h-4 w-4" />;
-      default:
-        return <MapPin className="h-4 w-4" />;
-    }
+  const createMarkerContent = (vehicle: Vehicle, color: string): HTMLElement => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <div style="
+        width: 40px;
+        height: 40px;
+        background-color: ${color};
+        border: 3px solid white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        font-size: 18px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        cursor: pointer;
+      ">
+        📍
+      </div>
+    `;
+    return div;
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "em_viagem":
-        return "Em Viagem";
-      case "parado":
-        return "Parado";
-      case "manutencao":
-        return "Manutenção";
-      case "alerta":
-        return "Alerta";
-      default:
-        return "Desconhecido";
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("martins_user_data");
+    setLocation("/login");
   };
 
-  const filteredVehicles = vehicles.filter(vehicle => {
-    const typeMatch = filterType === "todos" || vehicle.tipo === filterType;
-    const statusMatch = filterStatus === "todos" || vehicle.status === filterStatus;
-    return typeMatch && statusMatch;
+  const filteredVehicles = vehicles.filter((v) => {
+    const statusMatch = filterStatus === "todos" || v.status === filterStatus;
+    const typeMatch = filterType === "todos" || v.type === filterType;
+    return statusMatch && typeMatch;
   });
 
-  const handleMapReady = (mapInstance: google.maps.Map) => {
-    setMap(mapInstance);
-    setMapReady(true);
+  const stats = {
+    total: vehicles.length,
+    emRota: vehicles.filter((v) => v.status === "Em Rota").length,
+    parados: vehicles.filter((v) => v.status === "Parado").length,
+    manutencao: vehicles.filter((v) => v.status === "Manutenção").length,
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b px-6 py-4">
-        <div className="flex items-center justify-between">
+      <div className="bg-slate-800/50 border-b border-white/10 p-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Rastreamento em Tempo Real</h1>
-            <p className="text-sm text-gray-600">
-              {filteredVehicles.length} veículo(s) monitorado(s)
-            </p>
+            <h1 className="text-2xl font-bold text-white">Rastreamento em Tempo Real</h1>
+            <p className="text-white/60 text-sm">Monitoramento da frota de veículos</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => window.location.reload()}
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Atualizar
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => (window.location.href = "/admin")}
-            >
-              Voltar ao Admin
-            </Button>
-          </div>
+          <Button onClick={handleLogout} variant="outline" className="gap-2">
+            <LogOut className="h-4 w-4" />
+            Sair
+          </Button>
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <div className="w-80 bg-white border-r overflow-y-auto">
-          <div className="p-4 space-y-4">
-            {/* Filtros */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Filter className="h-4 w-4" />
-                  Filtros
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div>
-                  <label className="text-xs font-medium text-gray-600 block mb-1">
-                    Tipo de Veículo
-                  </label>
-                  <select
-                    className="w-full h-9 px-3 rounded-md border border-border bg-white text-sm"
-                    value={filterType}
-                    onChange={(e) => setFilterType(e.target.value as any)}
-                  >
-                    <option value="todos">Todos</option>
-                    <option value="onibus">Ônibus</option>
-                    <option value="van">Van</option>
-                    <option value="carro">Carro</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-xs font-medium text-gray-600 block mb-1">
-                    Status
-                  </label>
-                  <select
-                    className="w-full h-9 px-3 rounded-md border border-border bg-white text-sm"
-                    value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value as any)}
-                  >
-                    <option value="todos">Todos</option>
-                    <option value="em_viagem">Em Viagem</option>
-                    <option value="parado">Parado</option>
-                    <option value="manutencao">Manutenção</option>
-                    <option value="alerta">Alerta</option>
-                  </select>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Conteúdo Principal */}
+      <div className="flex-1 flex gap-4 p-4 overflow-hidden">
+        {/* Painel Lateral Esquerdo */}
+        <div className="w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col">
+          {/* Estatísticas */}
+          <div className="p-4 border-b border-white/10 space-y-2">
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-blue-500/20 border border-blue-500/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Total</p>
+                <p className="text-xl font-bold text-blue-400">{stats.total}</p>
+              </div>
+              <div className="bg-green-500/20 border border-green-500/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Em Rota</p>
+                <p className="text-xl font-bold text-green-400">{stats.emRota}</p>
+              </div>
+              <div className="bg-blue-600/20 border border-blue-600/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Parados</p>
+                <p className="text-xl font-bold text-blue-300">{stats.parados}</p>
+              </div>
+              <div className="bg-orange-500/20 border border-orange-500/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Manutenção</p>
+                <p className="text-xl font-bold text-orange-400">{stats.manutencao}</p>
+              </div>
+            </div>
+          </div>
 
-            {/* Lista de Veículos */}
-            <div className="space-y-2">
+          {/* Filtros */}
+          <div className="p-4 border-b border-white/10 space-y-3">
+            <div>
+              <label className="text-white/60 text-xs font-semibold">Status</label>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="w-full mt-1 bg-slate-700 text-white text-sm rounded px-2 py-1 border border-white/10"
+              >
+                <option value="todos">Todos</option>
+                <option value="Em Rota">Em Rota</option>
+                <option value="Parado">Parado</option>
+                <option value="Manutenção">Manutenção</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-white/60 text-xs font-semibold">Tipo</label>
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+                className="w-full mt-1 bg-slate-700 text-white text-sm rounded px-2 py-1 border border-white/10"
+              >
+                <option value="todos">Todos</option>
+                <option value="Van">Van</option>
+                <option value="Micro-ônibus">Micro-ônibus</option>
+                <option value="Ônibus">Ônibus</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Lista de Veículos */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-4 space-y-2">
               {filteredVehicles.map((vehicle) => (
-                <Card
+                <button
                   key={vehicle.id}
-                  className={`cursor-pointer transition-all hover:shadow-md ${
-                    selectedVehicle?.id === vehicle.id
-                      ? "ring-2 ring-blue-500"
-                      : ""
-                  }`}
                   onClick={() => setSelectedVehicle(vehicle)}
+                  className={`w-full text-left p-3 rounded-lg border transition-all ${
+                    selectedVehicle?.id === vehicle.id
+                      ? "bg-indigo-500/30 border-indigo-500/50"
+                      : "bg-slate-700/30 border-white/10 hover:border-white/20"
+                  }`}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <p className="font-bold text-sm">{vehicle.placa}</p>
-                        <p className="text-xs text-gray-600">{vehicle.motorista}</p>
-                      </div>
-                      <div
-                        className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium`}
-                        style={{
-                          backgroundColor: `${getStatusColor(vehicle.status)}20`,
-                          color: getStatusColor(vehicle.status),
-                        }}
-                      >
-                        {getStatusIcon(vehicle.status)}
-                        {getStatusLabel(vehicle.status)}
-                      </div>
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="text-white font-semibold text-sm">{vehicle.name}</p>
+                      <p className="text-white/60 text-xs">{vehicle.placa}</p>
                     </div>
-                    <div className="space-y-1 text-xs text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <Gauge className="h-3 w-3" />
-                        <span>{vehicle.velocidade} km/h</span>
-                      </div>
-                      {vehicle.destino && (
-                        <div className="flex items-center gap-2">
-                          <Navigation className="h-3 w-3" />
-                          <span>{vehicle.destino}</span>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-3 w-3" />
-                        <span>
-                          Atualizado há{" "}
-                          {Math.floor(
-                            (Date.now() - vehicle.ultimaAtualizacao.getTime()) / 1000
-                          )}
-                          s
-                        </span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    <span
+                      className={`text-xs font-bold px-2 py-1 rounded ${
+                        vehicle.status === "Em Rota"
+                          ? "bg-green-500/30 text-green-400"
+                          : vehicle.status === "Parado"
+                          ? "bg-blue-500/30 text-blue-400"
+                          : "bg-orange-500/30 text-orange-400"
+                      }`}
+                    >
+                      {vehicle.status}
+                    </span>
+                  </div>
+                  <div className="text-xs text-white/40 space-y-1">
+                    <p>👤 {vehicle.driver}</p>
+                    <p>⚡ {vehicle.speed.toFixed(0)} km/h</p>
+                  </div>
+                </button>
               ))}
             </div>
           </div>
         </div>
 
         {/* Mapa */}
-        <div className="flex-1 relative">
-          <MapView
-            onMapReady={handleMapReady}
-            initialCenter={{ lat: -25.4284, lng: -49.2733 }}
-            initialZoom={12}
-            className="w-full h-full"
-          />
-
-          {/* Info do Veículo Selecionado */}
-          {selectedVehicle && (
-            <Card className="absolute top-4 right-4 w-80 shadow-xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center justify-between">
-                  <span>{selectedVehicle.placa}</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedVehicle(null)}
-                  >
-                    ✕
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <p className="text-xs text-gray-600">Motorista</p>
-                    <p className="font-medium">{selectedVehicle.motorista}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600">Tipo</p>
-                    <p className="font-medium capitalize">{selectedVehicle.tipo}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600">Velocidade</p>
-                    <p className="font-medium">{selectedVehicle.velocidade} km/h</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600">Status</p>
-                    <p className="font-medium">{getStatusLabel(selectedVehicle.status)}</p>
-                  </div>
-                  {selectedVehicle.destino && (
-                    <div className="col-span-2">
-                      <p className="text-xs text-gray-600">Destino</p>
-                      <p className="font-medium">{selectedVehicle.destino}</p>
-                    </div>
-                  )}
-                </div>
-                <div className="pt-3 border-t">
-                  <Button className="w-full" size="sm">
-                    Ver Histórico de Rotas
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+        <div className="flex-1 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden">
+          <div id="map-container" className="w-full h-full" />
         </div>
+
+        {/* Painel Lateral Direito - Detalhes */}
+        {selectedVehicle && (
+          <div className="w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col">
+            <div className="p-4 border-b border-white/10">
+              <h3 className="text-lg font-bold text-white">{selectedVehicle.name}</h3>
+              <p className="text-white/60 text-sm">{selectedVehicle.placa}</p>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {/* Informações do Motorista */}
+              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+                <p className="text-white/60 text-xs font-semibold mb-2">Motorista</p>
+                <p className="text-white font-semibold mb-2">{selectedVehicle.driver}</p>
+                <Button className="w-full gap-2 text-sm" variant="outline" size="sm">
+                  <Phone className="h-3 w-3" />
+                  {selectedVehicle.phone}
+                </Button>
+              </div>
+
+              {/* Status e Localização */}
+              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+                <p className="text-white/60 text-xs font-semibold mb-3">Localização</p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-indigo-400" />
+                    <div>
+                      <p className="text-white/60 text-xs">Coordenadas</p>
+                      <p className="text-white text-sm">
+                        {selectedVehicle.lat.toFixed(4)}, {selectedVehicle.lng.toFixed(4)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Navigation className="h-4 w-4 text-green-400" />
+                    <div>
+                      <p className="text-white/60 text-xs">Destino</p>
+                      <p className="text-white text-sm">{selectedVehicle.destination}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Velocidade */}
+              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+                <p className="text-white/60 text-xs font-semibold mb-3">Velocidade</p>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Gauge className="h-4 w-4 text-blue-400" />
+                    <span className="text-white/60 text-sm">Velocidade Atual</span>
+                  </div>
+                  <span className="text-white font-bold">{selectedVehicle.speed.toFixed(0)} km/h</span>
+                </div>
+                <div className="w-full bg-slate-600 rounded-full h-2">
+                  <div
+                    className="bg-blue-500 h-2 rounded-full"
+                    style={{ width: `${Math.min(100, (selectedVehicle.speed / 120) * 100)}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Combustível */}
+              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+                <p className="text-white/60 text-xs font-semibold mb-3">Combustível</p>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Fuel className="h-4 w-4 text-yellow-400" />
+                    <span className="text-white text-sm">{selectedVehicle.fuel.toFixed(0)}%</span>
+                  </div>
+                  <span className="text-white/60 text-xs">
+                    {selectedVehicle.fuel < 20 && "⚠️ Baixo"}
+                    {selectedVehicle.fuel >= 20 && selectedVehicle.fuel < 50 && "⚠️ Moderado"}
+                    {selectedVehicle.fuel >= 50 && "✅ Bom"}
+                  </span>
+                </div>
+                <div className="w-full bg-slate-600 rounded-full h-3">
+                  <div
+                    className={`h-3 rounded-full ${
+                      selectedVehicle.fuel < 20
+                        ? "bg-red-500"
+                        : selectedVehicle.fuel < 50
+                        ? "bg-yellow-500"
+                        : "bg-green-500"
+                    }`}
+                    style={{ width: `${selectedVehicle.fuel}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Temperatura */}
+              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+                <p className="text-white/60 text-xs font-semibold mb-2">Temperatura do Motor</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Thermometer className="h-4 w-4 text-red-400" />
+                    <span className="text-white font-bold text-lg">{selectedVehicle.temperature}°C</span>
+                  </div>
+                  <span className="text-white/60 text-xs">
+                    {selectedVehicle.temperature > 100 && "🔴 Quente"}
+                    {selectedVehicle.temperature <= 100 && "🟢 Normal"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Última Atualização */}
+              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-white/60" />
+                  <div>
+                    <p className="text-white/60 text-xs">Última Atualização</p>
+                    <p className="text-white text-sm">
+                      {selectedVehicle.lastUpdate.toLocaleTimeString("pt-BR")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Alertas */}
+              {selectedVehicle.fuel < 20 && (
+                <div className="bg-red-500/20 border border-red-500/30 p-3 rounded-lg flex items-start gap-2">
+                  <AlertTriangle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-red-400 font-semibold text-sm">Combustível Baixo</p>
+                    <p className="text-red-300 text-xs">Abasteça em breve</p>
+                  </div>
+                </div>
+              )}
+
+              {selectedVehicle.temperature > 100 && (
+                <div className="bg-orange-500/20 border border-orange-500/30 p-3 rounded-lg flex items-start gap-2">
+                  <AlertTriangle className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-orange-400 font-semibold text-sm">Motor Aquecido</p>
+                    <p className="text-orange-300 text-xs">Verifique o sistema de arrefecimento</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Botões de Ação */}
+            <div className="p-4 border-t border-white/10 space-y-2">
+              <Button className="w-full gap-2" variant="outline">
+                <RefreshCw className="h-4 w-4" />
+                Atualizar
+              </Button>
+              <Button className="w-full gap-2" variant="outline">
+                <Navigation className="h-4 w-4" />
+                Ver Rota
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -21,6 +21,16 @@ interface UserData {
   role: string;
 }
 
+interface Vehicle {
+  id: string;
+  name: string;
+  type: string;
+  lat: number;
+  lng: number;
+  status: string;
+  driver: string;
+}
+
 export function DashboardPersonalizado() {
   const [, setLocation] = useLocation();
   const [user, setUser] = useState<UserData | null>(null);
@@ -28,7 +38,6 @@ export function DashboardPersonalizado() {
   const [greeting, setGreeting] = useState("Bem-vindo");
 
   useEffect(() => {
-    // Carregar dados do usuário do localStorage
     const userData = localStorage.getItem("martins_user_data");
     if (!userData) {
       setLocation("/login");
@@ -39,7 +48,6 @@ export function DashboardPersonalizado() {
       const parsedUser = JSON.parse(userData);
       setUser(parsedUser);
 
-      // Determinar saudação baseada na hora do dia
       const hour = new Date().getHours();
       if (hour >= 5 && hour < 12) {
         setGreeting("Bom dia");
@@ -72,27 +80,22 @@ export function DashboardPersonalizado() {
     return null;
   }
 
-  // Dashboard para Diretor
   if (user.role === "diretor") {
     return <DashboardDiretor user={user} greeting={greeting} onLogout={handleLogout} />;
   }
 
-  // Dashboard para Financeiro
   if (user.role === "financeiro") {
     return <DashboardFinanceiro user={user} greeting={greeting} onLogout={handleLogout} />;
   }
 
-  // Dashboard para Manutenção
   if (user.role === "manutencao") {
     return <DashboardManutencao user={user} greeting={greeting} onLogout={handleLogout} />;
   }
 
-  // Dashboard para RH
   if (user.role === "rh") {
     return <DashboardRH user={user} greeting={greeting} onLogout={handleLogout} />;
   }
 
-  // Dashboard padrão
   return <DashboardPadrao user={user} greeting={greeting} onLogout={handleLogout} />;
 }
 
@@ -101,7 +104,6 @@ function DashboardDiretor({ user, greeting, onLogout }: { user: UserData; greeti
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header com Logout */}
         <div className="flex justify-between items-start mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white mb-2">
@@ -115,7 +117,6 @@ function DashboardDiretor({ user, greeting, onLogout }: { user: UserData; greeti
           </Button>
         </div>
 
-        {/* Monitoramento de Bens */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border-blue-500/30 hover:border-blue-500/50 transition">
             <CardHeader className="pb-3">
@@ -170,7 +171,6 @@ function DashboardDiretor({ user, greeting, onLogout }: { user: UserData; greeti
           </Card>
         </div>
 
-        {/* Mapa de Rastreamento */}
         <Card className="bg-white/5 border-white/10 mb-8">
           <CardHeader>
             <CardTitle className="text-white">Rastreamento em Tempo Real</CardTitle>
@@ -185,7 +185,6 @@ function DashboardDiretor({ user, greeting, onLogout }: { user: UserData; greeti
           </CardContent>
         </Card>
 
-        {/* Resumo de Áreas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="bg-white/5 border-white/10">
             <CardHeader>
@@ -450,74 +449,181 @@ function DashboardRH({ user, greeting, onLogout }: { user: UserData; greeting: s
 
 // ==================== DASHBOARD PADRÃO ====================
 function DashboardPadrao({ user, greeting, onLogout }: { user: UserData; greeting: string; onLogout: () => void }) {
+  const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null);
+
+  const vehicles: Vehicle[] = [
+    { id: "VAN001", name: "Van Executiva 01", type: "Van", lat: -23.5505, lng: -46.6333, status: "Em Rota", driver: "João Silva" },
+    { id: "VAN002", name: "Van Executiva 02", type: "Van", lat: -23.5615, lng: -46.6560, status: "Em Rota", driver: "Maria Santos" },
+    { id: "ONIBUS001", name: "Ônibus Turismo 01", type: "Ônibus", lat: -23.5405, lng: -46.6200, status: "Parado", driver: "Carlos Oliveira" },
+    { id: "ONIBUS002", name: "Ônibus Turismo 02", type: "Ônibus", lat: -23.5705, lng: -46.6450, status: "Em Rota", driver: "Pedro Costa" },
+    { id: "VAN003", name: "Van Executiva 03", type: "Van", lat: -23.5305, lng: -46.6100, status: "Manutenção", driver: "Ana Lima" },
+  ];
+
+  const emRota = vehicles.filter(v => v.status === "Em Rota").length;
+  const parados = vehicles.filter(v => v.status !== "Em Rota").length;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-start mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-white mb-2">
-              {greeting}, <span className="text-indigo-400">{user.name}</span>
-            </h1>
-            <p className="text-white/60">Dashboard Padrão</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex">
+      {/* Menu Lateral */}
+      <div className="w-80 bg-slate-800/50 border-r border-white/10 overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-white">Veículos</h2>
+            <Button onClick={onLogout} variant="outline" size="sm" className="gap-1">
+              <LogOut className="h-3 w-3" />
+              Sair
+            </Button>
           </div>
-          <Button onClick={onLogout} variant="outline" className="gap-2">
-            <LogOut className="h-4 w-4" />
-            Sair
-          </Button>
+
+          {/* Resumo Rápido */}
+          <div className="space-y-2 mb-6">
+            <div className="bg-blue-500/20 border border-blue-500/30 p-3 rounded-lg">
+              <p className="text-white/60 text-xs">Total de Veículos</p>
+              <p className="text-2xl font-bold text-blue-400">{vehicles.length}</p>
+            </div>
+            <div className="bg-green-500/20 border border-green-500/30 p-3 rounded-lg">
+              <p className="text-white/60 text-xs">Em Rota</p>
+              <p className="text-2xl font-bold text-green-400">{emRota}</p>
+            </div>
+            <div className="bg-orange-500/20 border border-orange-500/30 p-3 rounded-lg">
+              <p className="text-white/60 text-xs">Parados/Manutenção</p>
+              <p className="text-2xl font-bold text-orange-400">{parados}</p>
+            </div>
+          </div>
+
+          {/* Divisão */}
+          <div className="w-full h-px bg-white/10 mb-6" />
+
+          {/* Lista de Veículos */}
+          <div className="space-y-2">
+            {vehicles.map((vehicle) => (
+              <button
+                key={vehicle.id}
+                onClick={() => setSelectedVehicle(vehicle.id)}
+                className={`w-full text-left p-3 rounded-lg border transition-all ${
+                  selectedVehicle === vehicle.id
+                    ? "bg-indigo-500/30 border-indigo-500/50"
+                    : "bg-slate-700/30 border-white/10 hover:border-white/20"
+                }`}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <p className="text-white font-semibold text-sm">{vehicle.name}</p>
+                    <p className="text-white/60 text-xs">{vehicle.driver}</p>
+                  </div>
+                  <span className={`text-xs font-bold px-2 py-1 rounded ${
+                    vehicle.status === "Em Rota"
+                      ? "bg-green-500/30 text-green-400"
+                      : vehicle.status === "Parado"
+                      ? "bg-blue-500/30 text-blue-400"
+                      : "bg-orange-500/30 text-orange-400"
+                  }`}>
+                    {vehicle.status}
+                  </span>
+                </div>
+                <div className="text-xs text-white/40">
+                  <p>📋 {vehicle.type}</p>
+                  <p>📍 {vehicle.lat.toFixed(4)}, {vehicle.lng.toFixed(4)}</p>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="bg-white/5 border-white/10">
+      {/* Conteúdo Principal */}
+      <div className="flex-1 overflow-auto">
+        <div className="p-8">
+          <div className="flex justify-between items-start mb-8">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2">
+                {greeting}, <span className="text-indigo-400">{user.name}</span>
+              </h1>
+              <p className="text-white/60">Rastreamento em Tempo Real</p>
+            </div>
+          </div>
+
+          {/* Mapa de Rastreamento */}
+          <Card className="bg-white/5 border-white/10 mb-8">
             <CardHeader>
-              <CardTitle className="text-white">Resumo Geral</CardTitle>
+              <CardTitle className="text-white flex items-center gap-2">
+                <MapPin className="h-5 w-5 text-indigo-400" />
+                Mapa de Rastreamento GPS
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-white/60">Veículos Ativos:</span>
-                  <span className="text-white font-bold">47</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">Funcionários:</span>
-                  <span className="text-white font-bold">28</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">Saldo Financeiro:</span>
-                  <span className="text-green-400 font-bold">R$ 83.3K</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">OS Abertas:</span>
-                  <span className="text-orange-400 font-bold">5</span>
+              <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg h-96 flex items-center justify-center border border-white/10 relative overflow-hidden">
+                {/* Mapa simulado com pontos de veículos */}
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 600%22><defs><pattern id=%22grid%22 width=%2240%22 height=%2240%22 patternUnits=%22userSpaceOnUse%22><path d=%22M 40 0 L 0 0 0 40%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.05)%22 stroke-width=%221%22/></pattern></defs><rect width=%22800%22 height=%22600%22 fill=%22%23334155%22/><rect width=%22800%22 height=%22600%22 fill=%22url(%23grid)%22/></svg>')] opacity-30" />
+                
+                {/* Pontos de veículos */}
+                {vehicles.map((vehicle, idx) => (
+                  <div
+                    key={vehicle.id}
+                    className="absolute w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-transform hover:scale-125"
+                    style={{
+                      left: `${20 + (vehicle.lng + 46.65) * 100}px`,
+                      top: `${100 + (23.6 - vehicle.lat) * 100}px`,
+                      backgroundColor: vehicle.status === "Em Rota" ? "rgb(34, 197, 94)" : vehicle.status === "Parado" ? "rgb(59, 130, 246)" : "rgb(249, 115, 22)",
+                    }}
+                    title={vehicle.name}
+                  >
+                    <div className="w-6 h-6 rounded-full border-2 border-white" />
+                  </div>
+                ))}
+
+                {/* Legenda */}
+                <div className="absolute bottom-4 left-4 bg-slate-900/80 p-4 rounded-lg border border-white/10">
+                  <p className="text-white text-sm font-semibold mb-2">Legenda</p>
+                  <div className="space-y-1 text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                      <span className="text-white/60">Em Rota</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-blue-500" />
+                      <span className="text-white/60">Parado</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-orange-500" />
+                      <span className="text-white/60">Manutenção</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/5 border-white/10">
-            <CardHeader>
-              <CardTitle className="text-white">Informações do Usuário</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-white/60 text-sm">Nome</p>
-                  <p className="text-white font-bold">{user.name}</p>
-                </div>
-                <div>
-                  <p className="text-white/60 text-sm">Usuário</p>
-                  <p className="text-white font-bold">{user.username}</p>
-                </div>
-                <div>
-                  <p className="text-white/60 text-sm">Perfil</p>
-                  <p className="text-white font-bold capitalize">{user.role}</p>
-                </div>
-                <div>
-                  <p className="text-white/60 text-sm">Hora Atual</p>
-                  <p className="text-white font-bold">{new Date().toLocaleTimeString("pt-BR")}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Detalhes do Veículo Selecionado */}
+          {selectedVehicle && (
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-white">Detalhes do Veículo</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {vehicles.find(v => v.id === selectedVehicle) && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                      <p className="text-white/60 text-sm">Veículo</p>
+                      <p className="text-white font-bold">{vehicles.find(v => v.id === selectedVehicle)?.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/60 text-sm">Motorista</p>
+                      <p className="text-white font-bold">{vehicles.find(v => v.id === selectedVehicle)?.driver}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/60 text-sm">Status</p>
+                      <p className="text-white font-bold">{vehicles.find(v => v.id === selectedVehicle)?.status}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/60 text-sm">Tipo</p>
+                      <p className="text-white font-bold">{vehicles.find(v => v.id === selectedVehicle)?.type}</p>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

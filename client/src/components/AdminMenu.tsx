@@ -1,5 +1,6 @@
-import { Link } from "wouter";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { useLocation } from "wouter";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Users,
@@ -19,128 +20,247 @@ import {
   Database,
   Shield,
   Wallet,
+  ChevronDown,
+  ChevronRight,
+  X,
+  Home,
+  Fuel,
+  ClipboardList,
+  TrendingUp,
+  Package,
+  Clock,
+  Lock,
+  Eye as EyeIcon,
 } from "lucide-react";
 
-const menuModules = [
+interface MenuItem {
+  label: string;
+  path: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+interface MenuModule {
+  title: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  bgColor: string;
+  borderColor: string;
+  items: MenuItem[];
+}
+
+const menuModules: MenuModule[] = [
+  {
+    title: "Dashboard",
+    description: "Visão geral do sistema",
+    icon: Home,
+    color: "from-blue-500 to-blue-600",
+    bgColor: "bg-blue-50",
+    borderColor: "border-blue-200",
+    items: [
+      { label: "Dashboard Principal", path: "/admin", icon: Home },
+      { label: "Dashboard Personalizado", path: "/admin/dashboardpersonalizado", icon: BarChart3 },
+    ],
+  },
+  {
+    title: "Frota & Rastreamento",
+    description: "Gestão de veículos e rastreamento",
+    icon: Truck,
+    color: "from-orange-500 to-red-600",
+    bgColor: "bg-orange-50",
+    borderColor: "border-orange-200",
+    items: [
+      { label: "Veículos", path: "/admin/veiculos", icon: Truck },
+      { label: "Monitoramento", path: "/monitoramento", icon: Eye },
+      { label: "Rastreamento", path: "/rastreamento", icon: MapPin },
+      { label: "Manutenção", path: "/admin/manutencao", icon: Wrench },
+      { label: "Abastecimento", path: "/admin/abastecimento", icon: Fuel },
+      { label: "Checklist", path: "/admin/checklist", icon: CheckSquare },
+    ],
+  },
   {
     title: "RH - Recursos Humanos",
-    description: "Gestão de funcionários, folha e documentos",
+    description: "Gestão de funcionários e folha",
     icon: Users,
-    color: "bg-blue-100",
+    color: "from-purple-500 to-pink-600",
+    bgColor: "bg-purple-50",
+    borderColor: "border-purple-200",
     items: [
+      { label: "Motoristas", path: "/admin/motoristas", icon: Users },
       { label: "Funcionários", path: "/admin/funcionarios", icon: Users },
       { label: "Folha Pagamento", path: "/admin/folhapagamento", icon: FileText },
-      { label: "Lançamentos RH", path: "/admin/lancamentosrh", icon: Zap },
       { label: "Férias", path: "/admin/ferias", icon: Calendar },
-      { label: "CNAB", path: "/admin/cnab", icon: FileText },
-      { label: "CNAB240", path: "/admin/cnab240", icon: FileText },
+      { label: "Ponto Eletrônico", path: "/admin/ponto", icon: Clock },
+      { label: "Documentos RH", path: "/admin/documentosrh", icon: FileText },
       { label: "Avisos Documentos", path: "/admin/avisosdocumentos", icon: AlertCircle },
-      { label: "Relatórios RH", path: "/admin/relatoriosrh", icon: BarChart3 },
+    ],
+  },
+  {
+    title: "Operações",
+    description: "Viagens, roteirizacao e agenda",
+    icon: MapPin,
+    color: "from-green-500 to-teal-600",
+    bgColor: "bg-green-50",
+    borderColor: "border-green-200",
+    items: [
+      { label: "Viagens", path: "/admin/viagens", icon: Truck },
+      { label: "Agenda", path: "/admin/agenda", icon: Calendar },
+      { label: "Roteirização", path: "/admin/roteirizacao", icon: MapPin },
+      { label: "Calendário Avançado", path: "/admin/calendarioavancado", icon: Calendar },
     ],
   },
   {
     title: "Financeiro",
-    description: "Contas, fluxo de caixa e relatórios",
+    description: "Contas, fluxo de caixa e DRE",
     icon: DollarSign,
-    color: "bg-green-100",
+    color: "from-emerald-500 to-green-600",
+    bgColor: "bg-emerald-50",
+    borderColor: "border-emerald-200",
     items: [
-      { label: "Contas a Pagar", path: "/admin/financeiro", icon: DollarSign },
-      { label: "Conciliação Bancária", path: "/admin/conciliacao", icon: DollarSign },
-      { label: "Fluxo de Caixa", path: "/admin/fluxocaixa", icon: BarChart3 },
-      { label: "DRE", path: "/admin/dre", icon: FileText },
-      { label: "Métodos Pagamento", path: "/admin/metodospagamento", icon: Wallet },
-      { label: "Relatório Financeiro", path: "/admin/relatoriofinanceiro", icon: BarChart3 },
+      { label: "Despesas", path: "/admin/despesas", icon: DollarSign },
+      { label: "Financeiro", path: "/admin/financeiro", icon: Wallet },
+      { label: "Fluxo de Caixa", path: "/admin/fluxocaixa", icon: TrendingUp },
+      { label: "DRE", path: "/admin/dre", icon: BarChart3 },
+      { label: "CNAB", path: "/admin/cnab", icon: FileText },
+      { label: "Conciliação", path: "/admin/conciliacao", icon: CheckSquare },
     ],
   },
   {
-    title: "Roteirização",
-    description: "Otimização de rotas com Google Maps",
-    icon: MapPin,
-    color: "bg-purple-100",
-    items: [
-      { label: "Roteirização", path: "/admin/roteirizacao", icon: MapPin },
-      { label: "Exportação GPS", path: "/admin/exportacaogps", icon: FileText },
-      { label: "Histórico Rotas", path: "/admin/historicorotas", icon: BarChart3 },
-      { label: "Otimização Avançada", path: "/admin/otimizacaoavancada", icon: Zap },
-    ],
-  },
-  {
-    title: "Atendimento ao Cliente",
-    description: "Tickets, chat e orçamentos",
+    title: "Atendimento",
+    description: "Clientes, orçamentos e tickets",
     icon: MessageSquare,
-    color: "bg-orange-100",
+    color: "from-cyan-500 to-blue-600",
+    bgColor: "bg-cyan-50",
+    borderColor: "border-cyan-200",
     items: [
       { label: "Atendimento", path: "/admin/atendimento", icon: MessageSquare },
-      { label: "Chatbot IA", path: "/admin/chatbotia", icon: Zap },
-      { label: "Gestão Tickets", path: "/admin/gestaotickets", icon: CheckSquare },
       { label: "Orçamentos", path: "/admin/orcamentos", icon: FileText },
-      { label: "Integração Interna", path: "/admin/integracaointerna", icon: Shield },
-      { label: "NPS", path: "/admin/nps", icon: BarChart3 },
+      { label: "Gestão Tickets", path: "/admin/gestaotickets", icon: CheckSquare },
+      { label: "Chatbot IA", path: "/admin/chatbotia", icon: Zap },
     ],
   },
   {
-    title: "Agenda de Compromissos",
-    description: "Calendário e eventos",
-    icon: Calendar,
-    color: "bg-red-100",
+    title: "Relatórios & Análise",
+    description: "Dados, gráficos e insights",
+    icon: BarChart3,
+    color: "from-indigo-500 to-purple-600",
+    bgColor: "bg-indigo-50",
+    borderColor: "border-indigo-200",
     items: [
-      { label: "Agenda", path: "/admin/agenda", icon: Calendar },
-      { label: "Calendário Avançado", path: "/admin/calendarioavancado", icon: Calendar },
-      { label: "Detalhes Evento", path: "/admin/detalhesevento", icon: FileText },
-      { label: "Notificações", path: "/admin/notificacoes", icon: AlertCircle },
-      { label: "Relatórios Agenda", path: "/admin/relatoriosagenda", icon: BarChart3 },
+      { label: "Relatórios", path: "/admin/relatorios", icon: BarChart3 },
+      { label: "Análise Rotatividade", path: "/admin/analiserotatividade", icon: TrendingUp },
+      { label: "Importar Dados", path: "/admin/importar", icon: Package },
     ],
   },
   {
-    title: "Administrativo",
-    description: "Configurações e ferramentas",
+    title: "Administração",
+    description: "Sistema, segurança e backup",
     icon: Settings,
-    color: "bg-gray-100",
+    color: "from-slate-500 to-gray-600",
+    bgColor: "bg-slate-50",
+    borderColor: "border-slate-200",
     items: [
-      { label: "Checklist", path: "/admin/checklist", icon: CheckSquare },
-      { label: "Manutenção", path: "/admin/manutencao", icon: Wrench },
-      { label: "Rastreamento", path: "/admin/rastreamento", icon: Eye },
-      { label: "Integrações", path: "/admin/integracoes", icon: Shield },
-      { label: "Configurações", path: "/admin/configuracoesgerais", icon: Settings },
-      { label: "Backup", path: "/admin/backuprestore", icon: Database },
+      { label: "Usuários", path: "/admin/usuarios", icon: Lock },
+      { label: "Perfil", path: "/admin/perfil", icon: Users },
+      { label: "Auditoria", path: "/admin/auditoria", icon: Shield },
+      { label: "Backup & Restore", path: "/admin/backuprestore", icon: Database },
+      { label: "Configurações", path: "/admin/configuracoes", icon: Settings },
     ],
   },
 ];
 
 export function AdminMenu() {
+  const [, setLocation] = useLocation();
+  const [expandedModule, setExpandedModule] = useState<string | null>("Dashboard");
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleNavigation = (path: string) => {
+    setLocation(path);
+  };
+
   return (
-    <div className="space-y-8 p-6">
-      <div>
-        <h1 className="text-4xl font-bold">Painel Administrativo</h1>
-        <p className="text-gray-600 mt-2">Acesse todos os módulos do sistema</p>
+    <div className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white transition-all duration-300 ${isOpen ? "w-80" : "w-20"} overflow-y-auto border-r border-slate-700 shadow-2xl`}>
+      {/* Header */}
+      <div className="sticky top-0 bg-gradient-to-r from-orange-500 to-red-600 p-4 flex items-center justify-between z-50">
+        {isOpen && (
+          <div>
+            <h1 className="text-2xl font-bold">MV</h1>
+            <p className="text-xs opacity-90">Martins Turismo</p>
+          </div>
+        )}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsOpen(!isOpen)}
+          className="text-white hover:bg-white/20"
+        >
+          {isOpen ? <X className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Menu Items */}
+      <div className="p-3 space-y-2">
         {menuModules.map((module) => (
-          <Card key={module.title} className="hover:shadow-lg transition-shadow">
-            <CardHeader className={`${module.color} rounded-t-lg`}>
-              <div className="flex items-center gap-3">
-                <module.icon className="w-6 h-6" />
-                <div>
-                  <CardTitle>{module.title}</CardTitle>
-                  <CardDescription className="text-sm">{module.description}</CardDescription>
-                </div>
+          <div key={module.title} className="space-y-1">
+            {/* Module Header */}
+            <button
+              onClick={() =>
+                setExpandedModule(expandedModule === module.title ? null : module.title)
+              }
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                expandedModule === module.title
+                  ? `bg-gradient-to-r ${module.color} text-white shadow-lg`
+                  : "hover:bg-slate-700/50 text-slate-300"
+              }`}
+            >
+              <div className={`p-2 rounded-lg ${expandedModule === module.title ? "bg-white/20" : "bg-slate-700/50 group-hover:bg-slate-600/50"}`}>
+                <module.icon className="h-5 w-5" />
               </div>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="space-y-2">
+
+              {isOpen && (
+                <>
+                  <div className="flex-1 text-left">
+                    <p className="font-semibold text-sm">{module.title}</p>
+                    {expandedModule === module.title && (
+                      <p className="text-xs opacity-75">{module.description}</p>
+                    )}
+                  </div>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform ${
+                      expandedModule === module.title ? "rotate-180" : ""
+                    }`}
+                  />
+                </>
+              )}
+            </button>
+
+            {/* Submenu Items */}
+            {isOpen && expandedModule === module.title && (
+              <div className="ml-2 space-y-1 border-l-2 border-slate-700 pl-2">
                 {module.items.map((item) => (
-                  <Link key={item.path} href={item.path}>
-                    <Button variant="ghost" className="w-full justify-start text-left">
-                      <item.icon className="w-4 h-4 mr-2" />
-                      {item.label}
-                    </Button>
-                  </Link>
+                  <button
+                    key={item.path}
+                    onClick={() => handleNavigation(item.path)}
+                    className="w-full flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all duration-150 group"
+                  >
+                    <item.icon className="h-4 w-4 text-slate-400 group-hover:text-orange-400" />
+                    <span>{item.label}</span>
+                  </button>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            )}
+          </div>
         ))}
+      </div>
+
+      {/* Footer */}
+      <div className="sticky bottom-0 bg-slate-900/80 backdrop-blur border-t border-slate-700 p-4">
+        {isOpen && (
+          <div className="text-xs text-slate-400 space-y-2">
+            <p className="font-semibold text-slate-300">Sistema MV Turismo</p>
+            <p>v1.0.0</p>
+          </div>
+        )}
       </div>
     </div>
   );
