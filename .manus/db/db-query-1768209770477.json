@@ -1,0 +1,13 @@
+{
+  "query": "SELECT COUNT(*) as total FROM vehicles;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT COUNT(*) as total FROM vehicles;",
+  "rows": [
+    {
+      "total": "46"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\n46\n",
+  "stderr": "",
+  "execution_time_ms": 137
+}

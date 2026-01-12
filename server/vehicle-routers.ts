@@ -6,6 +6,7 @@ import { db } from "./db";
 import { vehicles } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { logAudit } from "./_core/audit";
 
 export const vehicleRouter = router({
   // Listar todos os veículos
@@ -52,8 +53,22 @@ export const vehicleRouter = router({
         notes: z.string().optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const [result] = await db.insert(vehicles).values(input);
+      
+      // Log de auditoria
+      await logAudit({
+        userId: ctx.user!.id,
+        username: (ctx.user as any).username || ctx.user!.name,
+        action: "create",
+        module: "frota",
+        entity: "vehicles",
+        entityId: result.insertId,
+        description: `Criou veículo: ${input.plate} - ${input.model}`,
+        newValues: input,
+        ipAddress: ctx.req.ip || "unknown",
+        userAgent: ctx.req.headers["user-agent"] || "unknown",
+      });
 
       return { success: true };
     }),
@@ -78,13 +93,31 @@ export const vehicleRouter = router({
         notes: z.string().optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const { id, ...data } = input;
+      
+      // Buscar valores antigos
+      const [oldVehicle] = await db.select().from(vehicles).where(eq(vehicles.id, id)).limit(1);
 
       await db
         .update(vehicles)
         .set(data)
         .where(eq(vehicles.id, id));
+      
+      // Log de auditoria
+      await logAudit({
+        userId: ctx.user!.id,
+        username: (ctx.user as any).username || ctx.user!.name,
+        action: "update",
+        module: "frota",
+        entity: "vehicles",
+        entityId: id,
+        description: `Atualizou veículo: ${oldVehicle?.plate || id}`,
+        oldValues: oldVehicle,
+        newValues: { ...oldVehicle, ...data },
+        ipAddress: ctx.req.ip || "unknown",
+        userAgent: ctx.req.headers["user-agent"] || "unknown",
+      });
 
       return { success: true };
     }),
@@ -92,8 +125,25 @@ export const vehicleRouter = router({
   // Deletar veículo
   delete: frotaProcedure
     .input(z.object({ id: z.number() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Buscar dados antes de deletar
+      const [vehicle] = await db.select().from(vehicles).where(eq(vehicles.id, input.id)).limit(1);
+      
       await db.delete(vehicles).where(eq(vehicles.id, input.id));
+      
+      // Log de auditoria
+      await logAudit({
+        userId: ctx.user!.id,
+        username: (ctx.user as any).username || ctx.user!.name,
+        action: "delete",
+        module: "frota",
+        entity: "vehicles",
+        entityId: input.id,
+        description: `Deletou veículo: ${vehicle?.plate || input.id}`,
+        oldValues: vehicle,
+        ipAddress: ctx.req.ip || "unknown",
+        userAgent: ctx.req.headers["user-agent"] || "unknown",
+      });
 
       return { success: true };
     }),

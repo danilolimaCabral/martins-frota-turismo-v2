@@ -343,3 +343,24 @@
 - [x] Testar login com usuário teste (permissões limitadas)
 - [ ] Verificar logs de acesso na auditoria
 - [x] Validar bloqueio de acesso por permissões
+
+
+## 🔧 CORREÇÕES FINAIS (NOVA RODADA)
+
+### Carregamento de Veículos
+- [ ] Investigar erro no endpoint vehicle.list
+- [ ] Verificar se há veículos no banco de dados
+- [ ] Testar frotaProcedure com usuário teste
+- [ ] Corrigir carregamento travado na página /admin/veiculos
+
+### Erro no Servidor
+- [x] Buscar typo "financeiroProceduree" no código (não encontrado no source)
+- [x] Corrigir para "financeiroProcedure" (não necessário)
+- [x] Reiniciar servidor e validar (erro pode ser temporário)
+
+### Auditoria Completa
+- [x] Aplicar logAudit() em vehicle-routers.ts (create, update, delete)
+- [ ] Aplicar logAudit() em funcionario-routers.ts (create, update, delete)
+- [ ] Aplicar logAudit() em financeiro-routers.ts (create, update, delete)
+- [ ] Aplicar logAudit() em folha-routers.ts (aprovar, rejeitar)
+- [ ] Testar logs de auditoria no painel AdminAuditoria
