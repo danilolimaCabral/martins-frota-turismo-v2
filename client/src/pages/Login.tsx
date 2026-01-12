@@ -13,6 +13,22 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showSetupButton, setShowSetupButton] = useState(false);
+
+  // Verificar se precisa criar admin
+  const { data: setupData } = trpc.localAuth.needsSetup.useQuery();
+  
+  const createAdminMutation = trpc.localAuth.createDefaultAdmin.useMutation({
+    onSuccess: (data) => {
+      setShowSetupButton(false);
+      setError("");
+      setUsername(data.username);
+      setPassword(data.password);
+    },
+    onError: (error) => {
+      setError(error.message || "Erro ao criar admin");
+    },
+  });
 
   const loginMutation = trpc.localAuth.login.useMutation({
     onSuccess: (data) => {
@@ -41,6 +57,10 @@ export function Login() {
     }
 
     loginMutation.mutate({ username, password });
+  };
+
+  const handleCreateAdmin = () => {
+    createAdminMutation.mutate();
   };
 
   return (
@@ -143,6 +163,25 @@ export function Login() {
               )}
             </Button>
           </form>
+
+          {/* Setup Button */}
+          {setupData?.needsSetup && (
+            <Button
+              type="button"
+              onClick={handleCreateAdmin}
+              className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-2 rounded-lg transition-all"
+              disabled={createAdminMutation.isPending}
+            >
+              {createAdminMutation.isPending ? (
+                <>
+                  <Loader className="h-4 w-4 mr-2 animate-spin" />
+                  Criando Admin...
+                </>
+              ) : (
+                "🚀 Criar Usuário Admin"
+              )}
+            </Button>
+          )}
 
           {/* Demo Credentials */}
           <div className="bg-white/5 border border-white/10 rounded-lg p-4">

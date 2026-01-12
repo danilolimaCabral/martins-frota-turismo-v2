@@ -160,22 +160,16 @@ export function AdminDashboard() {
   return (
     <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Sidebar Vertical */}
-      <div className="w-20 bg-white/5 backdrop-blur-md border-r border-white/10 flex flex-col items-center py-4 gap-2 shadow-xl">
+      <div className="w-24 bg-gradient-to-b from-slate-800 to-slate-900 border-r border-white/10 flex flex-col items-center py-6 gap-4 shadow-2xl">
         {/* Logo e Nome da Empresa */}
-        <div className="w-full px-2 mb-6 text-center">
-          <div className="bg-white/10 rounded-lg p-3 mb-2">
-            <img
-              src="/logo.png"
-              alt="Martins Turismo"
-              className="h-10 w-10 mx-auto object-contain"
-              onError={(e) => {
-                // Fallback se a logo não existir
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
-            />
+        <div className="w-full px-2 text-center">
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg p-3 mb-3 shadow-lg">
+            <div className="h-12 w-12 mx-auto flex items-center justify-center text-white font-bold text-lg">
+              MV
+            </div>
           </div>
-          <p className="text-white text-xs font-bold">Martins</p>
-          <p className="text-white/60 text-xs">Turismo</p>
+          <p className="text-white text-xs font-bold tracking-tight">Martins</p>
+          <p className="text-orange-400 text-xs font-semibold">Turismo</p>
         </div>
 
         {/* Divider */}

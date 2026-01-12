@@ -1,0 +1,42 @@
+{
+  "query": "SELECT * FROM local_users LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT * FROM local_users LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "$2b$10$OXRlCuKCPlY6fbicfrL9lujL6wzUiQ7QS/OW8XgYjM0o0Aw6EXbDO",
+      "email": "admin@martinsturismo.com.br",
+      "name": "Administrador",
+      "role": "admin",
+      "permissions": "{\"rh\":true,\"financeiro\":true,\"frota\":true,\"agenda\":true,\"roteirizacao\":true,\"relatorios\":true}",
+      "active": "1",
+      "createdAt": "2026-01-12 00:09:34",
+      "updatedAt": "2026-01-12 11:13:09",
+      "nome": "Usuário Teste",
+      "ativo": "1",
+      "created_at": "2026-01-12 00:56:15",
+      "updated_at": "2026-01-12 11:13:09"
+    },
+    {
+      "id": "4",
+      "username": "teste",
+      "password": "$2b$10$o7o4EJnji7B8koLtlwuJ6eqWIjVi3QYv3cNB6r7Aeuex1LCNKvl6q",
+      "email": "teste@martinsturismo.com.br",
+      "name": "Usuário Teste",
+      "role": "user",
+      "permissions": "{\"frota\": true, \"rh\": false, \"financeiro\": false}",
+      "active": "1",
+      "createdAt": "2026-01-12 00:14:08",
+      "updatedAt": "2026-01-12 00:58:38",
+      "nome": "Usuário Teste",
+      "ativo": "1",
+      "created_at": "2026-01-12 00:56:15",
+      "updated_at": "2026-01-12 00:58:38"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tpassword\temail\tname\trole\tpermissions\tactive\tcreatedAt\tupdatedAt\tnome\tativo\tcreated_at\tupdated_at\n1\tadmin\t$2b$10$OXRlCuKCPlY6fbicfrL9lujL6wzUiQ7QS/OW8XgYjM0o0Aw6EXbDO\tadmin@martinsturismo.com.br\tAdministrador\tadmin\t{\"rh\":true,\"financeiro\":true,\"frota\":true,\"agenda\":true,\"roteirizacao\":true,\"relatorios\":true}\t1\t2026-01-12 00:09:34\t2026-01-12 11:13:09\tUsuário Teste\t1\t2026-01-12 00:56:15\t2026-01-12 11:13:09\n4\tteste\t$2b$10$o7o4EJnji7B8koLtlwuJ6eqWIjVi3QYv3cNB6r7Aeuex1LCNKvl6q\tteste@martinsturismo.com.br\tUsuário Teste\tuser\t{\"frota\": true, \"rh\": false, \"financeiro\": false}\t1\t2026-01-12 00:14:08\t2026-01-12 00:58:38\tUsuário Teste\t1\t2026-01-12 00:56:15\t2026-01-12 00:58:38\n",
+  "stderr": "",
+  "execution_time_ms": 573
+}

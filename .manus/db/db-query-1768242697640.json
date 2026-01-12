@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, username, nome, role, ativo FROM local_users;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute SELECT id, username, nome, role, ativo FROM local_users;",
+  "rows": [
+    {
+      "id": "1",
+      "username": "admin",
+      "nome": "Usuário Teste",
+      "role": "admin",
+      "ativo": "1"
+    },
+    {
+      "id": "4",
+      "username": "teste",
+      "nome": "Usuário Teste",
+      "role": "user",
+      "ativo": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tusername\tnome\trole\tativo\n1\tadmin\tUsuário Teste\tadmin\t1\n4\tteste\tUsuário Teste\tuser\t1\n",
+  "stderr": "",
+  "execution_time_ms": 415
+}
