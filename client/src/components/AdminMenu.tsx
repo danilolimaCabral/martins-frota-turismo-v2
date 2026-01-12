@@ -119,7 +119,7 @@ const menuModules: MenuModule[] = [
     items: [
       { label: "Despesas", path: "/admin/despesas", icon: DollarSign },
       { label: "Financeiro", path: "/admin/financeiro", icon: Wallet },
-      { label: "Fluxo de Caixa", path: "/admin/fluxocaixa", icon: TrendingUp },
+      { label: "Fluxo de Caixa", path: "/admin/fluxo-caixa", icon: TrendingUp },
       { label: "DRE", path: "/admin/dre", icon: BarChart3 },
       { label: "CNAB", path: "/admin/cnab", icon: FileText },
       { label: "Conciliação", path: "/admin/conciliacao", icon: CheckSquare },

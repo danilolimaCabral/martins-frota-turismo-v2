@@ -54,10 +54,10 @@ import AdminConfiguracoesGerais from "./pages/AdminConfiguracoesGerais";
 import { DashboardPersonalizado } from "./pages/DashboardPersonalizado";
 import AdminControleFerias from "./pages/AdminControleFerias";
 import AdminDRE from "./pages/AdminDRE";
+import AdminFluxoCaixa from "./pages/AdminFluxoCaixa";
 import AdminDetalhesEvento from "./pages/AdminDetalhesEvento";
 import AdminDocumentosRH from "./pages/AdminDocumentosRH";
 import AdminExportacaoGPS from "./pages/AdminExportacaoGPS";
-import AdminFluxoCaixa from "./pages/AdminFluxoCaixa";
 import AdminFolhaPagamentoAvancada from "./pages/AdminFolhaPagamentoAvancada";
 import AdminGestaoTickets from "./pages/AdminGestaoTickets";
 import AdminHistoricoRotas from "./pages/AdminHistoricoRotas";
@@ -257,6 +257,11 @@ function Router() {
         <Route path="/admin/dre">
           <ProtectedRoute>
             <AdminDRE />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/fluxo-caixa">
+          <ProtectedRoute>
+            <AdminFluxoCaixa />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/detalhesevento">

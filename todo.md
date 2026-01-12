@@ -531,3 +531,26 @@
 - [ ] Implementar atualização de posições
 - [ ] Adicionar alertas de desvio
 - [ ] Implementar histórico de posições
+
+
+## 🔄 FASE 4 - FLUXO DE CAIXA, WEBSOCKET E GRÁFICOS
+
+### Fluxo de Caixa
+- [x] Criar router fluxoCaixa com queries
+- [x] Implementar página AdminFluxoCaixa
+- [x] Adicionar gráfico de entradas/saídas
+- [x] Integrar dados reais do banco
+
+### WebSocket em Tempo Real
+- [ ] Configurar Socket.io no servidor
+- [ ] Implementar eventos de rastreamento
+- [ ] Atualizar página Monitoramento com WebSocket
+- [ ] Testar conexão em tempo real
+
+### Relatório Financeiro Avançado
+- [ ] Criar router relatorioFinanceiro
+- [ ] Implementar página com múltiplos gráficos
+- [ ] Gráfico de pizza (receitas por categoria)
+- [ ] Gráfico de barras (despesas mensais)
+- [ ] Gráfico de linhas (tendência de lucro)
+- [ ] Integrar dados reais
