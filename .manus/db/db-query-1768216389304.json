@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE local_users SET password = '$2b$10$OXRlCuKCPlY6fbicfrL9lujL6wzUiQ7QS/OW8XgYjM0o0Aw6EXbDO' WHERE username = 'admin';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4GH8MCSqhpmNowN.efeda4e2cea8 --database fsPfZDk4yqhxEkCbsNC9Vh --execute UPDATE local_users SET password = '$2b$10$OXRlCuKCPlY6fbicfrL9lujL6wzUiQ7QS/OW8XgYjM0o0Aw6EXbDO' WHERE username = 'admin';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 52
+}

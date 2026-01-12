@@ -382,3 +382,19 @@
 - [x] Popular funcionários (8 funcionários de teste)
 - [ ] Popular despesas (tabela expenses tem estrutura diferente)
 - [x] Validar dados no painel administrativo
+
+
+## 🔑 CORREÇÃO LOGIN ADMIN
+
+- [x] Verificar se usuário "Admin" existe no banco local_users
+- [x] Criar/atualizar usuário admin com username "admin" e senha "123456"
+- [x] Testar login com credenciais admin/123456
+- [x] Validar acesso completo ao sistema (todos os módulos)
+
+
+## 🎨 CORREÇÃO UI - ESPAÇO EM BRANCO
+
+- [x] Identificar componente causando espaço em branco no dashboard (Admin.tsx)
+- [x] Corrigir CSS/layout (adicionar lg:flex no container e flex-1 no main)
+- [x] Testar em diferentes resoluções
+- [x] Validar correção com usuário
