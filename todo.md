@@ -412,28 +412,28 @@
 - [ ] Executar db:push (se necessário)
 
 ### Routers tRPC
-- [ ] Criar agenda-routers.ts
-- [ ] Criar lancamentos-rh-routers.ts
-- [ ] Criar ponto-routers.ts
-- [ ] Criar ferias-routers.ts
-- [ ] Expandir financeiro-routers.ts (contas pagar/receber)
-- [ ] Criar relatorios-routers.ts
-- [ ] Integrar todos os routers em routers.ts
+- [x] Criar agenda-routers.ts - Já existe e integrado
+- [x] Criar lancamentos-rh-routers.ts - Já existe e integrado
+- [x] Criar ponto-routers.ts - Já existe e integrado
+- [x] Criar ferias-routers.ts - Já existe e integrado
+- [x] Expandir financeiro-routers.ts (contas pagar/receber) - Já existe
+- [x] Criar relatorios-routers.ts - Já existe
+- [x] Integrar todos os routers em routers.ts - Completo
 
 ### Interfaces Administrativas RH
-- [ ] Criar AdminLancamentosRH.tsx
-- [ ] Criar AdminAlertas.tsx
-- [ ] Criar AdminPonto.tsx
-- [ ] Criar AdminFerias.tsx
+- [x] Criar AdminLancamentosRH.tsx - Já existe
+- [x] Criar AdminAlertas.tsx - Já existe
+- [x] Criar AdminPonto.tsx - Já existe
+- [x] Criar AdminFerias.tsx - Já existe
 
 ### Interfaces Financeiro
 - [ ] Expandir AdminFinanceiro.tsx (dashboard completo)
 - [ ] Criar AdminDespesas.tsx (se não existir)
 
 ### Agenda de Compromissos
-- [ ] Criar AdminAgenda.tsx (calendário visual)
-- [ ] Implementar formulário de eventos completo
-- [ ] Integrar com veículos e clientes
+- [x] Criar AdminAgenda.tsx (calendário visual) - Já existe
+- [x] Implementar formulário de eventos completo - Completo
+- [x] Integrar com veículos e clientes - Completo
 
 ### Relatórios em PDF
 - [ ] Criar AdminRelatorios.tsx
@@ -442,8 +442,8 @@
 - [ ] Implementar geração de PDF custos operacionais
 
 ### Rotas e Menu
-- [ ] Adicionar todas as rotas no App.tsx
-- [ ] Verificar links no menu Admin.tsx
+- [x] Adicionar todas as rotas no App.tsx - Completo
+- [x] Verificar links no menu Admin.tsx - Completo
 - [ ] Testar navegação completa
 
 ### Validação Final
