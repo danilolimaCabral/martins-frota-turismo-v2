@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -34,10 +34,14 @@ export default function AdminRoteirizacao() {
 
   const initTablesMutation = trpc.roteirizacao.initTables.useMutation({
     onSuccess: () => {
-      alert("Tabelas inicializadas!");
       refetch();
     },
   });
+
+  // Inicializar tabelas automaticamente ao carregar a página
+  useEffect(() => {
+    initTablesMutation.mutate();
+  }, []);
 
   const createMutation = trpc.roteirizacao.create.useMutation({
     onSuccess: () => {
@@ -169,9 +173,7 @@ export default function AdminRoteirizacao() {
           <p className="text-muted-foreground">Otimize rotas de fretamento com pontos de embarque</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => initTablesMutation.mutate()}>
-            Inicializar Tabelas
-          </Button>
+          {/* Botão removido - tabelas inicializadas automaticamente */}
           <Dialog open={modalNovaRota} onOpenChange={setModalNovaRota}>
             <DialogTrigger asChild>
               <Button className="gap-2">
