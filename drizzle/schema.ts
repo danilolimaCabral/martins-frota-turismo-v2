@@ -1377,3 +1377,4 @@ export const auditLogs = mysqlTable("audit_logs", {
 
 export type AuditLog = typeof auditLogs.$inferSelect;
 export type InsertAuditLog = typeof auditLogs.$inferInsert;
+
