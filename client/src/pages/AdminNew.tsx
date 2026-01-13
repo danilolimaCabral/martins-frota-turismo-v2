@@ -198,17 +198,17 @@ export default function AdminNew() {
           ))}
         </nav>
 
-        {/* User Profile */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-blue-500/30 bg-blue-700/50">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">
+        {/* User Profile - Bottom */}
+        <div className="mt-auto p-4 border-t border-blue-500/30 bg-blue-700/50">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold text-xs">
                   {user?.name?.charAt(0) || "U"}
                 </span>
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold truncate">{user?.name || "Usuário"}</p>
+              <div className="min-w-0 hidden lg:block">
+                <p className="text-xs font-semibold truncate text-white">{user?.name || "Usuário"}</p>
                 <p className="text-xs text-blue-100 truncate">{user?.email || "user@martins.com"}</p>
               </div>
             </div>
@@ -216,7 +216,8 @@ export default function AdminNew() {
               variant="ghost"
               size="icon"
               onClick={handleLogout}
-              className="text-blue-100 hover:text-white hover:bg-blue-500/20"
+              className="text-blue-100 hover:text-white hover:bg-blue-500/20 flex-shrink-0"
+              title="Sair"
             >
               <LogOut className="w-4 h-4" />
             </Button>
@@ -226,24 +227,10 @@ export default function AdminNew() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
-        {/* Top Bar */}
-        <div className="bg-white border-b border-slate-200 p-4 md:p-6 hidden lg:flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">Painel Administrativo</h1>
-            <p className="text-sm text-slate-500">Bem-vindo ao sistema de gestão Martins</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" title="Notificações">
-              <Bell className="w-5 h-5" />
-            </Button>
-            <Button variant="outline" size="icon" title="Configurações">
-              <Settings className="w-5 h-5" />
-            </Button>
-          </div>
-        </div>
+        {/* Top Bar - Removed */}
 
         {/* Content Area */}
-        <div className="flex-1 p-4 md:p-6 overflow-auto">
+        <div className="flex-1 p-4 md:p-4 overflow-auto">
           {currentPage === "/admin" ? (
             <div className="space-y-6">
               {/* Dashboard Cards */}
@@ -267,13 +254,7 @@ export default function AdminNew() {
                 })}
               </div>
 
-              {/* Welcome Message */}
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white">
-                <h2 className="text-2xl font-bold mb-2">Bem-vindo, {user?.name || "Usuário"}!</h2>
-                <p className="text-blue-100">
-                  Selecione um módulo no menu lateral para começar a gerenciar sua frota.
-                </p>
-              </div>
+
             </div>
           ) : (
             <div className="bg-white rounded-lg p-8 text-center">
