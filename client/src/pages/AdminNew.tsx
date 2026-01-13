@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { NotificationCenter } from "@/components/NotificationCenter";
+import { DashboardCharts } from "@/components/DashboardCharts";
 import {
   LayoutDashboard,
   Bus,
@@ -113,14 +115,17 @@ export default function AdminNew() {
             <img src="/images/logo-martins-onibus.png" alt="Martins" className="h-8 w-auto" />
             <h1 className="font-bold text-slate-900">Martins</h1>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="hover:bg-slate-100"
-          >
-            {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </Button>
+          <div className="flex items-center gap-2">
+            <NotificationCenter />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="hover:bg-slate-100"
+            >
+              {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -239,6 +244,9 @@ export default function AdminNew() {
                   <p className="text-slate-300">Gerencie sua frota com eficiência e segurança</p>
                 </div>
 
+                {/* Dashboard Charts */}
+                <DashboardCharts />
+
                 {/* Dashboard Cards */}
                 <div>
                   <h2 className="text-xl font-bold text-slate-900 mb-4">Resumo Executivo</h2>
@@ -263,6 +271,7 @@ export default function AdminNew() {
                     })}
                   </div>
                 </div>
+
 
                 {/* Quick Access */}
                 <div>
