@@ -33,8 +33,7 @@ import {
   CreditCard,
   FileDown,
 } from "lucide-react";
-import { HoleriteViewer } from "@/components/HoleriteViewer";
-import { useHoleritePDF } from "@/hooks/useHoleritePDF";
+
 
 export default function AdminFolhaPagamento() {
   const [, setLocation] = useLocation();
@@ -44,7 +43,6 @@ export default function AdminFolhaPagamento() {
   const [mesFilter, setMesFilter] = useState((new Date().getMonth() + 1).toString());
   const [holeriteViewerOpen, setHoleriteViewerOpen] = useState(false);
   const [holeriteData, setHoleriteData] = useState<any>(null);
-  const { gerarPDFComDados } = useHoleritePDF();
 
   // Form state
   const [formData, setFormData] = useState({
@@ -121,89 +119,7 @@ export default function AdminFolhaPagamento() {
   };
 
   const handleVisualizarHolerite = (folha: any) => {
-    // Dados de exemplo para o holerite
-    const holeriteData = {
-      funcionario: {
-        nome: "João Silva Santos",
-        cpf: "123.456.789-01",
-        matricula: "00001",
-        cargo: "Gerente Administrativo",
-        departamento: "Administrativo",
-        dataAdmissao: "2020-01-15",
-        salarioBase: 4500,
-      },
-      empresa: {
-        cnpj: "12.345.678/0001-90",
-        razaoSocial: "MARTINS TURISMO LTDA",
-        endereco: "Rua das Flores, 123",
-        cidade: "CURITIBA",
-        uf: "PR",
-      },
-      periodo: {
-        mes: folha.mesReferencia,
-        ano: folha.anoReferencia,
-      },
-      proventos: {
-        salarioBase: parseFloat(folha.totalBruto || "0"),
-        horasExtras50: 0,
-        horasExtras100: 0,
-        adicionais: 0,
-        comissoes: 0,
-        bonus: 0,
-        ferias: 0,
-        decimoTerceiro: 0,
-        total: parseFloat(folha.totalBruto || "0"),
-      },
-      descontos: {
-        inss: parseFloat(folha.totalDescontos || "0") * 0.6,
-        irrf: parseFloat(folha.totalDescontos || "0") * 0.2,
-        valeTransporte: parseFloat(folha.totalDescontos || "0") * 0.2,
-        valeAlimentacao: 0,
-        contribuicaoSindical: 0,
-        pensaoAlimenticia: 0,
-        adiantamento: 0,
-        total: parseFloat(folha.totalDescontos || "0"),
-      },
-      obrigacoesEmpresa: {
-        fgts: parseFloat(folha.totalBruto || "0") * 0.08,
-        contribuicaoPatronal: parseFloat(folha.totalBruto || "0") * 0.2,
-        sat: parseFloat(folha.totalBruto || "0") * 0.02,
-        total: parseFloat(folha.totalBruto || "0") * 0.3,
-      },
-      liquido: parseFloat(folha.totalLiquido || "0"),
-      baseINSS: parseFloat(folha.totalBruto || "0"),
-      baseIRRF: parseFloat(folha.totalBruto || "0") - (parseFloat(folha.totalDescontos || "0") * 0.6),
-    };
-    setHoleriteData(holeriteData);
-    setHoleriteViewerOpen(true);
-  };
-
-  const handleDownloadPDF = () => {
-    if (holeriteData) {
-      const htmlContent = `
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h1>${holeriteData.empresa.razaoSocial}</h1>
-          <p>CNPJ: ${holeriteData.empresa.cnpj}</p>
-          <h2>HOLERITE - ${holeriteData.periodo.mes}/${holeriteData.periodo.ano}</h2>
-          <p>Funcionário: ${holeriteData.funcionario.nome}</p>
-          <p>CPF: ${holeriteData.funcionario.cpf}</p>
-          <h3>PROVENTOS</h3>
-          <p>Salário Base: R$ ${holeriteData.proventos.salarioBase.toFixed(2)}</p>
-          <p>Total: R$ ${holeriteData.proventos.total.toFixed(2)}</p>
-          <h3>DESCONTOS</h3>
-          <p>Total: R$ ${holeriteData.descontos.total.toFixed(2)}</p>
-          <h3>LÍQUIDO A RECEBER</h3>
-          <p style="font-size: 24px; font-weight: bold; color: green;">R$ ${holeriteData.liquido.toFixed(2)}</p>
-        </div>
-      `;
-      gerarPDFComDados(
-        htmlContent,
-        holeriteData.funcionario.nome,
-        holeriteData.periodo.mes,
-        holeriteData.periodo.ano
-      );
-      toast.success("PDF gerado com sucesso!");
-    }
+    toast.info("Funcionalidade de visualização de holerite em desenvolvimento");
   };
 
   const getStatusColor = (status: string) => {
@@ -466,16 +382,7 @@ export default function AdminFolhaPagamento() {
                     Visualizar Holerite
                   </Button>
 
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleDownloadPDF}
-                    className="bg-purple-50 text-purple-700 hover:bg-purple-100"
-                    disabled={!holeriteData}
-                  >
-                    <FileDown className="h-4 w-4 mr-2" />
-                    PDF
-                  </Button>
+
 
                   {folha.status === "aberta" && (
                     <Button
@@ -519,14 +426,6 @@ export default function AdminFolhaPagamento() {
         )}
       </main>
 
-      {/* Holerite Viewer Modal */}
-      {holeriteData && (
-        <HoleriteViewer
-          data={holeriteData}
-          open={holeriteViewerOpen}
-          onOpenChange={setHoleriteViewerOpen}
-        />
-      )}
     </div>
   );
 }
