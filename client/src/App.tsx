@@ -49,8 +49,7 @@ import AdminBackupRestore from "./pages/AdminBackupRestore";
 import { AdminCNAB } from "./pages/AdminCNAB";
 import AdminCNAB240 from "./pages/AdminCNAB240";
 import AdminCalendarioAvancado from "./pages/AdminCalendarioAvancado";
-
-
+import ThemeSelector from "./pages/ThemeSelector";
 
 import { DashboardPersonalizado } from "./pages/DashboardPersonalizado";
 import AdminControleFerias from "./pages/AdminControleFerias";
@@ -83,6 +82,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/login">
         <Login />
+      </Route>
+      <Route path="/theme">
+        <ThemeSelector />
       </Route>
       <Route path="/dashboard">
         <ProtectedRoute>

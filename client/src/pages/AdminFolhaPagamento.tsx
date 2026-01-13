@@ -277,7 +277,6 @@ export default function AdminFolhaPagamento() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos</SelectItem>
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((mes) => (
                       <SelectItem key={mes} value={mes.toString()}>
                         {getMesNome(mes)}
@@ -293,7 +292,6 @@ export default function AdminFolhaPagamento() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos</SelectItem>
                     {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((ano) => (
                       <SelectItem key={ano} value={ano.toString()}>
                         {ano}
