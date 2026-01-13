@@ -302,25 +302,25 @@ export function Rastreamento() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
       {/* Header */}
-      <div className="bg-slate-800/50 border-b border-white/10 p-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-white">Rastreamento em Tempo Real</h1>
-            <p className="text-white/60 text-sm">Monitoramento da frota de veículos</p>
+      <div className="bg-slate-800/50 border-b border-white/10 p-3 md:p-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
+          <div className="min-w-0">
+            <h1 className="text-lg md:text-2xl font-bold text-white truncate">Rastreamento em Tempo Real</h1>
+            <p className="text-white/60 text-xs md:text-sm truncate">Monitoramento da frota de veículos</p>
           </div>
-          <Button onClick={handleLogout} variant="outline" className="gap-2">
-            <LogOut className="h-4 w-4" />
-            Sair
+          <Button onClick={handleLogout} variant="outline" className="gap-2 flex-shrink-0 text-xs md:text-sm">
+            <LogOut className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Sair</span>
           </Button>
         </div>
       </div>
 
-      {/* Conteúdo Principal */}
-      <div className="flex-1 flex gap-4 p-4 overflow-hidden">
+      {/* Conteúdo Principal - Responsivo */}
+      <div className="flex-1 flex flex-col lg:flex-row gap-3 md:gap-4 p-3 md:p-4 overflow-hidden">
         {/* Painel Lateral Esquerdo */}
-        <div className="w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col">
+        <div className="w-full lg:w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col min-h-0">
           {/* Estatísticas */}
-          <div className="p-4 border-b border-white/10 space-y-2">
+          <div className="p-3 md:p-4 border-b border-white/10 space-y-2">
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-blue-500/20 border border-blue-500/30 p-2 rounded text-center">
                 <p className="text-white/60 text-xs">Total</p>
@@ -342,7 +342,7 @@ export function Rastreamento() {
           </div>
 
           {/* Filtros */}
-          <div className="p-4 border-b border-white/10 space-y-3">
+          <div className="p-3 md:p-4 border-b border-white/10 space-y-3">
             <div>
               <label className="text-white/60 text-xs font-semibold">Status</label>
               <select
@@ -372,8 +372,8 @@ export function Rastreamento() {
           </div>
 
           {/* Lista de Veículos */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="p-4 space-y-2">
+          <div className="flex-1 overflow-y-auto min-h-0">
+            <div className="p-3 md:p-4 space-y-2">
               {filteredVehicles.map((vehicle) => (
                 <button
                   key={vehicle.id}
@@ -412,21 +412,21 @@ export function Rastreamento() {
         </div>
 
         {/* Mapa */}
-        <div className="flex-1 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden">
+        <div className="hidden lg:flex lg:flex-1 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex-col min-h-0">
           <div id="map-container" className="w-full h-full" />
         </div>
 
         {/* Painel Lateral Direito - Detalhes */}
         {selectedVehicle && (
-          <div className="w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-white/10">
+          <div className="w-full lg:w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col min-h-0">
+            <div className="p-3 md:p-4 border-b border-white/10">
               <h3 className="text-lg font-bold text-white">{selectedVehicle.name}</h3>
               <p className="text-white/60 text-sm">{selectedVehicle.placa}</p>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 min-h-0">
               {/* Informações do Motorista */}
-              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
                 <p className="text-white/60 text-xs font-semibold mb-2">Motorista</p>
                 <p className="text-white font-semibold mb-2">{selectedVehicle.driver}</p>
                 <Button className="w-full gap-2 text-sm" variant="outline" size="sm">
@@ -436,7 +436,7 @@ export function Rastreamento() {
               </div>
 
               {/* Status e Localização */}
-              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
                 <p className="text-white/60 text-xs font-semibold mb-3">Localização</p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
@@ -459,7 +459,7 @@ export function Rastreamento() {
               </div>
 
               {/* Velocidade */}
-              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
                 <p className="text-white/60 text-xs font-semibold mb-3">Velocidade</p>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -477,7 +477,7 @@ export function Rastreamento() {
               </div>
 
               {/* Combustível */}
-              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
                 <p className="text-white/60 text-xs font-semibold mb-3">Combustível</p>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -505,7 +505,7 @@ export function Rastreamento() {
               </div>
 
               {/* Temperatura */}
-              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
                 <p className="text-white/60 text-xs font-semibold mb-2">Temperatura do Motor</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -520,7 +520,7 @@ export function Rastreamento() {
               </div>
 
               {/* Última Atualização */}
-              <div className="bg-slate-700/30 border border-white/10 p-3 rounded-lg">
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-white/60" />
                   <div>
@@ -534,7 +534,7 @@ export function Rastreamento() {
 
               {/* Alertas */}
               {selectedVehicle.fuel < 20 && (
-                <div className="bg-red-500/20 border border-red-500/30 p-3 rounded-lg flex items-start gap-2">
+                <div className="bg-red-500/20 border border-red-500/30 p-2 md:p-3 rounded-lg flex items-start gap-2">
                   <AlertTriangle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-red-400 font-semibold text-sm">Combustível Baixo</p>
@@ -544,7 +544,7 @@ export function Rastreamento() {
               )}
 
               {selectedVehicle.temperature > 100 && (
-                <div className="bg-orange-500/20 border border-orange-500/30 p-3 rounded-lg flex items-start gap-2">
+                <div className="bg-orange-500/20 border border-orange-500/30 p-2 md:p-3 rounded-lg flex items-start gap-2">
                   <AlertTriangle className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-orange-400 font-semibold text-sm">Motor Aquecido</p>
