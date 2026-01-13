@@ -40,6 +40,7 @@ import AdminPerfil from "./pages/AdminPerfil";
 import AdminAuditoria from "./pages/AdminAuditoria";
 import AdminConfiguracoes from "./pages/AdminConfiguracoes";
 import AdminDashboardExecutivo from "./pages/AdminDashboardExecutivo";
+import AdminDashboardFolha from "./pages/AdminDashboardFolha";
 import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
@@ -197,6 +198,11 @@ function Router() {
         <Route path="/admin/dashboard-executivo">
           <ProtectedRoute>
             <AdminDashboardExecutivo />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/dashboard-folha">
+          <ProtectedRoute>
+            <AdminDashboardFolha />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/manutencao">
