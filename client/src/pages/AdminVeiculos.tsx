@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Edit, Trash2, Car, Image } from "lucide-react";
+import { Plus, Edit, Trash2, Car, Image, Save, X } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminVeiculos() {
@@ -367,14 +367,17 @@ export default function AdminVeiculos() {
                     setIsDialogOpen(false);
                     resetForm();
                   }}
+                  className="gap-2"
                 >
+                  <X className="h-4 w-4" />
                   Cancelar
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-orange-500 hover:bg-orange-600"
+                  className="bg-orange-500 hover:bg-orange-600 gap-2"
                   disabled={createMutation.isPending || updateMutation.isPending}
                 >
+                  <Save className="h-4 w-4" />
                   {editingId ? "Atualizar" : "Criar"}
                 </Button>
               </div>
@@ -414,10 +417,10 @@ export default function AdminVeiculos() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 gap-1"
                     onClick={() => handleEdit(vehicle)}
                   >
-                    <Edit className="h-4 w-4 mr-1" />
+                    <Edit className="h-4 w-4" />
                     Editar
                   </Button>
                   <Button
@@ -440,10 +443,10 @@ export default function AdminVeiculos() {
           <h3 className="text-lg font-semibold mb-2">Nenhum veículo cadastrado</h3>
           <p className="text-gray-600 mb-4">Comece adicionando o primeiro veículo da frota</p>
           <Button
-            className="bg-orange-500 hover:bg-orange-600"
+            className="bg-orange-500 hover:bg-orange-600 gap-2"
             onClick={() => setIsDialogOpen(true)}
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4" />
             Adicionar Veículo
           </Button>
         </Card>

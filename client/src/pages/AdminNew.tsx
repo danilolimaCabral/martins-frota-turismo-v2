@@ -109,7 +109,7 @@ export default function AdminNew() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 lg:hidden">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
-            <img src="/logo-martins.webp" alt="Martins" className="h-8 w-auto" />
+            <img src="/images/logo-martins-onibus.png" alt="Martins" className="h-8 w-auto" />
             <h1 className="font-bold text-slate-900">Martins Admin</h1>
           </div>
           <Button
@@ -134,7 +134,7 @@ export default function AdminNew() {
         {/* Sidebar Header */}
         <div className="p-6 border-b border-blue-500/30 hidden lg:block">
           <div className="flex items-center gap-3">
-            <img src="/logo-martins.webp" alt="Martins" className="h-10 w-auto" />
+            <img src="/images/logo-martins-onibus.png" alt="Martins" className="h-12 w-auto" />
             <div>
               <h2 className="font-bold text-lg">Martins</h2>
               <p className="text-xs text-blue-100">Gestão de Frotas</p>
@@ -233,10 +233,10 @@ export default function AdminNew() {
             <p className="text-sm text-slate-500">Bem-vindo ao sistema de gestão Martins</p>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" title="Notificações">
               <Bell className="w-5 h-5" />
             </Button>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" title="Configurações">
               <Settings className="w-5 h-5" />
             </Button>
           </div>
