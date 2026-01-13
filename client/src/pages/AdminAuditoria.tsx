@@ -32,8 +32,8 @@ export default function AdminAuditoria() {
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({
     username: "",
-    action: "",
-    module: "",
+    action: "todas",
+    module: "todos",
     entity: "",
     startDate: "",
     endDate: "",
@@ -208,7 +208,7 @@ export default function AdminAuditoria() {
                   <SelectValue placeholder="Todas as ações" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todas</SelectItem>
+                  <SelectItem value="todas">Todas</SelectItem>
                   <SelectItem value="create">Criar</SelectItem>
                   <SelectItem value="update">Atualizar</SelectItem>
                   <SelectItem value="delete">Deletar</SelectItem>
@@ -227,7 +227,7 @@ export default function AdminAuditoria() {
                   <SelectValue placeholder="Todos os módulos" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
+                  <SelectItem value="todos">Todos</SelectItem>
                   <SelectItem value="rh">RH</SelectItem>
                   <SelectItem value="financeiro">Financeiro</SelectItem>
                   <SelectItem value="frota">Frota</SelectItem>

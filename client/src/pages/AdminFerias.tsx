@@ -29,7 +29,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 export default function AdminFerias() {
   const [modalNovaSolicitacao, setModalNovaSolicitacao] = useState(false);
-  const [statusFiltro, setStatusFiltro] = useState<string>("");
+  const [statusFiltro, setStatusFiltro] = useState<string>("todos");
 
   const { data: funcionarios } = trpc.funcionario.list.useQuery({});
   const { data: solicitacoes, refetch } = trpc.ferias.list.useQuery({
@@ -191,7 +191,7 @@ export default function AdminFerias() {
                   <SelectValue placeholder="Todos os status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
+                  <SelectItem value="todos">Todos</SelectItem>
                   <SelectItem value="pendente">Pendente</SelectItem>
                   <SelectItem value="aprovada">Aprovada</SelectItem>
                   <SelectItem value="rejeitada">Rejeitada</SelectItem>

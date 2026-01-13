@@ -38,6 +38,7 @@ import AdminFerias from "./pages/AdminFerias";
 import AdminUsuarios from "./pages/AdminUsuarios";
 import AdminPerfil from "./pages/AdminPerfil";
 import AdminAuditoria from "./pages/AdminAuditoria";
+import AdminConfiguracoes from "./pages/AdminConfiguracoes";
 import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
@@ -185,6 +186,11 @@ function Router() {
         <Route path="/admin/auditoria">
           <ProtectedRoute requireAdmin>
             <AdminAuditoria />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/configuracoes">
+          <ProtectedRoute>
+            <AdminConfiguracoes />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/manutencao">
