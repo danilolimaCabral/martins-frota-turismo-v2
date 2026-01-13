@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Edit, Trash2, Car } from "lucide-react";
+import { Plus, Edit, Trash2, Car, Image } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminVeiculos() {
@@ -159,8 +159,38 @@ export default function AdminVeiculos() {
     }
   };
 
+  // Imagens de vans disponíveis
+  const frota_images = [
+    { id: 1, name: "Van Executiva", src: "/images/frota/Gws7YuKTcYxJ.jpeg" },
+    { id: 2, name: "Van Branca", src: "/images/frota/W1iYzw2TnrYu.webp" },
+    { id: 3, name: "Ônibus Executivo", src: "/images/frota/nHyZXNDzoHEC.jpeg" },
+    { id: 4, name: "Ônibus de Turismo", src: "/images/frota/mefGUHXmB6yZ.jpg" },
+  ];
+
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 space-y-6">
+      {/* Galeria de Frota */}
+      <div className="bg-gradient-to-r from-blue-50 to-orange-50 p-6 rounded-lg border border-blue-200">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <Image className="w-6 h-6 text-orange-600" />
+          Galeria da Frota
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {frota_images.map((img) => (
+            <div key={img.id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+              <img 
+                src={img.src} 
+                alt={img.name}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-3 text-center">
+                <p className="font-semibold text-sm text-gray-700">{img.name}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">Gestão de Veículos</h1>
