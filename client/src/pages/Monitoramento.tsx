@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { MapView } from "@/components/Map";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useWebSocketTracking } from "@/hooks/useWebSocketTracking";
 import {
   Truck,
   AlertTriangle,
@@ -21,6 +22,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import type { VehicleLocation } from "@/hooks/useWebSocketTracking";
 
 interface Vehicle {
   id: number;
@@ -42,6 +44,27 @@ interface Vehicle {
 }
 
 export function Monitoramento() {
+  // WebSocket para rastreamento em tempo real
+  const { isConnected, currentLocation, routeHistory, alerts } = useWebSocketTracking({
+    onLocationUpdate: (location: VehicleLocation) => {
+      // Atualizar veículo selecionado com nova localização
+      setSelectedVehicle((prev) => {
+        if (prev && prev.id === location.vehicleId) {
+          return {
+            ...prev,
+            currentLat: location.lat,
+            currentLng: location.lng,
+            currentSpeed: location.speed,
+            currentKm: location.km,
+            fuelLevel: location.fuelLevel,
+            lastUpdate: new Date(location.timestamp),
+          };
+        }
+        return prev;
+      });
+    },
+  });
+
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("todos");

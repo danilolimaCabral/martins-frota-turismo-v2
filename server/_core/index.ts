@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
+import type { Server as HTTPServer } from "http";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 // OAuth desabilitado - usando autenticação local
 // import { registerOAuthRoutes } from "./oauth";
@@ -9,6 +10,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { handleRestLogin } from "../rest-login";
 import { serveStatic, setupVite } from "./vite";
+import { setupWebSocket, startVehicleSimulation } from "../websocket";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -41,6 +43,10 @@ async function startServer() {
   // REST Login endpoint (bypass tRPC)
   app.post("/api/login", handleRestLogin);
   
+  // WebSocket para rastreamento em tempo real
+  const io = setupWebSocket(server);
+  startVehicleSimulation(io);
+
   // tRPC API
   app.use(
     "/api/trpc",
@@ -65,6 +71,7 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    console.log(`WebSocket server initialized on port ${port}`);
   });
 }
 
