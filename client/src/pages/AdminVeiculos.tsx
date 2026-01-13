@@ -161,10 +161,14 @@ export default function AdminVeiculos() {
 
   // Imagens de vans disponíveis
   const frota_images = [
-    { id: 1, name: "Van Executiva", src: "/images/frota/Gws7YuKTcYxJ.jpeg" },
-    { id: 2, name: "Van Branca", src: "/images/frota/W1iYzw2TnrYu.webp" },
+    { id: 1, name: "Van Executiva", src: "/images/frota/xJ1ocxf1kyfz.jpeg" },
+    { id: 2, name: "Van Branca", src: "/images/frota/NWgU53uxmOKB.webp" },
     { id: 3, name: "Ônibus Executivo", src: "/images/frota/nHyZXNDzoHEC.jpeg" },
-    { id: 4, name: "Ônibus de Turismo", src: "/images/frota/mefGUHXmB6yZ.jpg" },
+    { id: 4, name: "Ônibus de Turismo", src: "/images/frota/tezu6ejK2xid.webp" },
+    { id: 5, name: "Ônibus Scania", src: "/images/frota/nAfpAjR0VxlA.png" },
+    { id: 6, name: "Micro-ônibus", src: "/images/frota/mefGUHXmB6yZ.jpg" },
+    { id: 7, name: "Van Turismo", src: "/images/frota/yWmxRzilxcML.png" },
+    { id: 8, name: "Van Mercedes", src: "/images/frota/W1iYzw2TnrYu.webp" },
   ];
 
   return (

@@ -153,3 +153,6 @@ export function MapView({
     <div ref={mapContainer} className={cn("w-full h-[500px]", className)} />
   );
 }
+
+// Export alias for compatibility
+export const Map = MapView;
