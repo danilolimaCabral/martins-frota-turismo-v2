@@ -37,7 +37,7 @@ import { cnabHistoricoRouter } from "./cnab-historico-routers";
 import { fuelingRouter } from "./fueling-routers";
 import { dreRouter } from "./dre-routers";
 import { fluxoCaixaRouter } from "./fluxo-caixa-routers";
-
+import { gpsRouter } from "./gps-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -79,7 +79,7 @@ export const appRouter = router({
   fueling: fuelingRouter,
   dre: dreRouter,
   fluxoCaixa: fluxoCaixaRouter,
-
+  gps: gpsRouter,
 });
 
 // TODO: add feature routers here, e.g.

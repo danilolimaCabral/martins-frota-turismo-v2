@@ -1502,3 +1502,108 @@ export const permissionAuditLog = mysqlTable("permission_audit_log", {
 
 export type PermissionAuditLog = typeof permissionAuditLog.$inferSelect;
 export type InsertPermissionAuditLog = typeof permissionAuditLog.$inferInsert;
+
+
+// ==================== GPS E RASTREAMENTO ====================
+
+export const gpsLocations = mysqlTable("gps_locations", {
+  id: int("id").autoincrement().primaryKey(),
+  vehicleId: int("vehicle_id")
+    .notNull()
+    .references(() => vehicles.id),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  speed: decimal("speed", { precision: 5, scale: 2 }).notNull(), // km/h
+  heading: int("heading"), // 0-360 graus
+  altitude: decimal("altitude", { precision: 8, scale: 2 }), // metros
+  accuracy: decimal("accuracy", { precision: 8, scale: 2 }), // metros
+  timestamp: timestamp("timestamp").notNull(),
+  provider: varchar("provider", { length: 50 }).notNull(), // onixsat, sascar, generic_rest, etc
+  providerVehicleId: varchar("provider_vehicle_id", { length: 100 }), // ID do veículo no sistema do provedor
+  fuelLevel: int("fuel_level"), // 0-100%
+  temperature: decimal("temperature", { precision: 5, scale: 2 }), // °C
+  odometer: decimal("odometer", { precision: 10, scale: 2 }), // km
+  status: mysqlEnum("status", ["moving", "stopped", "idle", "offline"]).default("offline"),
+  address: text("address"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type GPSLocation = typeof gpsLocations.$inferSelect;
+export type InsertGPSLocation = typeof gpsLocations.$inferInsert;
+
+export const gpsAlerts = mysqlTable("gps_alerts", {
+  id: int("id").autoincrement().primaryKey(),
+  vehicleId: int("vehicle_id")
+    .notNull()
+    .references(() => vehicles.id),
+  type: varchar("type", { length: 50 }).notNull(), // speeding, harsh_braking, harsh_acceleration, low_fuel, engine_fault, geofence_violation, offline, custom
+  severity: mysqlEnum("severity", ["low", "medium", "high", "critical"]).default("medium"),
+  message: text("message").notNull(),
+  timestamp: timestamp("timestamp").notNull(),
+  acknowledged: boolean("acknowledged").default(false),
+  acknowledgedBy: int("acknowledged_by").references(() => users.id),
+  acknowledgedAt: timestamp("acknowledged_at"),
+  metadata: text("metadata"), // JSON com dados adicionais
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type GPSAlert = typeof gpsAlerts.$inferSelect;
+export type InsertGPSAlert = typeof gpsAlerts.$inferInsert;
+
+export const gpsProviders = mysqlTable("gps_providers", {
+  id: varchar("id", { length: 100 }).primaryKey(),
+  type: varchar("type", { length: 50 }).notNull(), // onixsat, sascar, autotrac, generic_rest, traccar
+  name: varchar("name", { length: 100 }).notNull(),
+  apiKey: text("api_key").notNull(),
+  apiUrl: text("api_url").notNull(),
+  enabled: boolean("enabled").default(true),
+  syncInterval: int("sync_interval").default(30), // em segundos
+  credentials: text("credentials"), // JSON com credenciais adicionais
+  lastSync: timestamp("last_sync"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type GPSProvider = typeof gpsProviders.$inferSelect;
+export type InsertGPSProvider = typeof gpsProviders.$inferInsert;
+
+export const gpsGeofences = mysqlTable("gps_geofences", {
+  id: int("id").autoincrement().primaryKey(),
+  vehicleId: int("vehicle_id")
+    .notNull()
+    .references(() => vehicles.id),
+  name: varchar("name", { length: 100 }).notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  radius: decimal("radius", { precision: 8, scale: 2 }).notNull(), // metros
+  type: mysqlEnum("type", ["entry", "exit", "both"]).default("both"),
+  enabled: boolean("enabled").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type GPSGeofence = typeof gpsGeofences.$inferSelect;
+export type InsertGPSGeofence = typeof gpsGeofences.$inferInsert;
+
+export const gpsRouteHistory = mysqlTable("gps_route_history", {
+  id: int("id").autoincrement().primaryKey(),
+  vehicleId: int("vehicle_id")
+    .notNull()
+    .references(() => vehicles.id),
+  startTime: timestamp("start_time").notNull(),
+  endTime: timestamp("end_time"),
+  startLatitude: decimal("start_latitude", { precision: 10, scale: 8 }),
+  startLongitude: decimal("start_longitude", { precision: 11, scale: 8 }),
+  endLatitude: decimal("end_latitude", { precision: 10, scale: 8 }),
+  endLongitude: decimal("end_longitude", { precision: 11, scale: 8 }),
+  distance: decimal("distance", { precision: 10, scale: 2 }), // km
+  duration: int("duration"), // minutos
+  averageSpeed: decimal("average_speed", { precision: 5, scale: 2 }), // km/h
+  maxSpeed: decimal("max_speed", { precision: 5, scale: 2 }), // km/h
+  fuelConsumed: decimal("fuel_consumed", { precision: 8, scale: 2 }), // litros
+  provider: varchar("provider", { length: 50 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type GPSRouteHistory = typeof gpsRouteHistory.$inferSelect;
+export type InsertGPSRouteHistory = typeof gpsRouteHistory.$inferInsert;
