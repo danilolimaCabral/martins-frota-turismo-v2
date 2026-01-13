@@ -14,6 +14,14 @@ import {
   LogOut,
   Fuel,
   Thermometer,
+  ChevronDown,
+  ChevronUp,
+  BarChart3,
+  Sliders,
+  List,
+  Info,
+  Menu,
+  X,
 } from "lucide-react";
 
 interface Vehicle {
@@ -41,6 +49,11 @@ export function Rastreamento() {
   const [filterStatus, setFilterStatus] = useState<string>("todos");
   const [filterType, setFilterType] = useState<string>("todos");
   const [mapReady, setMapReady] = useState(false);
+  const [showLeftPanel, setShowLeftPanel] = useState(true);
+  const [showRightPanel, setShowRightPanel] = useState(true);
+  const [expandedStats, setExpandedStats] = useState(true);
+  const [expandedFilters, setExpandedFilters] = useState(true);
+  const [expandedVehicles, setExpandedVehicles] = useState(true);
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map());
 
