@@ -72,7 +72,6 @@ import AdminRastreamento from "./pages/AdminRastreamento";
 
 import AdminRelatoriosAgenda from "./pages/AdminRelatoriosAgenda";
 import AdminRelatoriosRH from "./pages/AdminRelatoriosRH";
-import { AdminModulos } from "./pages/AdminModulos";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -320,11 +319,6 @@ function Router() {
         <Route path="/admin/relatoriosrh">
           <ProtectedRoute>
             <AdminRelatoriosRH />
-          </ProtectedRoute>
-        </Route>
-        <Route path="/admin/modulos">
-          <ProtectedRoute>
-            <AdminModulos />
           </ProtectedRoute>
         </Route>
         <Route path="/rastreamento" component={Rastreamento} />

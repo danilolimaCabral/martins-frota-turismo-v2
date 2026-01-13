@@ -14,14 +14,6 @@ import {
   LogOut,
   Fuel,
   Thermometer,
-  ChevronDown,
-  ChevronUp,
-  BarChart3,
-  Sliders,
-  List,
-  Info,
-  Menu,
-  X,
 } from "lucide-react";
 
 interface Vehicle {
@@ -49,11 +41,6 @@ export function Rastreamento() {
   const [filterStatus, setFilterStatus] = useState<string>("todos");
   const [filterType, setFilterType] = useState<string>("todos");
   const [mapReady, setMapReady] = useState(false);
-  const [showLeftPanel, setShowLeftPanel] = useState(true);
-  const [showRightPanel, setShowRightPanel] = useState(true);
-  const [expandedStats, setExpandedStats] = useState(true);
-  const [expandedFilters, setExpandedFilters] = useState(true);
-  const [expandedVehicles, setExpandedVehicles] = useState(true);
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map());
 
@@ -329,33 +316,33 @@ export function Rastreamento() {
       </div>
 
       {/* Conteúdo Principal - Responsivo */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-4 md:gap-6 p-4 md:p-6 overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row gap-3 md:gap-4 p-3 md:p-4 overflow-hidden">
         {/* Painel Lateral Esquerdo */}
         <div className="w-full lg:w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col min-h-0">
           {/* Estatísticas */}
-          <div className="p-4 md:p-6 border-b border-white/10 space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-blue-500/20 border border-blue-500/30 p-3 md:p-4 rounded text-center">
-                <p className="text-white/60 text-sm md:text-base">Total</p>
-                <p className="text-2xl md:text-3xl font-bold text-blue-400 mt-1">{stats.total}</p>
+          <div className="p-3 md:p-4 border-b border-white/10 space-y-2">
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-blue-500/20 border border-blue-500/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Total</p>
+                <p className="text-xl font-bold text-blue-400">{stats.total}</p>
               </div>
-              <div className="bg-green-500/20 border border-green-500/30 p-3 md:p-4 rounded text-center">
-                <p className="text-white/60 text-sm md:text-base">Em Rota</p>
-                <p className="text-2xl md:text-3xl font-bold text-green-400 mt-1">{stats.emRota}</p>
+              <div className="bg-green-500/20 border border-green-500/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Em Rota</p>
+                <p className="text-xl font-bold text-green-400">{stats.emRota}</p>
               </div>
-              <div className="bg-blue-600/20 border border-blue-600/30 p-3 md:p-4 rounded text-center">
-                <p className="text-white/60 text-sm md:text-base">Parados</p>
-                <p className="text-2xl md:text-3xl font-bold text-blue-300 mt-1">{stats.parados}</p>
+              <div className="bg-blue-600/20 border border-blue-600/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Parados</p>
+                <p className="text-xl font-bold text-blue-300">{stats.parados}</p>
               </div>
-              <div className="bg-orange-500/20 border border-orange-500/30 p-3 md:p-4 rounded text-center">
-                <p className="text-white/60 text-sm md:text-base">Manutenção</p>
-                <p className="text-2xl md:text-3xl font-bold text-orange-400 mt-1">{stats.manutencao}</p>
+              <div className="bg-orange-500/20 border border-orange-500/30 p-2 rounded text-center">
+                <p className="text-white/60 text-xs">Manutenção</p>
+                <p className="text-xl font-bold text-orange-400">{stats.manutencao}</p>
               </div>
             </div>
           </div>
 
           {/* Filtros */}
-          <div className="p-4 md:p-6 border-b border-white/10 space-y-4">
+          <div className="p-3 md:p-4 border-b border-white/10 space-y-3">
             <div>
               <label className="text-white/60 text-xs font-semibold">Status</label>
               <select
@@ -386,24 +373,24 @@ export function Rastreamento() {
 
           {/* Lista de Veículos */}
           <div className="flex-1 overflow-y-auto min-h-0">
-            <div className="p-4 md:p-6 space-y-3">
+            <div className="p-3 md:p-4 space-y-2">
               {filteredVehicles.map((vehicle) => (
                 <button
                   key={vehicle.id}
                   onClick={() => setSelectedVehicle(vehicle)}
-                  className={`w-full text-left p-4 rounded-lg border transition-all ${
+                  className={`w-full text-left p-3 rounded-lg border transition-all ${
                     selectedVehicle?.id === vehicle.id
                       ? "bg-indigo-500/30 border-indigo-500/50"
                       : "bg-slate-700/30 border-white/10 hover:border-white/20"
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="text-white font-semibold text-base md:text-lg">{vehicle.name}</p>
-                      <p className="text-white/60 text-sm md:text-base">{vehicle.placa}</p>
+                      <p className="text-white font-semibold text-sm">{vehicle.name}</p>
+                      <p className="text-white/60 text-xs">{vehicle.placa}</p>
                     </div>
                     <span
-                      className={`text-sm md:text-base font-bold px-3 py-1 rounded ${
+                      className={`text-xs font-bold px-2 py-1 rounded ${
                         vehicle.status === "Em Rota"
                           ? "bg-green-500/30 text-green-400"
                           : vehicle.status === "Parado"
@@ -414,7 +401,7 @@ export function Rastreamento() {
                       {vehicle.status}
                     </span>
                   </div>
-                  <div className="text-sm md:text-base text-white/40 space-y-2">
+                  <div className="text-xs text-white/40 space-y-1">
                     <p>👤 {vehicle.driver}</p>
                     <p>⚡ {vehicle.speed.toFixed(0)} km/h</p>
                   </div>
@@ -432,31 +419,31 @@ export function Rastreamento() {
         {/* Painel Lateral Direito - Detalhes */}
         {selectedVehicle && (
           <div className="w-full lg:w-80 bg-slate-800/50 border border-white/10 rounded-lg overflow-hidden flex flex-col min-h-0">
-            <div className="p-4 md:p-6 border-b border-white/10">
-              <h3 className="text-xl md:text-2xl font-bold text-white">{selectedVehicle.name}</h3>
-              <p className="text-white/60 text-base md:text-lg mt-1">{selectedVehicle.placa}</p>
+            <div className="p-3 md:p-4 border-b border-white/10">
+              <h3 className="text-lg font-bold text-white">{selectedVehicle.name}</h3>
+              <p className="text-white/60 text-sm">{selectedVehicle.placa}</p>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6 min-h-0">
+            <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 min-h-0">
               {/* Informações do Motorista */}
-              <div className="bg-slate-700/30 border border-white/10 p-4 md:p-5 rounded-lg">
-                <p className="text-white/60 text-sm md:text-base font-semibold mb-3">Motorista</p>
-                <p className="text-white font-semibold text-lg mb-3">{selectedVehicle.driver}</p>
-                <Button className="w-full gap-2 text-base md:text-lg" variant="outline" size="lg">
-                  <Phone className="h-4 w-4" />
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
+                <p className="text-white/60 text-xs font-semibold mb-2">Motorista</p>
+                <p className="text-white font-semibold mb-2">{selectedVehicle.driver}</p>
+                <Button className="w-full gap-2 text-sm" variant="outline" size="sm">
+                  <Phone className="h-3 w-3" />
                   {selectedVehicle.phone}
                 </Button>
               </div>
 
               {/* Status e Localização */}
-              <div className="bg-slate-700/30 border border-white/10 p-4 md:p-5 rounded-lg">
-                <p className="text-white/60 text-sm md:text-base font-semibold mb-4">Localização</p>
+              <div className="bg-slate-700/30 border border-white/10 p-2 md:p-3 rounded-lg">
+                <p className="text-white/60 text-xs font-semibold mb-3">Localização</p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-indigo-400" />
                     <div>
-                      <p className="text-white/60 text-sm md:text-base">Coordenadas</p>
-                      <p className="text-white text-base md:text-lg font-semibold">
+                      <p className="text-white/60 text-xs">Coordenadas</p>
+                      <p className="text-white text-sm">
                         {selectedVehicle.lat.toFixed(4)}, {selectedVehicle.lng.toFixed(4)}
                       </p>
                     </div>

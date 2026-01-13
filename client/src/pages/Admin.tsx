@@ -199,7 +199,7 @@ export default function Admin() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row">
       {/* Header Mobile */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50 lg:hidden">
         <div className="flex items-center justify-between p-4">
@@ -240,7 +240,7 @@ export default function Admin() {
 
       {/* Sidebar */}
       <aside className={`
-        fixed top-16 left-0 h-[calc(100vh-64px)] w-64 md:w-72 bg-gradient-to-b from-blue-600 to-blue-700 text-white z-40 transform transition-transform duration-300 ease-in-out overflow-y-auto
+        fixed top-16 left-0 h-[calc(100vh-64px)] w-72 bg-gradient-to-b from-blue-600 to-blue-700 text-white z-40 transform transition-transform duration-300 ease-in-out overflow-y-auto
         lg:translate-x-0 lg:static lg:top-0 lg:h-screen lg:block
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
@@ -320,24 +320,23 @@ export default function Admin() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 w-full lg:ml-0 overflow-y-auto">
-        <div className="p-4 md:p-6 lg:p-8">
+      <main className="flex-1 w-full lg:ml-0">
         {/* Dashboard Header */}
         <div className="mb-6">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 mb-1">
+          <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-1">
             Dashboard
           </h2>
-          <p className="text-sm md:text-base text-slate-600">
+          <p className="text-slate-600">
             Bem-vindo, {user.name}! Aqui está um resumo do sistema.
           </p>
         </div>
 
         {/* Quick Actions - Atalhos Rápidos */}
         <div className="mb-6">
-          <h3 className="text-xs md:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
+          <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
             Atalhos Rápidos
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
             {quickActions.map((action) => (
               <Button
                 key={action.path}
@@ -353,10 +352,10 @@ export default function Admin() {
 
         {/* Stats Grid - Cards Clicáveis */}
         <div className="mb-6">
-          <h3 className="text-xs md:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
+          <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
             Visão Geral
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
             {dashboardCards.map((card) => (
               <Card 
                 key={card.title}
@@ -398,7 +397,7 @@ export default function Admin() {
         </div>
 
         {/* Análises Detalhadas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {/* Frota por Categoria */}
           <Card 
             className="cursor-pointer hover:shadow-lg transition-all"
@@ -721,7 +720,6 @@ export default function Admin() {
               </div>
             </CardContent>
           </Card>
-        </div>
         </div>
       </main>
     </div>
