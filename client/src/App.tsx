@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Funcionario from "./pages/Funcionario";
 import Admin from "./pages/Admin";
+import AdminNew from "./pages/AdminNew";
 import AdminVeiculos from "./pages/AdminVeiculos";
 import AdminMotoristas from "./pages/AdminMotoristas";
 import AdminViagens from "./pages/AdminViagens";
@@ -89,11 +90,11 @@ function Router() {
         </ProtectedRoute>
       </Route>
       <Route path="/funcionario" component={Funcionario} />
-        <Route path="/admin">
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        </Route>
+      <Route path="/admin">
+        <ProtectedRoute>
+          <AdminNew />
+        </ProtectedRoute>
+      </Route>
         <Route path="/admin/veiculos">
           <ProtectedRoute>
             <AdminVeiculos />
