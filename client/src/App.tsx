@@ -39,6 +39,7 @@ import AdminUsuarios from "./pages/AdminUsuarios";
 import AdminPerfil from "./pages/AdminPerfil";
 import AdminAuditoria from "./pages/AdminAuditoria";
 import AdminConfiguracoes from "./pages/AdminConfiguracoes";
+import AdminDashboardExecutivo from "./pages/AdminDashboardExecutivo";
 import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
@@ -191,6 +192,11 @@ function Router() {
         <Route path="/admin/configuracoes">
           <ProtectedRoute>
             <AdminConfiguracoes />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/dashboard-executivo">
+          <ProtectedRoute>
+            <AdminDashboardExecutivo />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/manutencao">

@@ -121,8 +121,37 @@ export const folhaRouter = router({
         throw new Error("Já existe uma folha de pagamento para este mês/ano");
       }
 
-      const result = await db.insert(folhasPagamento).values(input as any);
-      return { success: true, id: result[0].insertId };
+      try {
+        const result = await db.insert(folhasPagamento).values({
+          mesReferencia: input.mesReferencia,
+          anoReferencia: input.anoReferencia,
+          dataPagamento: input.dataPagamento ? new Date(input.dataPagamento) : null,
+          observacoes: input.observacoes,
+          status: 'aberta',
+          dataCriacao: new Date(),
+        });
+        
+        // Buscar a folha criada
+        const folhaCriada = await db
+          .select()
+          .from(folhasPagamento)
+          .where(
+            and(
+              eq(folhasPagamento.mesReferencia, input.mesReferencia),
+              eq(folhasPagamento.anoReferencia, input.anoReferencia)
+            )
+          )
+          .limit(1);
+        
+        if (folhaCriada.length === 0) {
+          throw new Error('Erro ao criar folha de pagamento');
+        }
+        
+        return { success: true, id: folhaCriada[0].id };
+      } catch (error: any) {
+        console.error('Erro ao criar folha:', error);
+        throw new Error(`Erro ao criar folha de pagamento: ${error.message}`);
+      }
     }),
 
   /**
