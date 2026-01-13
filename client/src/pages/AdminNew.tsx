@@ -238,12 +238,6 @@ export default function AdminNew() {
           <div className="p-4 md:p-8 max-w-7xl mx-auto">
             {currentPage === "/admin" ? (
               <div className="space-y-8">
-                {/* Welcome Section */}
-                <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 rounded-2xl p-8 text-white shadow-xl">
-                  <h1 className="text-3xl font-bold mb-2">Bem-vindo, {user?.name?.split(" ")[0]}!</h1>
-                  <p className="text-slate-300">Gerencie sua frota com eficiência e segurança</p>
-                </div>
-
                 {/* Dashboard Charts */}
                 <DashboardCharts />
 

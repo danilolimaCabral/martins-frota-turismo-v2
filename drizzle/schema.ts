@@ -1607,3 +1607,74 @@ export const gpsRouteHistory = mysqlTable("gps_route_history", {
 
 export type GPSRouteHistory = typeof gpsRouteHistory.$inferSelect;
 export type InsertGPSRouteHistory = typeof gpsRouteHistory.$inferInsert;
+
+
+// ==================== MÓDULO DE CONTRATOS ====================
+
+export const contratos = mysqlTable("contratos", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Informações do Cliente
+  nomeCliente: varchar("nome_cliente", { length: 255 }).notNull(),
+  cnpj: varchar("cnpj", { length: 18 }).notNull().unique(),
+  razaoSocial: varchar("razao_social", { length: 255 }),
+  nomeFantasia: varchar("nome_fantasia", { length: 255 }),
+  email: varchar("email", { length: 255 }),
+  telefone: varchar("telefone", { length: 20 }),
+  endereco: text("endereco"),
+  cidade: varchar("cidade", { length: 100 }),
+  estado: varchar("estado", { length: 2 }),
+  cep: varchar("cep", { length: 10 }),
+  
+  // Informações do Contato
+  nomeContato: varchar("nome_contato", { length: 255 }),
+  cargoContato: varchar("cargo_contato", { length: 100 }),
+  emailContato: varchar("email_contato", { length: 255 }),
+  telefoneContato: varchar("telefone_contato", { length: 20 }),
+  
+  // Dados do Contrato
+  numeroContrato: varchar("numero_contrato", { length: 50 }).unique(),
+  dataAssinatura: date("data_assinatura"),
+  dataVencimento: date("data_vencimento"),
+  status: mysqlEnum("status", ["ativo", "inativo", "vencido", "cancelado"]).default("ativo").notNull(),
+  
+  // Serviços
+  tiposServico: text("tipos_servico"), // JSON array de serviços (fretamento, turismo, etc)
+  descricaoServicos: text("descricao_servicos"),
+  
+  // Valores
+  valorMensal: decimal("valor_mensal", { precision: 12, scale: 2 }),
+  valorKm: decimal("valor_km", { precision: 10, scale: 2 }),
+  formaPagamento: mysqlEnum("forma_pagamento", ["boleto", "credito", "debito", "pix", "dinheiro"]),
+  diasPagamento: varchar("dias_pagamento", { length: 50 }), // Ex: "5,15,25"
+  
+  // Documentos
+  documentoUrl: text("documento_url"), // URL do contrato em PDF
+  
+  // Observações
+  observacoes: text("observacoes"),
+  
+  // Auditoria
+  criadoPor: int("criado_por").references(() => users.id),
+  atualizadoPor: int("atualizado_por").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Contrato = typeof contratos.$inferSelect;
+export type InsertContrato = typeof contratos.$inferInsert;
+
+// Tabela de histórico de contratos
+export const historicoContratos = mysqlTable("historico_contratos", {
+  id: int("id").autoincrement().primaryKey(),
+  contratoId: int("contrato_id").references(() => contratos.id, { onDelete: "cascade" }).notNull(),
+  
+  acao: mysqlEnum("acao", ["criado", "atualizado", "renovado", "cancelado", "vencido"]).notNull(),
+  descricao: text("descricao"),
+  
+  usuarioId: int("usuario_id").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type HistoricoContrato = typeof historicoContratos.$inferSelect;
+export type InsertHistoricoContrato = typeof historicoContratos.$inferInsert;
