@@ -13,11 +13,15 @@ export default function AdminConfiguracoes() {
   const [isSaving, setIsSaving] = useState(false);
   const [config, setConfig] = useState({
     empresa: {
-      nome: "Martins Viagens e Turismo",
+      nome: "MARTINS RS LTDA",
+      nomeFantasia: "Martins Viagens e Turismo",
       email: "contato@martinsturismo.com.br",
       telefone: "(41) 99102-1445",
-      endereco: "Curitiba, PR",
-      cnpj: "00.000.000/0000-00",
+      endereco: "Araucária, PR",
+      cnpj: "80.213.176/0001-60",
+      atividade: "Transporte rodoviário coletivo de passageiros (fretamento intermunicipal)",
+      dataFundacao: "1986",
+      regime: "Microempresa (ME)",
     },
     notificacoes: {
       emailNotificacoes: true,
@@ -78,6 +82,30 @@ export default function AdminConfiguracoes() {
             <h1 className="text-3xl font-bold text-gray-900">Configurações</h1>
           </div>
           <p className="text-gray-600">Gerencie as configurações gerais do sistema</p>
+        </div>
+
+        {/* Informacoes da Empresa - Header */}
+        <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-lg p-6 mb-8 text-white">
+          <h2 className="text-2xl font-bold mb-2">{config.empresa.nome}</h2>
+          <p className="text-slate-300 mb-4">{(config.empresa as any).nomeFantasia}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <p className="text-slate-400">CNPJ</p>
+              <p className="font-semibold">{config.empresa.cnpj}</p>
+            </div>
+            <div>
+              <p className="text-slate-400">Localizacao</p>
+              <p className="font-semibold">{config.empresa.endereco}</p>
+            </div>
+            <div>
+              <p className="text-slate-400">Fundacao</p>
+              <p className="font-semibold">{(config.empresa as any).dataFundacao}</p>
+            </div>
+            <div>
+              <p className="text-slate-400">Regime</p>
+              <p className="font-semibold">{(config.empresa as any).regime}</p>
+            </div>
+          </div>
         </div>
 
         {/* Tabs */}
