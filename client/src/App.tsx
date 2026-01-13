@@ -43,33 +43,33 @@ import { AdminAtendimento } from "./pages/AdminAtendimento";
 import { AdminMenu } from "./components/AdminMenu";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
-import AdminAvisosDocumentos from "./pages/AdminAvisosDocumentos";
+
 import AdminBackupRestore from "./pages/AdminBackupRestore";
 import { AdminCNAB } from "./pages/AdminCNAB";
 import AdminCNAB240 from "./pages/AdminCNAB240";
 import AdminCalendarioAvancado from "./pages/AdminCalendarioAvancado";
-import AdminChatbotIA from "./pages/AdminChatbotIA";
-import AdminConciliacao from "./pages/AdminConciliacao";
-import AdminConfiguracoesGerais from "./pages/AdminConfiguracoesGerais";
+
+
+
 import { DashboardPersonalizado } from "./pages/DashboardPersonalizado";
 import AdminControleFerias from "./pages/AdminControleFerias";
 import AdminDRE from "./pages/AdminDRE";
 import AdminFluxoCaixa from "./pages/AdminFluxoCaixa";
 import AdminDetalhesEvento from "./pages/AdminDetalhesEvento";
-import AdminDocumentosRH from "./pages/AdminDocumentosRH";
+
 import AdminExportacaoGPS from "./pages/AdminExportacaoGPS";
 import AdminFolhaPagamentoAvancada from "./pages/AdminFolhaPagamentoAvancada";
-import AdminGestaoTickets from "./pages/AdminGestaoTickets";
+
 import AdminHistoricoRotas from "./pages/AdminHistoricoRotas";
 import AdminIntegracaoInterna from "./pages/AdminIntegracaoInterna";
 import AdminIntegracoes from "./pages/AdminIntegracoes";
 import AdminMetodosPagamento from "./pages/AdminMetodosPagamento";
 import AdminNPS from "./pages/AdminNPS";
 import AdminNotificacoes from "./pages/AdminNotificacoes";
-import AdminOrcamentosCompleto from "./pages/AdminOrcamentosCompleto";
+
 import AdminOtimizacaoAvancada from "./pages/AdminOtimizacaoAvancada";
 import AdminRastreamento from "./pages/AdminRastreamento";
-import AdminRelatorioFinanceiro from "./pages/AdminRelatorioFinanceiro";
+
 import AdminRelatoriosAgenda from "./pages/AdminRelatoriosAgenda";
 import AdminRelatoriosRH from "./pages/AdminRelatoriosRH";
 import ChatbotMV from "./components/ChatbotMV";
@@ -214,11 +214,7 @@ function Router() {
             <AdminAnaliseRotatividade />
           </ProtectedRoute>
         </Route>
-        <Route path="/admin/avisosdocumentos">
-          <ProtectedRoute>
-            <AdminAvisosDocumentos />
-          </ProtectedRoute>
-        </Route>
+
         <Route path="/admin/backuprestore">
           <ProtectedRoute>
             <AdminBackupRestore />
@@ -234,21 +230,9 @@ function Router() {
             <AdminCalendarioAvancado />
           </ProtectedRoute>
         </Route>
-        <Route path="/admin/chatbotia">
-          <ProtectedRoute>
-            <AdminChatbotIA />
-          </ProtectedRoute>
-        </Route>
-        <Route path="/admin/conciliacao">
-          <ProtectedRoute>
-            <AdminConciliacao />
-          </ProtectedRoute>
-        </Route>
-        <Route path="/admin/configuracoesgerais">
-          <ProtectedRoute>
-            <AdminConfiguracoesGerais />
-          </ProtectedRoute>
-        </Route>
+
+
+
         <Route path="/admin/controleferias">
           <ProtectedRoute>
             <AdminControleFerias />
@@ -269,11 +253,7 @@ function Router() {
             <AdminDetalhesEvento />
           </ProtectedRoute>
         </Route>
-        <Route path="/admin/documentosrh">
-          <ProtectedRoute>
-            <AdminDocumentosRH />
-          </ProtectedRoute>
-        </Route>
+
         <Route path="/admin/exportacaogps">
           <ProtectedRoute>
             <AdminExportacaoGPS />
@@ -287,11 +267,6 @@ function Router() {
         <Route path="/admin/folhapagamentoavancada">
           <ProtectedRoute>
             <AdminFolhaPagamentoAvancada />
-          </ProtectedRoute>
-        </Route>
-        <Route path="/admin/gestaotickets">
-          <ProtectedRoute>
-            <AdminGestaoTickets />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/historicorotas">
@@ -324,11 +299,7 @@ function Router() {
             <AdminNotificacoes />
           </ProtectedRoute>
         </Route>
-        <Route path="/admin/orcamentoscompleto">
-          <ProtectedRoute>
-            <AdminOrcamentosCompleto />
-          </ProtectedRoute>
-        </Route>
+
         <Route path="/admin/otimizacaoavancada">
           <ProtectedRoute>
             <AdminOtimizacaoAvancada />
@@ -339,11 +310,7 @@ function Router() {
             <AdminRastreamento />
           </ProtectedRoute>
         </Route>
-        <Route path="/admin/relatoriofinanceiro">
-          <ProtectedRoute>
-            <AdminRelatorioFinanceiro />
-          </ProtectedRoute>
-        </Route>
+
         <Route path="/admin/relatoriosagenda">
           <ProtectedRoute>
             <AdminRelatoriosAgenda />

@@ -38,6 +38,7 @@ import { fuelingRouter } from "./fueling-routers";
 import { dreRouter } from "./dre-routers";
 import { fluxoCaixaRouter } from "./fluxo-caixa-routers";
 
+
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
@@ -78,6 +79,7 @@ export const appRouter = router({
   fueling: fuelingRouter,
   dre: dreRouter,
   fluxoCaixa: fluxoCaixaRouter,
+
 });
 
 // TODO: add feature routers here, e.g.
