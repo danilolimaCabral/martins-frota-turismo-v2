@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "../lib/trpc";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { Users, Plus, Edit, Trash2, Shield, User as UserIcon } from "lucide-react";
+import { Users, Plus, Edit, Trash2, Shield, User as UserIcon , ArrowLeft } from "lucide-react";
 
 export default function AdminUsuarios() {
+  const [, setLocation] = useLocation();
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] = useState<any>(null);
   const [formData, setFormData] = useState({

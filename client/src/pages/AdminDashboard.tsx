@@ -15,6 +15,7 @@ import {
   X,
   ChevronRight,
   ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 
 const sidebarItems = [

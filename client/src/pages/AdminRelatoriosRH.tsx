@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BarChart3, Plus, Search, Edit, Trash2 } from "lucide-react";
+import { BarChart3, Plus, Search, Edit, Trash2 , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 interface RelatorioRHData {
@@ -30,6 +31,7 @@ interface RelatorioRHData {
 }
 
 export default function AdminRelatoriosRH() {
+  const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);

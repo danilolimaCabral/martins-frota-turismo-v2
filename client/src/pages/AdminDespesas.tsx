@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "../lib/trpc";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -6,11 +7,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/
 import { Label } from "../components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Textarea } from "../components/ui/textarea";
-import { CheckCircle, X, FileText, Calendar, DollarSign, User, Filter, Image as ImageIcon } from "lucide-react";
+import { CheckCircle, X, FileText, Calendar, DollarSign, User, Filter, Image as ImageIcon , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
 
 export default function AdminDespesas() {
+  const [, setLocation] = useLocation();
   const { user } = useLocalAuth();
   const [selectedExpense, setSelectedExpense] = useState<any>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);

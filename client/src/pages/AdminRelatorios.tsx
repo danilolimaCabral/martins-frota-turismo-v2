@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -7,9 +8,10 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileText, Download, DollarSign, Users, Car, TrendingUp, Calendar } from "lucide-react";
+import { FileText, Download, DollarSign, Users, Car, TrendingUp, Calendar , ArrowLeft } from "lucide-react";
 
 export default function AdminRelatorios() {
+  const [, setLocation] = useLocation();
   const [periodoFinanceiro, setPeriodoFinanceiro] = useState({
     dataInicio: new Date(new Date().getFullYear(), 0, 1).toISOString().split("T")[0],
     dataFim: new Date().toISOString().split("T")[0],

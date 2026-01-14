@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, MapPin, Clock, Users, AlertCircle, CheckCircle, Loader, Navigation } from "lucide-react";
+import { Upload, MapPin, Clock, Users, AlertCircle, CheckCircle, Loader, Navigation , ArrowLeft } from "lucide-react";
 import * as XLSX from "xlsx";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
@@ -97,6 +98,7 @@ async function geocodificarEndereco(endereco: string): Promise<{ lat: number; lo
 }
 
 export default function AdminRoteirizacaoComEscalaV2() {
+  const [, setLocation] = useLocation();
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
   const [pontos, setPontos] = useState<Escala[]>([]);
   const [distanciaMaxima, setDistanciaMaxima] = useState<number>(700);

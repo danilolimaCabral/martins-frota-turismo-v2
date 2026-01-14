@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, Lock, Mail, CheckCircle2 } from "lucide-react";
+import { User, Lock, Mail, CheckCircle2 , ArrowLeft } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
 export default function AdminPerfil() {

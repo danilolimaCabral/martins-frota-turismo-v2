@@ -30,6 +30,7 @@ import {
   FileText,
   Download,
   Mail,
+  ArrowLeft,
 } from "lucide-react";
 
 export default function AdminDashboardFolha() {

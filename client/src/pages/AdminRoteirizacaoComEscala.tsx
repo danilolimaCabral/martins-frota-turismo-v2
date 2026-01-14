@@ -1,9 +1,10 @@
 import { useState, useRef } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, MapPin, Clock, Users, AlertCircle, CheckCircle, Loader } from "lucide-react";
+import { Upload, MapPin, Clock, Users, AlertCircle, CheckCircle, Loader , ArrowLeft } from "lucide-react";
 import * as XLSX from "xlsx";
 
 interface Colaborador {
@@ -39,6 +40,7 @@ interface Escala {
 }
 
 export default function AdminRoteirizacaoComEscala() {
+  const [, setLocation] = useLocation();
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
   const [pontos, setPontos] = useState<PontoEmbarque[]>([]);
   const [escala, setEscala] = useState<Escala[]>([]);

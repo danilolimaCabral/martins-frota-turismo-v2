@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Palmtree, Plus, Calendar, CheckCircle, XCircle, Clock, Users } from "lucide-react";
+import { Palmtree, Plus, Calendar, CheckCircle, XCircle, Clock, Users , ArrowLeft } from "lucide-react";
 
 const STATUS_COLORS: Record<string, string> = {
   pendente: "bg-yellow-500",
@@ -28,6 +29,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function AdminFerias() {
+  const [, setLocation] = useLocation();
   const [modalNovaSolicitacao, setModalNovaSolicitacao] = useState(false);
   const [statusFiltro, setStatusFiltro] = useState<string>("todos");
 

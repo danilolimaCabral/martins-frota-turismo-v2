@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Upload, Users, Bus, CheckCircle, AlertCircle } from "lucide-react";
+import { Upload, Users, Bus, CheckCircle, AlertCircle , ArrowLeft } from "lucide-react";
 
 export default function AdminImportar() {
+  const [, setLocation] = useLocation();
   const [resultado, setResultado] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 

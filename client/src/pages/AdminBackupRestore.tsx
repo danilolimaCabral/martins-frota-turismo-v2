@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { HardDrive, Plus, Download, Upload, Trash2, Clock, CheckCircle, AlertCircle } from "lucide-react";
+import { HardDrive, Plus, Download, Upload, Trash2, Clock, CheckCircle, AlertCircle , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 interface BackupData {
@@ -24,6 +25,7 @@ interface BackupData {
 }
 
 export default function AdminBackupRestore() {
+  const [, setLocation] = useLocation();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [backups, setBackups] = useState<BackupData[]>([
     {

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useLocation } from "wouter";
+import { ArrowLeft } from "lucide-react";
 import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +17,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 
 export default function AdminTemplates() {
+  const [, setLocation] = useLocation();
   const [dialogAberto, setDialogAberto] = useState(false);
   const [dialogTipo, setDialogTipo] = useState<'criar' | 'editar' | 'visualizar' | 'duplicar'>('criar');
   const [templateSelecionado, setTemplateSelecionado] = useState<any>(null);

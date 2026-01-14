@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { MapPin, Calendar, Users, Car, DollarSign, Mail, Phone, Building, Trash2, Eye } from "lucide-react";
+import { MapPin, Calendar, Users, Car, DollarSign, Mail, Phone, Building, Trash2, Eye , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
@@ -48,6 +49,7 @@ type Orcamento = {
 };
 
 export default function AdminOrcamentos() {
+  const [, setLocation] = useLocation();
   const { user, loading } = useAuth();
   const [statusFilter, setStatusFilter] = useState<string>("todos");
   const [selectedOrcamento, setSelectedOrcamento] = useState<Orcamento | null>(null);

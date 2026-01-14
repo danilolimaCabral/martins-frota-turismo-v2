@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import { trpc } from '@/lib/trpc';
+import { useLocation } from "wouter";
+import { ArrowLeft } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer } from '@/components/ChartContainer';
 import {
@@ -129,6 +131,7 @@ const KPICard: React.FC<{
 );
 
 export default function AdminDashboardExecutivo() {
+  const [, setLocation] = useLocation();
   const mockData = useMemo(() => generateMockData(), []);
 
   // Dados dos KPIs

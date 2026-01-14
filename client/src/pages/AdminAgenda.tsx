@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Plus, ChevronLeft, ChevronRight, DollarSign, Bus, User, MapPin, Clock } from "lucide-react";
+import { Calendar, Plus, ChevronLeft, ChevronRight, DollarSign, Bus, User, MapPin, Clock , ArrowLeft } from "lucide-react";
 
 const DIAS_SEMANA = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -30,6 +31,7 @@ const TIPO_SERVICO_LABELS: Record<string, string> = {
 };
 
 export default function AdminAgenda() {
+  const [, setLocation] = useLocation();
   const [mesAtual, setMesAtual] = useState(new Date().getMonth() + 1);
   const [anoAtual, setAnoAtual] = useState(new Date().getFullYear());
   const [eventoSelecionado, setEventoSelecionado] = useState<any>(null);

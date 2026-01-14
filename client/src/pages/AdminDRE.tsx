@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { TrendingUp, TrendingDown, DollarSign, BarChart3 } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, BarChart3 , ArrowLeft } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
 export default function AdminDRE() {
+  const [, setLocation] = useLocation();
   const [dataInicio, setDataInicio] = useState(
     new Date(new Date().getFullYear(), 0, 1).toISOString().split("T")[0]
   );

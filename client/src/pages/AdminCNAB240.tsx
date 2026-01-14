@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -6,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { AlertCircle, CheckCircle, Download, FileText, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle, Download, FileText, Loader2 , ArrowLeft } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface FormData {
@@ -20,6 +21,7 @@ interface FormData {
 }
 
 export default function AdminCNAB240() {
+  const [, setLocation] = useLocation();
   const [formData, setFormData] = useState<FormData>({
     folhaId: 0,
     banco: "001",

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MapPin, Plus, Upload, Route, Play, Trash2, Eye, Users, Clock, Navigation, Map, Zap, TrendingUp } from "lucide-react";
+import { MapPin, Plus, Upload, Route, Play, Trash2, Eye, Users, Clock, Navigation, Map, Zap, TrendingUp , ArrowLeft } from "lucide-react";
 import { MapView } from "@/components/Map";
 import { toast } from "sonner";
 
@@ -58,6 +59,7 @@ const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
 };
 
 export default function AdminRoteirizacaoMelhorado() {
+  const [, setLocation] = useLocation();
   const [rotas, setRotas] = useState<Rota[]>([
     {
       id: 1,

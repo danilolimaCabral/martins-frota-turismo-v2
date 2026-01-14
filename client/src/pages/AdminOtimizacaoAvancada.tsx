@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
+import { useLocation } from "wouter";
+import { ArrowLeft } from "lucide-react";
 import { Car, Route, DollarSign, TrendingUp, Users, MapPin, Clock, Package } from 'lucide-react';
 
 interface FleetData {

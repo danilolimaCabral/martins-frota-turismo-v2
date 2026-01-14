@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { TrendingUp, TrendingDown, Wallet, BarChart3 } from "lucide-react";
+import { TrendingUp, TrendingDown, Wallet, BarChart3 , ArrowLeft } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
@@ -9,6 +10,7 @@ import { Line, Bar } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
 export default function AdminFluxoCaixa() {
+  const [, setLocation] = useLocation();
   const [dataInicio, setDataInicio] = useState(
     new Date(new Date().getFullYear(), 0, 1).toISOString().split("T")[0]
   );

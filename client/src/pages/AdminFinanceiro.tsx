@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,9 +7,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingUp, TrendingDown, DollarSign, Plus, Check } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, Plus, Check , ArrowLeft } from "lucide-react";
 
 export default function AdminFinanceiro() {
+  const [, setLocation] = useLocation();
   const { data: stats } = trpc.financeiro.getStats.useQuery();
   const { data: contasPagar, refetch: refetchPagar } = trpc.financeiro.contasPagar.list.useQuery();
   const { data: contasReceber, refetch: refetchReceber } = trpc.financeiro.contasReceber.list.useQuery();

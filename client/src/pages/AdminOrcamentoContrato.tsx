@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileText, Plus, Edit, Trash2, CheckCircle, Download, Send, DollarSign, Calendar } from "lucide-react";
+import { FileText, Plus, Edit, Trash2, CheckCircle, Download, Send, DollarSign, Calendar , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 interface Servico {
@@ -83,6 +84,7 @@ const SERVICOS_PADRAO = [
 ];
 
 export default function AdminOrcamentoContrato() {
+  const [, setLocation] = useLocation();
   const [orcamentos, setOrcamentos] = useState<Orcamento[]>([
     {
       id: 1,

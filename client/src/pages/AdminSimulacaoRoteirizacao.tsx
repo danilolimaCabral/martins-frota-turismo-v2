@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,7 @@ import {
   CheckCircle,
   AlertCircle,
   Zap,
+  ArrowLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -88,6 +90,7 @@ const PONTOS_ROTA: Ponto[] = [
 ];
 
 export default function AdminSimulacaoRoteirizacao() {
+  const [, setLocation] = useLocation();
   const [pontos, setPontos] = useState<Ponto[]>(PONTOS_ROTA);
   const [simulacao, setSimulacao] = useState<SimulacaoState>({
     isPlaying: false,

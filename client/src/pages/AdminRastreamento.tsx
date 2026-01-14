@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { MapPin, Truck, Navigation, Fuel, AlertCircle } from "lucide-react";
+import { MapPin, Truck, Navigation, Fuel, AlertCircle , ArrowLeft } from "lucide-react";
+import { useLocation } from "wouter";
 import { Map } from "@/components/Map";
 
 interface Veiculo {
@@ -16,6 +17,7 @@ interface Veiculo {
 }
 
 export default function AdminRastreamento() {
+  const [, setLocation] = useLocation();
   const [veiculos] = useState<Veiculo[]>([
     {
       id: "1",

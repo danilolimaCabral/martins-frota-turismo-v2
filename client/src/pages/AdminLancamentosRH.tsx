@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +14,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { Plus, DollarSign, TrendingUp, TrendingDown } from "lucide-react";
+import { Plus, DollarSign, TrendingUp, TrendingDown , ArrowLeft } from "lucide-react";
 
 export default function AdminLancamentosRH() {
+  const [, setLocation] = useLocation();
 
   const [showForm, setShowForm] = useState(false);
   const [filtroTipo, setFiltroTipo] = useState<"credito" | "debito" | "todos">("todos");

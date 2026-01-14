@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { TrendingUp, TrendingDown, Calendar, Users, Fuel, DollarSign, Brain, Zap } from "lucide-react";
+import { TrendingUp, TrendingDown, Calendar, Users, Fuel, DollarSign, Brain, Zap , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 interface RotaHistorico {
@@ -157,6 +158,7 @@ const DADOS_MOTORISTAS = [
 const CORES_PADROES = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#06b6d4"];
 
 export default function AdminHistoricoRotas() {
+  const [, setLocation] = useLocation();
   const [filtroMotorista, setFiltroMotorista] = useState<string | null>(null);
   const [filtroVeiculo, setFiltroVeiculo] = useState<string | null>(null);
 

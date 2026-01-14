@@ -1,14 +1,16 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Switch } from "../components/ui/switch";
-import { Settings, Save, AlertCircle, Bell, Lock, Palette } from "lucide-react";
+import { Settings, Save, AlertCircle, Bell, Lock, Palette , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminConfiguracoes() {
+  const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("geral");
   const [isSaving, setIsSaving] = useState(false);
   const [config, setConfig] = useState({
