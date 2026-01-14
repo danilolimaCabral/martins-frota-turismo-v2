@@ -83,6 +83,7 @@ import AdminRoteirizacaoProfissional from "./pages/AdminRoteirizacaoProfissional
 import AdminRastreamentoRealtime from "./pages/AdminRastreamentoRealtime";
 import AdminRelatorioRoteirizacao from "./pages/AdminRelatorioRoteirizacao";
 import AdminControleAbastecimento from "./pages/AdminControleAbastecimento";
+import AdminControleAbastecimentoReal from "./pages/AdminControleAbastecimentoReal";
 import AdminCapacidadeVeiculos from "./pages/AdminCapacidadeVeiculos";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -219,6 +220,11 @@ function Router() {
         <Route path="/admin/controle-abastecimento">
           <ProtectedRoute>
             <AdminControleAbastecimento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/controle-abastecimento-real">
+          <ProtectedRoute>
+            <AdminControleAbastecimentoReal />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/capacidade-veiculos">

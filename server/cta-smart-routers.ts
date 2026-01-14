@@ -30,7 +30,6 @@ export const ctaSmartRouter = router({
             ? error.message
             : "Erro ao sincronizar abastecimentos",
         total: 0,
-        sucesso: 0,
         erro: 0,
       };
     }
