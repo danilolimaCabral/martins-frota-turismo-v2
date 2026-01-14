@@ -190,3 +190,47 @@ export function getDistance(lat1: number, lng1: number, lat2: number, lng2: numb
 export function getRouteTotalDistance(points: Point[]): number {
   return parseFloat(calculateTotalDistance(points).toFixed(2));
 }
+
+/**
+ * Alias para calculateDistance (compatibilidade com testes)
+ */
+export function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  return getDistance(lat1, lng1, lat2, lng2);
+}
+
+/**
+ * Otimização com Nearest Neighbor
+ */
+export function optimizeRouteNearestNeighbor(indices: number[], points: any[]): number[] {
+  const visited = new Set<number>();
+  const route: number[] = [indices[0]];
+  visited.add(indices[0]);
+
+  while (visited.size < indices.length) {
+    const current = route[route.length - 1];
+    let nearest = -1;
+    let minDistance = Infinity;
+
+    for (const idx of indices) {
+      if (!visited.has(idx)) {
+        const dist = calculateDistance(
+          points[current].lat,
+          points[current].lng,
+          points[idx].lat,
+          points[idx].lng
+        );
+        if (dist < minDistance) {
+          minDistance = dist;
+          nearest = idx;
+        }
+      }
+    }
+
+    if (nearest !== -1) {
+      route.push(nearest);
+      visited.add(nearest);
+    }
+  }
+
+  return route;
+}
