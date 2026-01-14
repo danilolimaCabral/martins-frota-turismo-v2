@@ -144,7 +144,7 @@ export default function TesteRoteirizacao39Pontos() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate("/")}
+              onClick={() => navigate(-1)}
               className="text-orange-600 hover:bg-orange-50"
             >
               <ArrowLeft className="h-5 w-5" />
