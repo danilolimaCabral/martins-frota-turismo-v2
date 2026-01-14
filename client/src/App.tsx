@@ -77,6 +77,7 @@ import AdminRastreamento from "./pages/AdminRastreamento";
 
 import AdminRelatoriosAgenda from "./pages/AdminRelatoriosAgenda";
 import AdminRelatoriosRH from "./pages/AdminRelatoriosRH";
+import AdminRoteirizacaoComEscala from "./pages/AdminRoteirizacaoComEscala";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { useEffect } from "react";
@@ -182,6 +183,11 @@ function Router() {
         <Route path="/admin/roteirizacao">
           <ProtectedRoute>
             <AdminRoteirizacao />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/roteirizacao-com-escala">
+          <ProtectedRoute>
+            <AdminRoteirizacaoComEscala />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/orcamento-contrato">
