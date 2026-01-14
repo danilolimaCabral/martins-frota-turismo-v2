@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
+import { ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   BarChart,
@@ -116,6 +118,7 @@ const rotasExemplo: RotaData[] = [
 ];
 
 export default function AdminRelatorioRoteirizacao() {
+  const [, navigate] = useLocation();
   const [rotas, setRotas] = useState<RotaData[]>(rotasExemplo);
   const [filtroStatus, setFiltroStatus] = useState<string>("todos");
   const [dataInicio, setDataInicio] = useState("2025-01-10");
@@ -244,12 +247,20 @@ export default function AdminRelatorioRoteirizacao() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+        <Button
+          onClick={() => navigate("/admin/roteirizacao-profissional")}
+          variant="outline"
+          className="mb-6 border-2 border-slate-600 hover:bg-slate-700 text-white"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Voltar
+        </Button>
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">📊 Relatório de Roteirização</h1>
-          <p className="text-slate-600">Análise completa de distância, tempo, combustível e custos</p>
+          <h1 className="text-3xl font-bold text-white mb-2">📊 Relatório de Roteirização</h1>
+          <p className="text-gray-300">Análise completa de distância, tempo, combustível e custos</p>
         </div>
 
         {/* Filtros */}

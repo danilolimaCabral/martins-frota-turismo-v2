@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLocation } from "wouter";
+import { ArrowLeft } from "lucide-react";
 import {
   Play,
   Pause,
@@ -85,6 +87,7 @@ function gerarDadosRastreamento(
 }
 
 export default function AdminRastreamentoRealtime() {
+  const [, navigate] = useLocation();
   const [isSimulando, setIsSimulando] = useState(false);
   const [progresso, setProgresso] = useState(0);
   const [velocidadeSimulacao, setVelocidadeSimulacao] = useState(1);
@@ -194,12 +197,20 @@ export default function AdminRastreamentoRealtime() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+        <Button
+          onClick={() => navigate("/admin/roteirizacao-profissional")}
+          variant="outline"
+          className="mb-6 border-2 border-slate-600 hover:bg-slate-700 text-white"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Voltar
+        </Button>
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">📍 Rastreamento em Tempo Real</h1>
-          <p className="text-slate-600">Simulação completa com dados de telemetria e alertas</p>
+          <h1 className="text-3xl font-bold text-white mb-2">📍 Rastreamento em Tempo Real</h1>
+          <p className="text-gray-300">Simulação completa com dados de telemetria e alertas</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
