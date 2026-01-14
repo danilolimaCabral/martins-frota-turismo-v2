@@ -154,22 +154,22 @@ export default function AdminRoteirizacao39Pontos() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       {/* Header */}
-      <div className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
+      <div className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg">
               <Route className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Roteirização Inteligente</h1>
-              <p className="text-sm text-slate-400">39 Pontos • Curitiba, PR</p>
+              <h1 className="text-2xl font-bold text-slate-900">Roteirização Inteligente</h1>
+              <p className="text-sm text-slate-600">39 Pontos • Curitiba, PR</p>
             </div>
           </div>
           <Button 
             variant="outline" 
-            className="gap-2 border-slate-700 text-slate-300 hover:bg-slate-800" 
+            className="gap-2 border-slate-300 text-slate-700 hover:bg-slate-100" 
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -189,29 +189,29 @@ export default function AdminRoteirizacao39Pontos() {
 
             {/* Estatísticas Comparativas */}
             <div className="grid grid-cols-3 gap-4">
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white border-slate-200">
                 <CardContent className="pt-6">
                   <div className="text-center">
                     <MapPin className="h-5 w-5 text-orange-500 mx-auto mb-2" />
-                    <p className="text-slate-400 text-sm">Total de Pontos</p>
-                    <p className="text-3xl font-bold text-white mt-1">39</p>
+                    <p className="text-slate-600 text-sm">Total de Pontos</p>
+                    <p className="text-3xl font-bold text-slate-900 mt-1">39</p>
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white border-slate-200">
                 <CardContent className="pt-6">
                   <div className="text-center">
                     <Route className="h-5 w-5 text-blue-500 mx-auto mb-2" />
-                    <p className="text-slate-400 text-sm">Rota Sequencial</p>
-                    <p className="text-3xl font-bold text-white mt-1">24.4 km</p>
+                    <p className="text-slate-600 text-sm">Rota Sequencial</p>
+                    <p className="text-3xl font-bold text-slate-900 mt-1">24.4 km</p>
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white border-slate-200">
                 <CardContent className="pt-6">
                   <div className="text-center">
                     <TrendingDown className="h-5 w-5 text-green-500 mx-auto mb-2" />
-                    <p className="text-slate-400 text-sm">Economia Potencial</p>
+                    <p className="text-slate-600 text-sm">Economia Potencial</p>
                     <p className="text-3xl font-bold text-green-500 mt-1">79.1%</p>
                   </div>
                 </CardContent>
@@ -222,20 +222,20 @@ export default function AdminRoteirizacao39Pontos() {
           {/* Painel de Controle */}
           <div className="space-y-6">
             {/* Seleção de Algoritmo */}
-            <Card className="bg-slate-800/50 border-slate-700 shadow-xl">
-              <CardHeader className="border-b border-slate-700">
-                <CardTitle className="text-white flex items-center gap-2">
+            <Card className="bg-white border-slate-200 shadow-xl">
+              <CardHeader className="border-b border-slate-200">
+                <CardTitle className="text-slate-900 flex items-center gap-2">
                   <Zap className="h-5 w-5 text-orange-500" />
                   Otimização
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-6 space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-300 mb-2 block">Selecione o Algoritmo</label>
+                  <label className="text-sm font-medium text-slate-700 mb-2 block">Selecione o Algoritmo</label>
                   <select
                     value={algoritmoSelecionado}
                     onChange={(e) => setAlgoritmoSelecionado(e.target.value)}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   >
                     <option value="nearest-neighbor">🎯 Nearest Neighbor (79.1%)</option>
                     <option value="genetic">🧬 Algoritmo Genético (85%)</option>
@@ -249,56 +249,56 @@ export default function AdminRoteirizacao39Pontos() {
                   disabled={loading}
                 >
                   <Play className="h-5 w-5" />
-                  {loading ? "Otimizando..." : "Otimizar Rota"}
+                  {loading ? "Otimizando..." : "🚀 Otimizar Rota"}
                 </Button>
               </CardContent>
             </Card>
 
             {/* Resultados */}
             {rotaOtimizada && (
-              <Card className="bg-gradient-to-br from-slate-800/50 to-slate-700/50 border-slate-600 shadow-xl">
-                <CardHeader className="border-b border-slate-600">
-                  <CardTitle className="text-white flex items-center gap-2">
+              <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-xl">
+                <CardHeader className="border-b border-green-200">
+                  <CardTitle className="text-slate-900 flex items-center gap-2">
                     <Badge className="bg-green-500/20 text-green-400 border-green-500/30">✓ Otimizada</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-4">
                   {/* Distância */}
-                  <div className="bg-slate-700/30 rounded-lg p-4">
+                  <div className="bg-white rounded-lg p-4 border border-green-100">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-slate-400 text-sm">Distância Total</span>
+                      <span className="text-slate-600 text-sm">Distância Total</span>
                       <TrendingDown className="h-4 w-4 text-green-500" />
                     </div>
-                    <p className="text-3xl font-bold text-white">{rotaOtimizada.distancia} km</p>
-                    <p className="text-xs text-green-400 mt-1">Redução de {rotaOtimizada.economia}%</p>
+                    <p className="text-3xl font-bold text-slate-900">{rotaOtimizada.distancia} km</p>
+                    <p className="text-xs text-green-600 mt-1">Redução de {rotaOtimizada.economia}%</p>
                   </div>
 
                   {/* Tempo */}
-                  <div className="bg-slate-700/30 rounded-lg p-4">
+                  <div className="bg-white rounded-lg p-4 border border-blue-100">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-slate-400 text-sm">Tempo Estimado</span>
+                      <span className="text-slate-600 text-sm">Tempo Estimado</span>
                       <Clock className="h-4 w-4 text-blue-500" />
                     </div>
-                    <p className="text-3xl font-bold text-white">{rotaOtimizada.tempo} min</p>
+                    <p className="text-3xl font-bold text-slate-900">{rotaOtimizada.tempo} min</p>
                   </div>
 
                   {/* Combustível */}
-                  <div className="bg-slate-700/30 rounded-lg p-4">
+                  <div className="bg-white rounded-lg p-4 border border-yellow-100">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-slate-400 text-sm">Combustível Economizado</span>
+                      <span className="text-slate-600 text-sm">Combustível Economizado</span>
                       <Fuel className="h-4 w-4 text-yellow-500" />
                     </div>
-                    <p className="text-3xl font-bold text-white">{rotaOtimizada.combustivel} L</p>
-                    <p className="text-xs text-yellow-400 mt-1">Economia: R$ {rotaOtimizada.custo}</p>
+                    <p className="text-3xl font-bold text-slate-900">{rotaOtimizada.combustivel} L</p>
+                    <p className="text-xs text-yellow-600 mt-1">Economia: R$ {rotaOtimizada.custo}</p>
                   </div>
 
                   {/* Botões */}
-                  <div className="space-y-2 pt-4 border-t border-slate-600">
+                  <div className="space-y-2 pt-4 border-t border-green-200">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white gap-2">
                       <Download className="h-4 w-4" />
                       Exportar PDF
                     </Button>
-                    <Button variant="outline" className="w-full border-slate-600 text-slate-300 hover:bg-slate-700">
+                    <Button variant="outline" className="w-full border-slate-300 text-slate-700 hover:bg-slate-50">
                       Salvar Rota
                     </Button>
                   </div>
