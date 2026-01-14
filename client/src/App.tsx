@@ -77,6 +77,18 @@ import AdminRelatoriosAgenda from "./pages/AdminRelatoriosAgenda";
 import AdminRelatoriosRH from "./pages/AdminRelatoriosRH";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { useEffect } from "react";
+import { useLocation } from "wouter";
+
+function DashboardRedirect() {
+  const [, setLocation] = useLocation();
+  
+  useEffect(() => {
+    setLocation('/admin');
+  }, [setLocation]);
+  
+  return null;
+}
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -91,7 +103,7 @@ function Router() {
       </Route>
       <Route path="/dashboard">
         <ProtectedRoute>
-          <DashboardPersonalizado />
+          <DashboardRedirect />
         </ProtectedRoute>
       </Route>
       <Route path="/funcionario" component={Funcionario} />
