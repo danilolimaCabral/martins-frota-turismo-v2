@@ -103,7 +103,7 @@ const AdminNPSModule: React.FC = () => {
       {/* Botão Voltar */}
       <div className="mb-6 flex items-center gap-2">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => window.history.back()}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-colors font-medium"
         >
           <ArrowLeft size={20} />

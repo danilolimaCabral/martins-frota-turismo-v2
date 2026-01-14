@@ -163,7 +163,7 @@ export default function AdminRoteirizacaoCompleta() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate(-1)}
+              onClick={() => window.history.back()}
               className="text-orange-600 hover:bg-orange-50"
             >
               <ArrowLeft className="h-5 w-5" />
