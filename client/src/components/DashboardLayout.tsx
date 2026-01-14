@@ -244,15 +244,14 @@ function DashboardLayoutContent({
 
       <SidebarInset>
         {isMobile && (
-          <div className="flex border-b h-14 items-center justify-between bg-background/95 px-2 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger className="h-9 w-9 rounded-lg bg-background" />
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col gap-1">
-                  <span className="tracking-tight text-foreground">
-                    {activeMenuItem?.label ?? "Menu"}
-                  </span>
-                </div>
+          <div className="flex border-b h-16 items-center justify-between bg-gradient-to-r from-slate-900 to-slate-800 px-3 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <SidebarTrigger className="h-9 w-9 rounded-lg bg-slate-700 hover:bg-slate-600 text-white flex-shrink-0" />
+              <div className="flex items-center gap-2 min-w-0 flex-1">
+                <img src="/logo-martins-novo.png" alt="Martins" className="h-8 w-8 object-contain flex-shrink-0" />
+                <span className="text-sm font-semibold text-white truncate">
+                  {activeMenuItem?.label ?? "Dashboard"}
+                </span>
               </div>
             </div>
           </div>
