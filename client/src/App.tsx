@@ -50,6 +50,8 @@ import { AdminAtendimento } from "./pages/AdminAtendimento";
 import { AdminMenu } from "./components/AdminMenu";
 import TesteRoteirizacao39Pontos from "./pages/TesteRoteirizacao39Pontos";
 import AdminRoteirizacaoCompleta from "./pages/AdminRoteirizacaoCompleta";
+import AdminRoteirizacaoDragDrop from "./pages/AdminRoteirizacaoDragDrop";
+import AdminDashboardHistoricoRotas from "./pages/AdminDashboardHistoricoRotas";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
 import AdminOrcamentoContrato from "./pages/AdminOrcamentoContrato";
@@ -234,6 +236,16 @@ function Router() {
         <Route path="/admin/roteirizacao-completa">
           <ProtectedRoute>
             <AdminRoteirizacaoCompleta />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/roteirizacao-drag-drop">
+          <ProtectedRoute>
+            <AdminRoteirizacaoDragDrop />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/historico-rotas">
+          <ProtectedRoute>
+            <AdminDashboardHistoricoRotas />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/rastreamento-realtime">
