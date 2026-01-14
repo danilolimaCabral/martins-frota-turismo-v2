@@ -26,7 +26,7 @@ export const optimizedRoutesRouter = {
         routePoints: z.string(),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }: any) => {
       const result = await db.insert(optimizedRoutes).values({
         name: input.name,
         description: input.description,
@@ -71,7 +71,7 @@ export const optimizedRoutesRouter = {
   // Obter detalhes de uma rota
   getById: protectedProcedure
     .input(z.number())
-    .query(async ({ input }) => {
+    .query(async ({ input }: any) => {
       const route = await db
         .select()
         .from(optimizedRoutes)
@@ -98,7 +98,7 @@ export const optimizedRoutesRouter = {
         routePoints: z.string(),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }: any) => {
       const result = await db.insert(routeVersionHistory).values({
         routeId: input.routeId,
         versionNumber: 1,
@@ -142,7 +142,7 @@ export const optimizedRoutesRouter = {
         executionDate: z.string(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input }: any) => {
       const route = await db
         .select()
         .from(optimizedRoutes)
@@ -176,7 +176,7 @@ export const optimizedRoutesRouter = {
   // Obter estatísticas de uma rota
   getAnalytics: protectedProcedure
     .input(z.number())
-    .query(async ({ input }) => {
+    .query(async ({ input }: any) => {
       const analytics = await db
         .select()
         .from(routeAnalytics)
@@ -189,7 +189,7 @@ export const optimizedRoutesRouter = {
   // Deletar rota
   delete: protectedProcedure
     .input(z.number())
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input }: any) => {
       await db.delete(optimizedRoutes).where(eq(optimizedRoutes.id, input));
 
       return {
