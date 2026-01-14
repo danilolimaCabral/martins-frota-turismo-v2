@@ -4,7 +4,8 @@ import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import { toast } from "sonner";
-import { RefreshCw, CheckCircle, AlertCircle, Clock, Zap } from "lucide-react";
+import { RefreshCw, CheckCircle, AlertCircle, Clock, Zap,
+  ArrowLeft } from "lucide-react";
 
 export default function AdminCTASmartSync() {
   const [syncDialogOpen, setSyncDialogOpen] = useState(false);

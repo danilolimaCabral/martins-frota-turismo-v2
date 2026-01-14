@@ -126,6 +126,7 @@ export default function Admin() {
     { icon: MapPin, label: "Roteirização", path: "/admin/roteirizacao", module: "roteirizacao" },
     { icon: Route, label: "Roteirização Profissional", path: "/admin/roteirizacao-profissional", module: "roteirizacao" },
     { icon: TrendingUp, label: "Rastreamento Real-time", path: "/admin/rastreamento-realtime", module: "roteirizacao" },
+    { icon: TrendingDown, label: "Histórico de Rotas", path: "/admin/rotas-otimizadas-historico", module: "roteirizacao" },
     { icon: FileBarChart, label: "Relatório Roteirização", path: "/admin/relatorio-roteirizacao", module: "roteirizacao" },
     { icon: Fuel, label: "Controle Abastecimento", path: "/admin/controle-abastecimento-real", module: "frota" },
     { icon: Droplet, label: "Dashboard CTA Smart", path: "/admin/cta-smart-dashboard", module: "frota" },
