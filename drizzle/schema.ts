@@ -53,6 +53,10 @@ export const vehicles = mysqlTable("vehicles", {
   model: varchar("model", { length: 100 }), // Modelo
   year: int("year"), // Ano
   capacity: int("capacity"), // Capacidade de passageiros
+  capacityKg: int("capacityKg"), // Capacidade de carga em kg
+  capacityM3: decimal("capacityM3", { precision: 8, scale: 2 }), // Capacidade de volume em m3
+  currentLoad: int("currentLoad").default(0), // Carga atual em kg
+  currentPassengers: int("currentPassengers").default(0), // Passageiros atuais
   color: varchar("color", { length: 50 }),
   chassis: varchar("chassis", { length: 100 }), // Chassi
   renavam: varchar("renavam", { length: 20 }),

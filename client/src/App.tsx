@@ -82,6 +82,8 @@ import AdminRoteirizacaoComEscalaV2 from "./pages/AdminRoteirizacaoComEscalaV2";
 import AdminRoteirizacaoProfissional from "./pages/AdminRoteirizacaoProfissional";
 import AdminRastreamentoRealtime from "./pages/AdminRastreamentoRealtime";
 import AdminRelatorioRoteirizacao from "./pages/AdminRelatorioRoteirizacao";
+import AdminControleAbastecimento from "./pages/AdminControleAbastecimento";
+import AdminCapacidadeVeiculos from "./pages/AdminCapacidadeVeiculos";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { useEffect } from "react";
@@ -212,6 +214,16 @@ function Router() {
         <Route path="/admin/relatorio-roteirizacao">
           <ProtectedRoute>
             <AdminRelatorioRoteirizacao />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/controle-abastecimento">
+          <ProtectedRoute>
+            <AdminControleAbastecimento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/capacidade-veiculos">
+          <ProtectedRoute>
+            <AdminCapacidadeVeiculos />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/orcamento-contrato">
