@@ -122,6 +122,11 @@ export default function Admin() {
     { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro", module: "financeiro" },
     { icon: Calendar, label: "Agenda", path: "/admin/agenda", module: "agenda" },
     { icon: MapPin, label: "Roteirização", path: "/admin/roteirizacao", module: "roteirizacao" },
+    { icon: Route, label: "Roteirização Profissional", path: "/admin/roteirizacao-profissional", module: "roteirizacao" },
+    { icon: TrendingUp, label: "Rastreamento Real-time", path: "/admin/rastreamento-realtime", module: "roteirizacao" },
+    { icon: FileBarChart, label: "Relatório Roteirização", path: "/admin/relatorio-roteirizacao", module: "roteirizacao" },
+    { icon: Fuel, label: "Controle Abastecimento", path: "/admin/controle-abastecimento-real", module: "frota" },
+    { icon: Bus, label: "Capacidade Veículos", path: "/admin/capacidade-veiculos", module: "frota" },
     { icon: Clock, label: "Controle de Ponto", path: "/admin/ponto", module: "rh" },
     { icon: Calendar, label: "Férias", path: "/admin/ferias", module: "rh" },
     { icon: Receipt, label: "Importar Dados", path: "/admin/importar", module: null }, // Admin only via isAdmin check
