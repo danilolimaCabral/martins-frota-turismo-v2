@@ -1,4 +1,4 @@
-import { int, mysqlTable, text, timestamp, varchar, decimal, mysqlEnum, boolean, date, json } from "drizzle-orm/mysql-core";
+import { int, mysqlTable, text, timestamp, varchar, decimal, mysqlEnum, boolean, date, json, time } from "drizzle-orm/mysql-core";
 
 /**
  * Sistema de Gestão de Frotas - Martins Viagens e Turismo
@@ -1701,3 +1701,172 @@ export const historicoContratos = mysqlTable("historico_contratos", {
 
 export type HistoricoContrato = typeof historicoContratos.$inferSelect;
 export type InsertHistoricoContrato = typeof historicoContratos.$inferInsert;
+
+
+// ==================== MÓDULO DE ROTEIRIZAÇÃO OTIMIZADA ====================
+
+export const optimizedRoutes = mysqlTable("optimized_routes", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  // Identificação
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  
+  // Veículo e Motorista
+  vehicleId: int("vehicle_id").references(() => vehicles.id),
+  driverId: int("driver_id").references(() => users.id),
+  
+  // Dados da Rota
+  totalDistance: decimal("total_distance", { precision: 10, scale: 2 }).notNull(), // km
+  estimatedTime: int("estimated_time").notNull(), // minutos
+  totalPassengers: int("total_passengers").default(0),
+  
+  // Restrições
+  timeWindowStart: time("time_window_start"), // Horário de início
+  timeWindowEnd: time("time_window_end"), // Horário de fim
+  maxCapacity: int("max_capacity"), // Capacidade máxima
+  
+  // Status
+  status: mysqlEnum("status", ["draft", "optimized", "active", "completed", "cancelled"]).default("draft").notNull(),
+  
+  // Dados da Otimização
+  originalDistance: decimal("original_distance", { precision: 10, scale: 2 }), // km
+  savings: decimal("savings", { precision: 10, scale: 2 }), // km economizados
+  savingsPercentage: decimal("savings_percentage", { precision: 5, scale: 2 }), // percentual
+  algorithmUsed: varchar("algorithm_used", { length: 50 }), // nearest_neighbor, 2opt, genetic, etc
+  iterations: int("iterations"), // número de iterações do algoritmo
+  
+  // Pontos da Rota (JSON)
+  routePoints: text("route_points"), // JSON array com pontos ordenados
+  
+  // Auditoria
+  createdBy: int("created_by").references(() => users.id),
+  updatedBy: int("updated_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type OptimizedRoute = typeof optimizedRoutes.$inferSelect;
+export type InsertOptimizedRoute = typeof optimizedRoutes.$inferInsert;
+
+// Tabela de histórico de versões de rotas
+export const routeVersionHistory = mysqlTable("route_version_history", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  routeId: int("route_id").notNull().references(() => optimizedRoutes.id, { onDelete: "cascade" }),
+  versionNumber: int("version_number").notNull(),
+  
+  // Dados da versão
+  totalDistance: decimal("total_distance", { precision: 10, scale: 2 }).notNull(),
+  estimatedTime: int("estimated_time").notNull(),
+  savings: decimal("savings", { precision: 10, scale: 2 }),
+  savingsPercentage: decimal("savings_percentage", { precision: 5, scale: 2 }),
+  algorithmUsed: varchar("algorithm_used", { length: 50 }),
+  iterations: int("iterations"),
+  
+  // Pontos da rota (JSON)
+  routePoints: text("route_points"),
+  
+  // Mudanças
+  changeDescription: text("change_description"),
+  
+  // Auditoria
+  createdBy: int("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type RouteVersionHistory = typeof routeVersionHistory.$inferSelect;
+export type InsertRouteVersionHistory = typeof routeVersionHistory.$inferInsert;
+
+// Tabela de pontos de embarque
+export const embarquePoints = mysqlTable("embarque_points", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  routeId: int("route_id").notNull().references(() => optimizedRoutes.id, { onDelete: "cascade" }),
+  
+  // Localização
+  name: varchar("name", { length: 255 }).notNull(),
+  address: text("address").notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  
+  // Ordem na rota
+  sequenceNumber: int("sequence_number").notNull(),
+  
+  // Tempo
+  arrivalTime: time("arrival_time"),
+  departureTime: time("departure_time"),
+  waitingTime: int("waiting_time"), // minutos
+  
+  // Passageiros
+  passengers: int("passengers").default(0),
+  
+  // Distância
+  distanceFromPrevious: decimal("distance_from_previous", { precision: 10, scale: 2 }), // km
+  
+  // Status
+  status: mysqlEnum("status", ["pending", "completed", "skipped"]).default("pending").notNull(),
+  
+  // Auditoria
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type EmbarquePoint = typeof embarquePoints.$inferSelect;
+export type InsertEmbarquePoint = typeof embarquePoints.$inferInsert;
+
+// Tabela de restrições de rota
+export const routeConstraints = mysqlTable("route_constraints", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  routeId: int("route_id").notNull().references(() => optimizedRoutes.id, { onDelete: "cascade" }),
+  
+  // Tipo de restrição
+  constraintType: mysqlEnum("constraint_type", ["time_window", "capacity", "vehicle_type", "driver_license", "custom"]).notNull(),
+  
+  // Valores
+  constraintValue: text("constraint_value"), // JSON com valores específicos
+  
+  // Descrição
+  description: text("description"),
+  
+  // Status
+  isActive: boolean("is_active").default(true).notNull(),
+  
+  // Auditoria
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RouteConstraint = typeof routeConstraints.$inferSelect;
+export type InsertRouteConstraint = typeof routeConstraints.$inferInsert;
+
+// Tabela de análise de rotas
+export const routeAnalytics = mysqlTable("route_analytics", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  routeId: int("route_id").notNull().references(() => optimizedRoutes.id, { onDelete: "cascade" }),
+  
+  // Métricas
+  actualDistance: decimal("actual_distance", { precision: 10, scale: 2 }), // km reais
+  actualTime: int("actual_time"), // minutos reais
+  actualFuelConsumed: decimal("actual_fuel_consumed", { precision: 8, scale: 2 }), // litros
+  actualCost: decimal("actual_cost", { precision: 12, scale: 2 }), // R$
+  
+  // Eficiência
+  distanceVariance: decimal("distance_variance", { precision: 5, scale: 2 }), // % de diferença
+  timeVariance: decimal("time_variance", { precision: 5, scale: 2 }), // % de diferença
+  
+  // Qualidade
+  onTimeDelivery: int("on_time_delivery"), // % de pontos no horário
+  passengersDelivered: int("passengers_delivered"),
+  
+  // Data
+  executionDate: date("execution_date").notNull(),
+  
+  // Auditoria
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type RouteAnalytic = typeof routeAnalytics.$inferSelect;
+export type InsertRouteAnalytic = typeof routeAnalytics.$inferInsert;

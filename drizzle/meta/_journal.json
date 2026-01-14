@@ -15,6 +15,13 @@
       "when": 1768404844193,
       "tag": "0001_complex_pixie",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1768414337649,
+      "tag": "0002_fat_shockwave",
+      "breakpoints": true
     }
   ]
 }
