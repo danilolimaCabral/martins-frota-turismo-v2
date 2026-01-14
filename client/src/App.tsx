@@ -49,6 +49,7 @@ import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
 import { AdminMenu } from "./components/AdminMenu";
 import TesteRoteirizacao39Pontos from "./pages/TesteRoteirizacao39Pontos";
+import AdminRoteirizacaoCompleta from "./pages/AdminRoteirizacaoCompleta";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
 import AdminOrcamentoContrato from "./pages/AdminOrcamentoContrato";
@@ -228,6 +229,11 @@ function Router() {
         <Route path="/admin/teste-roteirizacao-39-pontos">
           <ProtectedRoute>
             <TesteRoteirizacao39Pontos />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/roteirizacao-completa">
+          <ProtectedRoute>
+            <AdminRoteirizacaoCompleta />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/rastreamento-realtime">
