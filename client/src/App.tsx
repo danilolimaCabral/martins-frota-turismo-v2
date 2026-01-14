@@ -32,6 +32,7 @@ import AdminFinanceiro from "./pages/AdminFinanceiro";
 import AdminImportar from "./pages/AdminImportar";
 import AdminAgenda from "./pages/AdminAgenda";
 import AdminRoteirizacao from "./pages/AdminRoteirizacao";
+import AdminRoteirizacaoOtimizacao from "./pages/AdminRoteirizacaoOtimizacao";
 import AdminPonto from "./pages/AdminPonto";
 import AdminRelatorios from "./pages/AdminRelatorios";
 import AdminFerias from "./pages/AdminFerias";
@@ -189,9 +190,10 @@ function Router() {
           </ProtectedRoute>
         </Route>
         <Route path="/admin/roteirizacao">
-          <ProtectedRoute>
-            <AdminRoteirizacao />
-          </ProtectedRoute>
+          <AdminRoteirizacao />
+        </Route>
+        <Route path="/admin/roteirizacao-otimizacao">
+          <AdminRoteirizacaoOtimizacao />
         </Route>
         <Route path="/admin/roteirizacao-com-escala">
           <ProtectedRoute>

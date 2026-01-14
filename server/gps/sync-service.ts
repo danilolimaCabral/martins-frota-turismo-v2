@@ -302,16 +302,16 @@ export class GPSSyncService {
 
       return result.map((alert) => ({
         id: String(alert.id),
-        vehicleId: alert.vehicleId,
-        type: alert.type,
-        severity: alert.severity,
+        vehicleId: String(alert.vehicleId),
+        type: alert.type as GPSAlert['type'],
+        severity: alert.severity as GPSAlert['severity'],
         message: alert.message,
         timestamp: alert.timestamp,
         acknowledged: alert.acknowledged,
-        acknowledgedBy: alert.acknowledgedBy,
+        acknowledgedBy: alert.acknowledgedBy ? String(alert.acknowledgedBy) : undefined,
         acknowledgedAt: alert.acknowledgedAt,
         metadata: alert.metadata ? JSON.parse(alert.metadata) : undefined,
-      }));
+      })) as GPSAlert[];
     } catch (error) {
       console.error('Error getting unacknowledged alerts:', error);
       return [];
