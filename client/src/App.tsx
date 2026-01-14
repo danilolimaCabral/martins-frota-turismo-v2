@@ -85,7 +85,7 @@ import AdminRelatorioRoteirizacao from "./pages/AdminRelatorioRoteirizacao";
 import AdminControleAbastecimento from "./pages/AdminControleAbastecimento";
 import AdminControleAbastecimentoReal from "./pages/AdminControleAbastecimentoReal";
 import AdminCapacidadeVeiculos from "./pages/AdminCapacidadeVeiculos";
-import AdminCTASmartDashboard from "./pages/AdminCTASmartDashboard";
+import AdminCTASmartDashboardV2 from "./pages/AdminCTASmartDashboardV2";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { useEffect } from "react";
@@ -234,9 +234,9 @@ function Router() {
           </ProtectedRoute>
         </Route>
         <Route path="/admin/cta-smart-dashboard">
-          <ProtectedRoute>
-            <AdminCTASmartDashboard />
-          </ProtectedRoute>
+          <ErrorBoundary>
+            <AdminCTASmartDashboardV2 />
+          </ErrorBoundary>
         </Route>
         <Route path="/admin/orcamento-contrato">
           <ProtectedRoute>

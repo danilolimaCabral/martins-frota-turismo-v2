@@ -19,6 +19,7 @@ import {
   Users,
   Calendar,
   MapPin,
+  Clock,
 } from "lucide-react";
 import {
   BarChart,
@@ -72,7 +73,7 @@ interface MotoristasRow {
   ultimaData: string;
 }
 
-export default function AdminCTASmartDashboard() {
+export default function AdminCTASmartDashboardV2() {
   const [, navigate] = useLocation();
   const [token, setToken] = useState("8Uj0tAO8TJ");
   const [dias, setDias] = useState(30);
@@ -102,16 +103,25 @@ export default function AdminCTASmartDashboard() {
     { enabled: !!token }
   );
 
+  const estatisticasCombustivelQuery = trpc.ctaSmart.estatisticasPorCombustivel.useQuery(
+    { token, dias },
+    { enabled: !!token }
+  );
+
   // Mutation para sincronizar
   const sincronizarMutation = trpc.ctaSmart.sincronizar.useMutation({
     onSuccess: (data) => {
       setSyncStatus("success");
       setSyncMessage(data.mensagem);
+      const now = new Date();
+      setLastSyncTime(now);
+      const next = new Date(now.getTime() + 5 * 60 * 1000);
+      setNextSyncTime(next);
       setTimeout(() => setSyncStatus("idle"), 3000);
-      // Invalidar queries
       abastecimentosQuery.refetch();
       resumoPorVeiculoQuery.refetch();
       kpisQuery.refetch();
+      estatisticasCombustivelQuery.refetch();
     },
     onError: (error) => {
       setSyncStatus("error");
@@ -120,7 +130,6 @@ export default function AdminCTASmartDashboard() {
     },
   });
 
-  // Processar dados quando chegam
   useEffect(() => {
     if (abastecimentosQuery.data?.abastecimentos) {
       const dados = abastecimentosQuery.data.abastecimentos.map((item: any, idx: number) => ({
@@ -140,7 +149,6 @@ export default function AdminCTASmartDashboard() {
     }
   }, [abastecimentosQuery.data]);
 
-  // Processar resumo por veículo
   useEffect(() => {
     if (resumoPorVeiculoQuery.data?.resumo) {
       const dados = resumoPorVeiculoQuery.data.resumo.map((item: any) => ({
@@ -157,7 +165,6 @@ export default function AdminCTASmartDashboard() {
     }
   }, [resumoPorVeiculoQuery.data]);
 
-  // Processar motoristas
   useEffect(() => {
     if (abastecimentosQuery.data?.abastecimentos) {
       const motoristasMap = new Map<string, any>();
@@ -189,21 +196,36 @@ export default function AdminCTASmartDashboard() {
     }
   }, [abastecimentosQuery.data]);
 
-  // Processar KPIs
   useEffect(() => {
     if (kpisQuery.data) {
       setKpis(kpisQuery.data);
     }
   }, [kpisQuery.data]);
 
-  // Auto-refresh a cada 5 minutos
   useEffect(() => {
+    handleSincronizar();
     const interval = setInterval(() => {
       handleSincronizar();
-    }, 5 * 60 * 1000); // 5 minutos
-
+    }, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (nextSyncTime) {
+        const now = new Date();
+        const diff = nextSyncTime.getTime() - now.getTime();
+        if (diff > 0) {
+          const minutes = Math.floor(diff / 60000);
+          const seconds = Math.floor((diff % 60000) / 1000);
+          setCountdown(`${minutes}m ${seconds}s`);
+        } else {
+          setCountdown("Sincronizando...");
+        }
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [nextSyncTime]);
 
   const handleSincronizar = () => {
     setSyncStatus("loading");
@@ -212,33 +234,8 @@ export default function AdminCTASmartDashboard() {
 
   const exportarCSV = () => {
     if (abastecimentos.length === 0) return;
-
-    const headers = [
-      "Data",
-      "Hora",
-      "Placa",
-      "Motorista",
-      "Combustível",
-      "Litros",
-      "Valor",
-      "Odômetro",
-      "Posto",
-      "Cidade",
-    ];
-
-    const rows = abastecimentos.map((a) => [
-      a.data,
-      a.hora,
-      a.placa,
-      a.motorista,
-      a.combustivel,
-      a.litros.toFixed(2),
-      a.valor.toFixed(2),
-      a.odometro,
-      a.posto,
-      a.cidade,
-    ]);
-
+    const headers = ["Data", "Hora", "Placa", "Motorista", "Combustível", "Litros", "Valor", "Odômetro", "Posto", "Cidade"];
+    const rows = abastecimentos.map((a) => [a.data, a.hora, a.placa, a.motorista, a.combustivel, a.litros.toFixed(2), a.valor.toFixed(2), a.odometro, a.posto, a.cidade]);
     const csv = [headers, ...rows].map((row) => row.join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
@@ -253,22 +250,29 @@ export default function AdminCTASmartDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <Button
-            onClick={() => navigate("/admin")}
-            variant="outline"
-            className="border-2 border-slate-600 hover:bg-slate-700 text-white"
-          >
+          <Button onClick={() => navigate("/admin")} variant="outline" className="border-2 border-slate-600 hover:bg-slate-700 text-white">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar
           </Button>
-          <h1 className="text-3xl font-bold text-white">⛽ Dashboard CTA Smart</h1>
-          <Button
-            onClick={handleSincronizar}
-            disabled={syncStatus === "loading"}
-            className="bg-blue-500 hover:bg-blue-600"
-          >
+          <div className="text-center flex-1">
+            <h1 className="text-3xl font-bold text-white">⛽ Dashboard CTA Smart</h1>
+            <div className="flex justify-center gap-6 mt-2 text-sm text-gray-300">
+              {lastSyncTime && (
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <span>Última: {lastSyncTime.toLocaleTimeString("pt-BR")}</span>
+                </div>
+              )}
+              {nextSyncTime && (
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-blue-400" />
+                  <span>Próxima: {countdown}</span>
+                </div>
+              )}
+            </div>
+          </div>
+          <Button onClick={handleSincronizar} disabled={syncStatus === "loading"} className="bg-blue-500 hover:bg-blue-600">
             {syncStatus === "loading" ? (
               <>
                 <Loader className="h-4 w-4 mr-2 animate-spin" />
@@ -283,17 +287,8 @@ export default function AdminCTASmartDashboard() {
           </Button>
         </div>
 
-        {/* Status Message */}
         {syncStatus !== "idle" && (
-          <div
-            className={`mb-6 p-4 rounded-lg border-2 ${
-              syncStatus === "success"
-                ? "bg-green-500/10 border-green-500/30 text-green-300"
-                : syncStatus === "error"
-                ? "bg-red-500/10 border-red-500/30 text-red-300"
-                : "bg-blue-500/10 border-blue-500/30 text-blue-300"
-            }`}
-          >
+          <div className={`mb-6 p-4 rounded-lg border-2 ${syncStatus === "success" ? "bg-green-500/10 border-green-500/30 text-green-300" : syncStatus === "error" ? "bg-red-500/10 border-red-500/30 text-red-300" : "bg-blue-500/10 border-blue-500/30 text-blue-300"}`}>
             {syncStatus === "success" && <CheckCircle className="h-5 w-5 inline mr-2" />}
             {syncStatus === "error" && <AlertCircle className="h-5 w-5 inline mr-2" />}
             {syncStatus === "loading" && <Loader className="h-5 w-5 inline mr-2 animate-spin" />}
@@ -301,7 +296,6 @@ export default function AdminCTASmartDashboard() {
           </div>
         )}
 
-        {/* KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <Card className="bg-gradient-to-br from-blue-500 to-blue-600 border-0 shadow-xl">
             <CardContent className="pt-6">
@@ -344,9 +338,7 @@ export default function AdminCTASmartDashboard() {
           </Card>
         </div>
 
-        {/* Gráficos */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          {/* Gráfico de Combustível */}
           <Card className="bg-slate-800/50 backdrop-blur border-slate-700 border shadow-2xl">
             <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center gap-2">
@@ -357,16 +349,7 @@ export default function AdminCTASmartDashboard() {
             <CardContent className="pt-6">
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
-                  <Pie
-                    data={kpis?.porCombustivel || []}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value.toFixed(1)}L`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="totalLitros"
-                  >
+                  <Pie data={kpis?.porCombustivel || []} cx="50%" cy="50%" labelLine={false} label={({ name, value }) => `${name}: ${value.toFixed(1)}L`} outerRadius={80} fill="#8884d8" dataKey="totalLitros">
                     {(kpis?.porCombustivel || []).map((entry: any, index: number) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
@@ -377,7 +360,6 @@ export default function AdminCTASmartDashboard() {
             </CardContent>
           </Card>
 
-          {/* Gráfico de Custo */}
           <Card className="bg-slate-800/50 backdrop-blur border-slate-700 border shadow-2xl">
             <CardHeader className="bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center gap-2">
@@ -391,10 +373,7 @@ export default function AdminCTASmartDashboard() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                   <XAxis dataKey="combustivel" stroke="#94a3b8" />
                   <YAxis stroke="#94a3b8" />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569" }}
-                    formatter={(value) => `R$ ${value.toFixed(2)}`}
-                  />
+                  <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569" }} formatter={(value) => `R$ ${value.toFixed(2)}`} />
                   <Bar dataKey="totalGasto" fill="#10b981" />
                 </BarChart>
               </ResponsiveContainer>
@@ -402,20 +381,14 @@ export default function AdminCTASmartDashboard() {
           </Card>
         </div>
 
-        {/* Tabelas */}
         <div className="space-y-6">
-          {/* Tabela de Abastecimentos */}
           <Card className="bg-slate-800/50 backdrop-blur border-slate-700 border shadow-2xl">
             <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-t-lg flex justify-between items-center">
               <CardTitle className="flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
                 Abastecimentos Recentes
               </CardTitle>
-              <Button
-                size="sm"
-                onClick={exportarCSV}
-                className="bg-blue-500 hover:bg-blue-600"
-              >
+              <Button size="sm" onClick={exportarCSV} className="bg-blue-500 hover:bg-blue-600">
                 <Download className="h-4 w-4 mr-2" />
                 Exportar CSV
               </Button>
@@ -464,7 +437,6 @@ export default function AdminCTASmartDashboard() {
             </CardContent>
           </Card>
 
-          {/* Tabela de Veículos */}
           <Card className="bg-slate-800/50 backdrop-blur border-slate-700 border shadow-2xl">
             <CardHeader className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center gap-2">
@@ -508,7 +480,6 @@ export default function AdminCTASmartDashboard() {
             </CardContent>
           </Card>
 
-          {/* Tabela de Motoristas */}
           <Card className="bg-slate-800/50 backdrop-blur border-slate-700 border shadow-2xl">
             <CardHeader className="bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center gap-2">
