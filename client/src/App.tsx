@@ -58,6 +58,7 @@ import MotoristaRotaCompartilhada from "./pages/MotoristaRotaCompartilhada";
 import AdminAtribuicaoRotas from "./pages/AdminAtribuicaoRotas";
 import AdminDashboardRastreamento from "./pages/AdminDashboardRastreamento";
 import AdminRelatorioPerformanceMotoristas from "./pages/AdminRelatorioPerformanceMotoristas";
+import AdminRoteirizacaoSalvarWaze from "./pages/AdminRoteirizacaoSalvarWaze";
 import AdminDashboardHistoricoRotas from "./pages/AdminDashboardHistoricoRotas";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
@@ -536,6 +537,11 @@ function Router() {
         <Route path="/admin/performance-motoristas">
           <ProtectedRoute>
             <AdminRelatorioPerformanceMotoristas />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/salvar-compartilhar-rotas">
+          <ProtectedRoute>
+            <AdminRoteirizacaoSalvarWaze />
           </ProtectedRoute>
         </Route>
       {/* Final fallback route */}
