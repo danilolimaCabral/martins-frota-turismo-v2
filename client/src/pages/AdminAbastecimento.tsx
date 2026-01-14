@@ -13,8 +13,12 @@ import {
   Trash2,
   Eye,
   BarChart3,
+  RefreshCw,
+  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 interface FuelingRecord {
   id: number;
@@ -44,6 +48,8 @@ export function AdminAbastecimento() {
   const [filterVehicle, setFilterVehicle] = useState<string>("todos");
   const [filterType, setFilterType] = useState<string>("todos");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<any>(null);
   const [stats, setStats] = useState({
     totalLiters: 0,
     totalCost: 0,
@@ -73,6 +79,25 @@ export function AdminAbastecimento() {
   });
   const { data: statsData } = trpc.fueling.getStats.useQuery({});
 
+  // Mutation para sincronizar com CTA Smart
+  const syncMutation = trpc.ctaSmart.sincronizarAbastecimentos.useMutation({
+    onSuccess: (data) => {
+      setSyncStatus(data);
+      setIsSyncing(false);
+      if (data.sucesso) {
+        toast.success(`✅ ${data.mensagem}`);
+        // Recarregar dados após sincronização
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        toast.error(`❌ ${data.mensagem}`);
+      }
+    },
+    onError: (error) => {
+      toast.error("Erro ao sincronizar: " + error.message);
+      setIsSyncing(false);
+    },
+  });
+
   const createMutation = trpc.fueling.create.useMutation();
   const deleteMutation = trpc.fueling.delete.useMutation();
 
@@ -92,6 +117,11 @@ export function AdminAbastecimento() {
   useEffect(() => {
     if (statsData) setStats(statsData);
   }, [statsData]);
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    await syncMutation.mutateAsync();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,142 +180,411 @@ export function AdminAbastecimento() {
     }
   };
 
-  const filteredFuelings = fuelings.filter((f) => {
-    const vehicleMatch = filterVehicle === "todos" || f.vehicleId === parseInt(filterVehicle);
-    const typeMatch = filterType === "todos" || f.fuelType === filterType;
-    const searchMatch =
-      f.vehicleName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      f.station?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      f.driverName?.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredFuelings = fuelings.filter((fueling) => {
+    const matchesSearch =
+      !searchTerm ||
+      (fueling.vehicleName?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+      (fueling.station?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+      (fueling.driverName?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false);
 
-    return vehicleMatch && typeMatch && searchMatch;
+    const matchesVehicle =
+      filterVehicle === "todos" || fueling.vehicleId.toString() === filterVehicle;
+
+    const matchesType =
+      filterType === "todos" || fueling.fuelType === filterType;
+
+    return matchesSearch && matchesVehicle && matchesType;
   });
 
-  const fuelTypeLabels: Record<string, string> = {
-    gasolina: "Gasolina",
-    etanol: "Etanol",
-    diesel: "Diesel",
-    gnv: "GNV",
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-4xl font-bold text-slate-900 flex items-center gap-3">
-                <Fuel className="h-10 w-10 text-amber-600" />
-                Controle de Abastecimento
-              </h1>
-              <p className="text-slate-600 mt-2">Gerencie o abastecimento da frota</p>
+    <div className="space-y-6 p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+            <Fuel className="w-8 h-8 text-orange-600" />
+            Controle de Abastecimento
+          </h1>
+          <p className="text-gray-600 mt-1">Gerencie o abastecimento da frota</p>
+        </div>
+        <div className="flex gap-3">
+          <Button
+            onClick={handleSync}
+            disabled={isSyncing}
+            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+          >
+            <RefreshCw className={`w-4 h-4 ${isSyncing ? "animate-spin" : ""}`} />
+            {isSyncing ? "Sincronizando..." : "Sincronizar CTA Smart"}
+          </Button>
+          <Button
+            onClick={() => setShowForm(true)}
+            className="bg-orange-600 hover:bg-orange-700 text-white flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Novo Abastecimento
+          </Button>
+        </div>
+      </div>
+
+      {/* Status de Sincronização */}
+      {syncStatus && (
+        <Card className={`border-l-4 ${syncStatus.sucesso ? "border-l-green-500 bg-green-50" : "border-l-red-500 bg-red-50"}`}>
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              {syncStatus.sucesso ? (
+                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+              ) : (
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              )}
+              <div className="flex-1">
+                <p className={`font-semibold ${syncStatus.sucesso ? "text-green-900" : "text-red-900"}`}>
+                  {syncStatus.mensagem}
+                </p>
+                {syncStatus.total > 0 && (
+                  <p className={`text-sm mt-1 ${syncStatus.sucesso ? "text-green-700" : "text-red-700"}`}>
+                    Total: {syncStatus.total} | Sucesso: {syncStatus.sucesso} | Erros: {syncStatus.erro}
+                  </p>
+                )}
+              </div>
             </div>
-            <Button
-              onClick={() => setShowForm(!showForm)}
-              className="gap-2 bg-amber-600 hover:bg-amber-700"
+          </CardContent>
+        </Card>
+      )}
+
+      {/* KPIs */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total de Litros</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
+                  {stats.totalLiters.toFixed(2)}
+                </p>
+              </div>
+              <Droplet className="w-8 h-8 text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Custo Total</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
+                  R$ {stats.totalCost.toFixed(2)}
+                </p>
+              </div>
+              <DollarSign className="w-8 h-8 text-green-600" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Preço Médio</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
+                  R$ {stats.averagePrice.toFixed(2)}
+                </p>
+              </div>
+              <TrendingUp className="w-8 h-8 text-purple-600" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Registros</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
+                  {stats.count}
+                </p>
+              </div>
+              <BarChart3 className="w-8 h-8 text-orange-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filtros */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Buscar veículo, posto, motorista..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+            </div>
+
+            <select
+              value={filterVehicle}
+              onChange={(e) => setFilterVehicle(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             >
-              <Plus className="h-4 w-4" />
-              Novo Abastecimento
+              <option value="todos">Todos os Veículos</option>
+              {vehicles.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              <option value="todos">Todos os Combustíveis</option>
+              <option value="gasolina">Gasolina</option>
+              <option value="etanol">Etanol</option>
+              <option value="diesel">Diesel</option>
+              <option value="gnv">GNV</option>
+            </select>
+
+            <Button className="bg-gray-600 hover:bg-gray-700 text-white flex items-center gap-2">
+              <Download className="w-4 h-4" />
+              Exportar
             </Button>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Estatísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-600 text-sm font-medium">Total de Litros</p>
-                  <p className="text-3xl font-bold text-slate-900 mt-2">
-                    {stats.totalLiters.toFixed(2)}
-                  </p>
-                </div>
-                <Droplet className="h-12 w-12 text-blue-500 opacity-20" />
-              </div>
-            </CardContent>
-          </Card>
+      {/* Tabela */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Registros de Abastecimento ({filteredFuelings.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Veículo
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Data
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Litros
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Preço/L
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Total
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Combustível
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Posto
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                    Ações
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredFuelings.length > 0 ? (
+                  filteredFuelings.map((fueling) => (
+                    <tr key={fueling.id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4">{fueling.vehicleName}</td>
+                      <td className="py-3 px-4">
+                        {new Date(fueling.date).toLocaleDateString("pt-BR")}
+                      </td>
+                      <td className="py-3 px-4">{fueling.liters} L</td>
+                      <td className="py-3 px-4">
+                        R$ {parseFloat(fueling.pricePerLiter.toString()).toFixed(2)}
+                      </td>
+                      <td className="py-3 px-4 font-semibold">
+                        R$ {parseFloat(fueling.totalCost.toString()).toFixed(2)}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                          {fueling.fuelType}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-gray-600">{fueling.station}</td>
+                      <td className="py-3 px-4 flex gap-2">
+                        <button
+                          onClick={() => setSelectedFueling(fueling)}
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(fueling.id)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={8} className="py-8 text-center text-gray-500">
+                      Nenhum registro encontrado
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
 
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-600 text-sm font-medium">Custo Total</p>
-                  <p className="text-3xl font-bold text-slate-900 mt-2">
-                    R$ {stats.totalCost.toFixed(2)}
-                  </p>
-                </div>
-                <DollarSign className="h-12 w-12 text-green-500 opacity-20" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-600 text-sm font-medium">Preço Médio</p>
-                  <p className="text-3xl font-bold text-slate-900 mt-2">
-                    R$ {stats.averagePrice.toFixed(2)}
-                  </p>
-                </div>
-                <TrendingUp className="h-12 w-12 text-purple-500 opacity-20" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-slate-600 text-sm font-medium">Registros</p>
-                  <p className="text-3xl font-bold text-slate-900 mt-2">{stats.count}</p>
-                </div>
-                <BarChart3 className="h-12 w-12 text-orange-500 opacity-20" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Formulário */}
-        {showForm && (
-          <Card className="mb-8 border-amber-200 bg-amber-50">
-            <CardHeader>
-              <CardTitle>Registrar Novo Abastecimento</CardTitle>
+      {/* Form Modal */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <Card className="w-full max-w-2xl">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <CardTitle>Novo Abastecimento</CardTitle>
+              <button
+                onClick={() => setShowForm(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Veículo */}
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Veículo *
                     </label>
                     <select
                       value={formData.vehicleId}
-                      onChange={(e) => setFormData({ ...formData, vehicleId: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      required
+                      onChange={(e) =>
+                        setFormData({ ...formData, vehicleId: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     >
                       <option value="">Selecione um veículo</option>
                       {vehicles.map((v) => (
                         <option key={v.id} value={v.id}>
-                          {v.plate} - {v.brand} {v.model}
+                          {v.name}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Motorista */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Data *
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) =>
+                        setFormData({ ...formData, date: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Litros *
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={formData.liters}
+                      onChange={(e) =>
+                        setFormData({ ...formData, liters: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Preço por Litro
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={formData.pricePerLiter}
+                      onChange={(e) =>
+                        setFormData({ ...formData, pricePerLiter: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      KM *
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.km}
+                      onChange={(e) =>
+                        setFormData({ ...formData, km: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Combustível
+                    </label>
+                    <select
+                      value={formData.fuelType}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          fuelType: e.target.value as any,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    >
+                      <option value="gasolina">Gasolina</option>
+                      <option value="etanol">Etanol</option>
+                      <option value="diesel">Diesel</option>
+                      <option value="gnv">GNV</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Posto
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.station}
+                      onChange={(e) =>
+                        setFormData({ ...formData, station: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Motorista
                     </label>
                     <select
                       value={formData.driverId}
-                      onChange={(e) => setFormData({ ...formData, driverId: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      onChange={(e) =>
+                        setFormData({ ...formData, driverId: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     >
                       <option value="">Selecione um motorista</option>
                       {drivers.map((d) => (
@@ -295,400 +594,42 @@ export function AdminAbastecimento() {
                       ))}
                     </select>
                   </div>
-
-                  {/* Data */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Data *
-                    </label>
-                    <input
-                      type="date"
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      required
-                    />
-                  </div>
-
-                  {/* Quilometragem */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Quilometragem *
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.km}
-                      onChange={(e) => setFormData({ ...formData, km: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      placeholder="0.00"
-                      required
-                    />
-                  </div>
-
-                  {/* Litros */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Litros *
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.liters}
-                      onChange={(e) => setFormData({ ...formData, liters: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      placeholder="0.00"
-                      required
-                    />
-                  </div>
-
-                  {/* Preço por Litro */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Preço por Litro *
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={formData.pricePerLiter}
-                      onChange={(e) =>
-                        setFormData({ ...formData, pricePerLiter: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      placeholder="0.00"
-                      required
-                    />
-                  </div>
-
-                  {/* Tipo de Combustível */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Tipo de Combustível *
-                    </label>
-                    <select
-                      value={formData.fuelType}
-                      onChange={(e) => {
-                        const value = e.target.value as "gasolina" | "etanol" | "diesel" | "gnv";
-                        setFormData({
-                          ...formData,
-                          fuelType: value,
-                        });
-                      }}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      required
-                    >
-                      <option value="diesel">Diesel</option>
-                      <option value="gasolina">Gasolina</option>
-                      <option value="etanol">Etanol</option>
-                      <option value="gnv">GNV</option>
-                    </select>
-                  </div>
-
-                  {/* Posto */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Posto de Abastecimento *
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.station}
-                      onChange={(e) => setFormData({ ...formData, station: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      placeholder="Ex: Posto Shell"
-                      required
-                    />
-                  </div>
-
-                  {/* Cidade */}
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
-                      Cidade
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.city}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      placeholder="Ex: São Paulo"
-                    />
-                  </div>
                 </div>
 
-                {/* Notas */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Observações
                   </label>
                   <textarea
                     value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    onChange={(e) =>
+                      setFormData({ ...formData, notes: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                     rows={3}
-                    placeholder="Notas adicionais..."
                   />
                 </div>
 
-                {/* Botões */}
-                <div className="flex gap-2">
-                  <Button type="submit" className="bg-amber-600 hover:bg-amber-700">
-                    Registrar Abastecimento
-                  </Button>
+                <div className="flex gap-3 justify-end">
                   <Button
                     type="button"
-                    variant="outline"
                     onClick={() => setShowForm(false)}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-800"
                   >
                     Cancelar
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-orange-600 hover:bg-orange-700 text-white"
+                  >
+                    Salvar
                   </Button>
                 </div>
               </form>
             </CardContent>
           </Card>
-        )}
-
-        {/* Filtros */}
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <div className="flex gap-4 flex-wrap">
-              <div className="flex-1 min-w-[200px]">
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  <Search className="h-4 w-4 inline mr-2" />
-                  Buscar
-                </label>
-                <input
-                  type="text"
-                  placeholder="Veículo, posto, motorista..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                />
-              </div>
-
-              <div className="flex-1 min-w-[200px]">
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  <Filter className="h-4 w-4 inline mr-2" />
-                  Veículo
-                </label>
-                <select
-                  value={filterVehicle}
-                  onChange={(e) => setFilterVehicle(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                >
-                  <option value="todos">Todos</option>
-                  {vehicles.map((v) => (
-                    <option key={v.id} value={v.id}>
-                      {v.plate}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex-1 min-w-[200px]">
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Combustível
-                </label>
-                <select
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-                >
-                  <option value="todos">Todos</option>
-                  <option value="diesel">Diesel</option>
-                  <option value="gasolina">Gasolina</option>
-                  <option value="etanol">Etanol</option>
-                  <option value="gnv">GNV</option>
-                </select>
-              </div>
-
-              <div className="flex items-end gap-2">
-                <Button variant="outline" className="gap-2">
-                  <Download className="h-4 w-4" />
-                  Exportar
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Tabela */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Registros de Abastecimento ({filteredFuelings.length})</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-left py-3 px-4 font-semibold text-slate-700">
-                      Veículo
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-slate-700">
-                      Data
-                    </th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-700">
-                      Litros
-                    </th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-700">
-                      Preço/L
-                    </th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-700">
-                      Total
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-slate-700">
-                      Combustível
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-slate-700">
-                      Posto
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-slate-700">
-                      Ações
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredFuelings.length === 0 ? (
-                    <tr>
-                      <td colSpan={8} className="text-center py-8 text-slate-500">
-                        Nenhum registro encontrado
-                      </td>
-                    </tr>
-                  ) : (
-                    filteredFuelings.map((fueling) => (
-                      <tr key={fueling.id} className="border-b border-slate-100 hover:bg-slate-50">
-                        <td className="py-3 px-4">
-                          <div>
-                            <p className="font-medium text-slate-900">{fueling.vehicleName}</p>
-                            <p className="text-sm text-slate-500">{fueling.driverName}</p>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-slate-600">
-                          {new Date(fueling.date).toLocaleDateString("pt-BR")}
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium text-slate-900">
-                          {Number(fueling.liters).toFixed(2)} L
-                        </td>
-                        <td className="py-3 px-4 text-right text-slate-600">
-                          R$ {Number(fueling.pricePerLiter).toFixed(2)}
-                        </td>
-                        <td className="py-3 px-4 text-right font-semibold text-amber-600">
-                          R$ {Number(fueling.totalCost).toFixed(2)}
-                        </td>
-                        <td className="py-3 px-4">
-                          <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                            {fuelTypeLabels[fueling.fuelType] || fueling.fuelType}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-slate-600">{fueling.station}</td>
-                        <td className="py-3 px-4 text-center">
-                          <div className="flex justify-center gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setSelectedFueling(fueling)}
-                              className="text-blue-600 hover:text-blue-700"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleDelete(fueling.id)}
-                              className="text-red-600 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Modal de Detalhes */}
-        {selectedFueling && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <Card className="w-full max-w-2xl">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Detalhes do Abastecimento</CardTitle>
-                <Button
-                  variant="ghost"
-                  onClick={() => setSelectedFueling(null)}
-                  className="text-slate-500 hover:text-slate-700"
-                >
-                  ✕
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-slate-600">Veículo</p>
-                    <p className="font-semibold text-slate-900">{selectedFueling.vehicleName}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-600">Data</p>
-                    <p className="font-semibold text-slate-900">
-                      {new Date(selectedFueling.date).toLocaleDateString("pt-BR")}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-600">Quilometragem</p>
-                    <p className="font-semibold text-slate-900">{Number(selectedFueling.km).toFixed(2)} km</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-600">Litros</p>
-                    <p className="font-semibold text-slate-900">{Number(selectedFueling.liters).toFixed(2)} L</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-600">Preço por Litro</p>
-                    <p className="font-semibold text-slate-900">
-                      R$ {Number(selectedFueling.pricePerLiter).toFixed(2)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-600">Custo Total</p>
-                    <p className="font-semibold text-amber-600 text-lg">
-                      R$ {Number(selectedFueling.totalCost).toFixed(2)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-600">Combustível</p>
-                    <p className="font-semibold text-slate-900">
-                      {fuelTypeLabels[selectedFueling.fuelType] || selectedFueling.fuelType}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-600">Posto</p>
-                    <p className="font-semibold text-slate-900">{selectedFueling.station}</p>
-                  </div>
-                  {selectedFueling.city && (
-                    <div>
-                      <p className="text-sm text-slate-600">Cidade</p>
-                      <p className="font-semibold text-slate-900">{selectedFueling.city}</p>
-                    </div>
-                  )}
-                  {selectedFueling.driverName && (
-                    <div>
-                      <p className="text-sm text-slate-600">Motorista</p>
-                      <p className="font-semibold text-slate-900">{selectedFueling.driverName}</p>
-                    </div>
-                  )}
-                </div>
-                {selectedFueling.notes && (
-                  <div>
-                    <p className="text-sm text-slate-600">Observações</p>
-                    <p className="text-slate-900">{selectedFueling.notes}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
