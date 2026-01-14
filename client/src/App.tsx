@@ -97,6 +97,8 @@ import AdminCapacidadeVeiculos from "./pages/AdminCapacidadeVeiculos";
 import AdminCTASmartDashboardV2 from "./pages/AdminCTASmartDashboardV2";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AppMVPassageiro } from "./pages/AppMVPassageiro";
+import { AppMVMotorista } from "./pages/AppMVMotorista";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
@@ -495,6 +497,16 @@ function Router() {
         <Route path="/dashboard">
           <ProtectedRoute requireAdmin>
             <Admin />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/app/passageiro">
+          <ProtectedRoute>
+            <AppMVPassageiro />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/app/motorista">
+          <ProtectedRoute>
+            <AppMVMotorista />
           </ProtectedRoute>
         </Route>
       {/* Final fallback route */}

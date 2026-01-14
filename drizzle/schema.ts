@@ -1870,3 +1870,135 @@ export const routeAnalytics = mysqlTable("route_analytics", {
 
 export type RouteAnalytic = typeof routeAnalytics.$inferSelect;
 export type InsertRouteAnalytic = typeof routeAnalytics.$inferInsert;
+
+
+// ==================== APP UBER - CORRIDAS ====================
+
+// Tabela de Passageiros
+export const passengers = mysqlTable("passengers", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("5.00"),
+  totalTrips: int("total_trips").default(0),
+  paymentMethods: text("payment_methods"), // JSON array
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+export type Passenger = typeof passengers.$inferSelect;
+export type InsertPassenger = typeof passengers.$inferInsert;
+
+// Tabela de Motoristas Uber
+export const uberDrivers = mysqlTable("uber_drivers", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  licenseNumber: varchar("license_number", { length: 50 }).notNull().unique(),
+  licenseExpiry: date("license_expiry"),
+  vehicleId: int("vehicle_id").references(() => vehicles.id),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("5.00"),
+  totalTrips: int("total_trips").default(0),
+  isActive: boolean("is_active").default(true),
+  currentLocation: text("current_location"), // JSON: {lat, lng}
+  isOnline: boolean("is_online").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+export type UberDriver = typeof uberDrivers.$inferSelect;
+export type InsertUberDriver = typeof uberDrivers.$inferInsert;
+
+// Tabela de Corridas
+export const rides = mysqlTable("rides", {
+  id: int("id").autoincrement().primaryKey(),
+  passengerId: int("passenger_id").notNull().references(() => passengers.id, { onDelete: "cascade" }),
+  driverId: int("driver_id").references(() => uberDrivers.id),
+  
+  // Localizações
+  pickupLocation: text("pickup_location").notNull(), // JSON: {lat, lng, address}
+  dropoffLocation: text("dropoff_location").notNull(), // JSON: {lat, lng, address}
+  
+  // Status
+  status: mysqlEnum("status", ["requested", "accepted", "in_progress", "completed", "cancelled"]).default("requested"),
+  
+  // Estimativas
+  estimatedDistance: decimal("estimated_distance", { precision: 8, scale: 2 }),
+  estimatedDuration: int("estimated_duration"), // em minutos
+  estimatedPrice: decimal("estimated_price", { precision: 10, scale: 2 }),
+  
+  // Valores finais
+  finalDistance: decimal("final_distance", { precision: 8, scale: 2 }),
+  finalDuration: int("final_duration"), // em minutos
+  finalPrice: decimal("final_price", { precision: 10, scale: 2 }),
+  
+  // Tempos
+  requestedAt: timestamp("requested_at").defaultNow(),
+  acceptedAt: timestamp("accepted_at"),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+  
+  // Notas
+  passengerNotes: text("passenger_notes"),
+  driverNotes: text("driver_notes"),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+export type Ride = typeof rides.$inferSelect;
+export type InsertRide = typeof rides.$inferInsert;
+
+// Tabela de Avaliações
+export const rideRatings = mysqlTable("ride_ratings", {
+  id: int("id").autoincrement().primaryKey(),
+  rideId: int("ride_id").notNull().references(() => rides.id, { onDelete: "cascade" }),
+  fromUserId: int("from_user_id").notNull().references(() => users.id),
+  toUserId: int("to_user_id").notNull().references(() => users.id),
+  rating: int("rating").notNull(), // 1-5
+  comment: text("comment"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+export type RideRating = typeof rideRatings.$inferSelect;
+export type InsertRideRating = typeof rideRatings.$inferInsert;
+
+// Tabela de Pagamentos
+export const ridePayments = mysqlTable("ride_payments", {
+  id: int("id").autoincrement().primaryKey(),
+  rideId: int("ride_id").notNull().references(() => rides.id, { onDelete: "cascade" }),
+  passengerId: int("passenger_id").notNull().references(() => passengers.id),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  paymentMethod: mysqlEnum("payment_method", ["credit_card", "debit_card", "cash", "wallet"]).default("credit_card"),
+  status: mysqlEnum("status", ["pending", "completed", "failed", "refunded"]).default("pending"),
+  stripePaymentId: varchar("stripe_payment_id", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+export type RidePayment = typeof ridePayments.$inferSelect;
+export type InsertRidePayment = typeof ridePayments.$inferInsert;
+
+// Tabela de Histórico de Localização em Tempo Real
+export const rideLocationHistory = mysqlTable("ride_location_history", {
+  id: int("id").autoincrement().primaryKey(),
+  rideId: int("ride_id").notNull().references(() => rides.id, { onDelete: "cascade" }),
+  driverId: int("driver_id").notNull().references(() => uberDrivers.id),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  accuracy: decimal("accuracy", { precision: 5, scale: 2 }), // em metros
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+export type RideLocationHistory = typeof rideLocationHistory.$inferSelect;
+export type InsertRideLocationHistory = typeof rideLocationHistory.$inferInsert;
+
+// Tabela de Promoções e Cupons
+export const rideCoupons = mysqlTable("ride_coupons", {
+  id: int("id").autoincrement().primaryKey(),
+  code: varchar("code", { length: 50 }).notNull().unique(),
+  discountType: mysqlEnum("discount_type", ["percentage", "fixed"]).notNull(),
+  discountValue: decimal("discount_value", { precision: 8, scale: 2 }).notNull(),
+  maxDiscount: decimal("max_discount", { precision: 10, scale: 2 }),
+  minRideAmount: decimal("min_ride_amount", { precision: 10, scale: 2 }),
+  maxUses: int("max_uses"),
+  currentUses: int("current_uses").default(0),
+  validFrom: timestamp("valid_from"),
+  validUntil: timestamp("valid_until"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+export type RideCoupon = typeof rideCoupons.$inferSelect;
+export type InsertRideCoupon = typeof rideCoupons.$inferInsert;
