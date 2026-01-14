@@ -65,6 +65,7 @@ const mockChecklists: Checklist[] = [
 ];
 
 export function AdminChecklist() {
+  const [, navigate] = useLocation();
   const [checklists, setChecklists] = useState<Checklist[]>(mockChecklists);
   const [showForm, setShowForm] = useState(false);
   const [selectedChecklist, setSelectedChecklist] = useState<Checklist | null>(null);
@@ -136,7 +137,7 @@ export function AdminChecklist() {
       <div className="mb-6 flex items-center gap-2">
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-colors font-medium"
         >
           <ArrowLeft size={20} />
           <span>Voltar</span>

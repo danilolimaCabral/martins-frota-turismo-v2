@@ -11,6 +11,7 @@ import { Plus, Download, CheckCircle , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 export function AdminCNAB() {
+  const [, navigate] = useLocation();
   const [folhas, setFolhas] = useState<any[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ mes: "", ano: "", banco: "" });
@@ -35,7 +36,7 @@ export function AdminCNAB() {
       <div className="mb-6 flex items-center gap-2">
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-colors font-medium"
         >
           <ArrowLeft size={20} />
           <span>Voltar</span>

@@ -64,6 +64,7 @@ const mockManutencoes: Manutencao[] = [
 ];
 
 export function AdminManutencao() {
+  const [, navigate] = useLocation();
   const [manutencoes, setManutencoes] = useState<Manutencao[]>(mockManutencoes);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -172,7 +173,7 @@ export function AdminManutencao() {
       <div className="mb-6 flex items-center gap-2">
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white transition-colors font-medium"
         >
           <ArrowLeft size={20} />
           <span>Voltar</span>
