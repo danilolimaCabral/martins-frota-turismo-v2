@@ -166,6 +166,7 @@ export const importRouter = router({
           } else {
             // Inserir novo
             await db.insert(vehicles).values({
+              fleetNumber: veiculo.placa, // Usar placa como número de frota se não fornecido
               plate: veiculo.placa,
               model: veiculo.modelo,
               year: veiculo.ano,
@@ -244,6 +245,7 @@ export const importRouter = router({
             }).where(eq(vehicles.plate, veiculo.placa));
           } else {
             await db.insert(vehicles).values({
+              fleetNumber: veiculo.placa, // Usar placa como número de frota se não fornecido
               plate: veiculo.placa,
               model: veiculo.modelo,
               year: veiculo.ano,

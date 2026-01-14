@@ -44,6 +44,9 @@ export type InsertUser = typeof users.$inferInsert;
 
 export const vehicles = mysqlTable("vehicles", {
   id: int("id").autoincrement().primaryKey(),
+  
+  // Identificação
+  fleetNumber: varchar("fleetNumber", { length: 50 }).notNull(), // Número de frota (mín 5 caracteres)
   plate: varchar("plate", { length: 10 }).notNull().unique(), // Placa
   type: mysqlEnum("type", ["van", "micro-onibus", "onibus"]).notNull(),
   brand: varchar("brand", { length: 100 }), // Marca
@@ -61,6 +64,22 @@ export const vehicles = mysqlTable("vehicles", {
   derExpiry: date("derExpiry"), // Vencimento DER
   cadasturNumber: varchar("cadasturNumber", { length: 50 }), // Número Cadastur
   cadasturExpiry: date("cadasturExpiry"), // Vencimento Cadastur
+  
+  // Documentação de Veículos
+  // Seguro RCO
+  rcoExpiry: date("rcoExpiry"), // Validade do Seguro RCO
+  rcoHasThirdParty: boolean("rcoHasThirdParty").default(false), // Tem cobertura de terceiros
+  
+  // Vistoria IMETRO
+  imetroExpiry: date("imetroExpiry"), // Validade da Vistoria IMETRO
+  
+  // Aferição Tacógrafo
+  tachographExpiry: date("tachographExpiry"), // Validade da Aferição do Tacógrafo
+  
+  // IPVA
+  ipvaExpiry: date("ipvaExpiry"), // Validade do IPVA
+  ipvaIsInstallment: boolean("ipvaIsInstallment").default(false), // IPVA parcelado
+  ipvaInstallments: int("ipvaInstallments"), // Número de parcelas do IPVA
   
   // Status
   status: mysqlEnum("status", ["ativo", "manutencao", "inativo"]).default("ativo").notNull(),

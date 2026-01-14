@@ -321,7 +321,7 @@ export class GPSSyncService {
   /**
    * Reconhecer alerta
    */
-  async acknowledgeAlert(alertId: string, userId: string): Promise<boolean> {
+  async acknowledgeAlert(alertId: number, userId: string): Promise<boolean> {
     try {
       if (!gpsAlerts) return false;
 
@@ -329,7 +329,7 @@ export class GPSSyncService {
         .update(gpsAlerts)
         .set({
           acknowledged: true,
-          acknowledgedBy: userId,
+          acknowledgedBy: parseInt(userId),
           acknowledgedAt: new Date(),
         })
         .where(eq(gpsAlerts.id, alertId));

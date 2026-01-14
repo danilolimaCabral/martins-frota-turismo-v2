@@ -26,6 +26,7 @@ export default function AdminVeiculos() {
   const [editingId, setEditingId] = useState<number | null>(null);
   
   const [formData, setFormData] = useState({
+    fleetNumber: "",
     plate: "",
     model: "",
     brand: "",
@@ -39,6 +40,13 @@ export default function AdminVeiculos() {
     currentKm: "0",
     gpsDevice: "",
     notes: "",
+    rcoExpiry: "",
+    rcoHasThirdParty: false,
+    imetroExpiry: "",
+    tachographExpiry: "",
+    ipvaExpiry: "",
+    ipvaIsInstallment: false,
+    ipvaInstallments: 0,
   });
 
   const utils = trpc.useUtils();
@@ -80,6 +88,7 @@ export default function AdminVeiculos() {
 
   const resetForm = () => {
     setFormData({
+      fleetNumber: "",
       plate: "",
       model: "",
       brand: "",
@@ -93,6 +102,13 @@ export default function AdminVeiculos() {
       currentKm: "0",
       gpsDevice: "",
       notes: "",
+      rcoExpiry: "",
+      rcoHasThirdParty: false,
+      imetroExpiry: "",
+      tachographExpiry: "",
+      ipvaExpiry: "",
+      ipvaIsInstallment: false,
+      ipvaInstallments: 0,
     });
     setEditingId(null);
   };
@@ -109,6 +125,7 @@ export default function AdminVeiculos() {
 
   const handleEdit = (vehicle: any) => {
     setFormData({
+      fleetNumber: vehicle.fleetNumber || "",
       plate: vehicle.plate,
       model: vehicle.model || "",
       brand: vehicle.brand || "",
@@ -122,6 +139,13 @@ export default function AdminVeiculos() {
       currentKm: vehicle.currentKm || "0",
       gpsDevice: vehicle.gpsDevice || "",
       notes: vehicle.notes || "",
+      rcoExpiry: vehicle.rcoExpiry ? new Date(vehicle.rcoExpiry).toISOString().split("T")[0] : "",
+      rcoHasThirdParty: vehicle.rcoHasThirdParty || false,
+      imetroExpiry: vehicle.imetroExpiry ? new Date(vehicle.imetroExpiry).toISOString().split("T")[0] : "",
+      tachographExpiry: vehicle.tachographExpiry ? new Date(vehicle.tachographExpiry).toISOString().split("T")[0] : "",
+      ipvaExpiry: vehicle.ipvaExpiry ? new Date(vehicle.ipvaExpiry).toISOString().split("T")[0] : "",
+      ipvaIsInstallment: vehicle.ipvaIsInstallment || false,
+      ipvaInstallments: vehicle.ipvaInstallments || 0,
     });
     setEditingId(vehicle.id);
     setIsDialogOpen(true);
@@ -220,6 +244,18 @@ export default function AdminVeiculos() {
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="fleetNumber">Número de Frota *</Label>
+                  <Input
+                    id="fleetNumber"
+                    value={formData.fleetNumber}
+                    onChange={(e) => setFormData({ ...formData, fleetNumber: e.target.value })}
+                    placeholder="Mín. 5 caracteres"
+                    minLength={5}
+                    required
+                  />
+                </div>
+                
                 <div>
                   <Label htmlFor="plate">Placa *</Label>
                   <Input
@@ -361,6 +397,95 @@ export default function AdminVeiculos() {
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder="Observações adicionais sobre o veículo..."
                 />
+              </div>
+              
+              {/* Seção de Documentação */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="text-lg font-semibold mb-4">Documentação de Veículos</h3>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Seguro RCO */}
+                  <div>
+                    <Label htmlFor="rcoExpiry">Seguro RCO - Validade</Label>
+                    <Input
+                      id="rcoExpiry"
+                      type="date"
+                      value={formData.rcoExpiry}
+                      onChange={(e) => setFormData({ ...formData, rcoExpiry: e.target.value })}
+                    />
+                  </div>
+                  
+                  <div className="flex items-end">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.rcoHasThirdParty}
+                        onChange={(e) => setFormData({ ...formData, rcoHasThirdParty: e.target.checked })}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm">Tem cobertura de terceiros</span>
+                    </label>
+                  </div>
+                  
+                  {/* Vistoria IMETRO */}
+                  <div>
+                    <Label htmlFor="imetroExpiry">Vistoria IMETRO - Validade</Label>
+                    <Input
+                      id="imetroExpiry"
+                      type="date"
+                      value={formData.imetroExpiry}
+                      onChange={(e) => setFormData({ ...formData, imetroExpiry: e.target.value })}
+                    />
+                  </div>
+                  
+                  {/* Tacógrafo */}
+                  <div>
+                    <Label htmlFor="tachographExpiry">Aferição Tacógrafo - Validade</Label>
+                    <Input
+                      id="tachographExpiry"
+                      type="date"
+                      value={formData.tachographExpiry}
+                      onChange={(e) => setFormData({ ...formData, tachographExpiry: e.target.value })}
+                    />
+                  </div>
+                  
+                  {/* IPVA */}
+                  <div>
+                    <Label htmlFor="ipvaExpiry">IPVA - Validade</Label>
+                    <Input
+                      id="ipvaExpiry"
+                      type="date"
+                      value={formData.ipvaExpiry}
+                      onChange={(e) => setFormData({ ...formData, ipvaExpiry: e.target.value })}
+                    />
+                  </div>
+                  
+                  <div className="flex items-end">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.ipvaIsInstallment}
+                        onChange={(e) => setFormData({ ...formData, ipvaIsInstallment: e.target.checked })}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm">IPVA parcelado</span>
+                    </label>
+                  </div>
+                  
+                  {formData.ipvaIsInstallment && (
+                    <div>
+                      <Label htmlFor="ipvaInstallments">Número de parcelas</Label>
+                      <Input
+                        id="ipvaInstallments"
+                        type="number"
+                        min="1"
+                        max="12"
+                        value={formData.ipvaInstallments}
+                        onChange={(e) => setFormData({ ...formData, ipvaInstallments: parseInt(e.target.value) })}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
               
               <div className="flex justify-end gap-2">

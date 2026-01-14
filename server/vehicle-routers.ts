@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { publicProcedure, protectedProcedure, router, createPermissionProcedure } from "./_core/trpc";
-
-const frotaProcedure = createPermissionProcedure("frota");
 import { db } from "./db";
 import { vehicles } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { logAudit } from "./_core/audit";
+
+const frotaProcedure = createPermissionProcedure("frota");
 
 export const vehicleRouter = router({
   // Listar todos os veículos
@@ -38,6 +38,7 @@ export const vehicleRouter = router({
   create: frotaProcedure
     .input(
       z.object({
+        fleetNumber: z.string().min(5), // Número de frota (mín 5 caracteres)
         plate: z.string().min(7).max(10),
         model: z.string().min(1),
         brand: z.string().min(1),
@@ -51,10 +52,27 @@ export const vehicleRouter = router({
         currentKm: z.string().default("0"),
         gpsDevice: z.string().optional(),
         notes: z.string().optional(),
+        // Documentação
+        rcoExpiry: z.string().optional(), // Data de validade RCO
+        rcoHasThirdParty: z.boolean().default(false), // Tem cobertura de terceiros
+        imetroExpiry: z.string().optional(), // Data de validade IMETRO
+        tachographExpiry: z.string().optional(), // Data de validade Tacógrafo
+        ipvaExpiry: z.string().optional(), // Data de validade IPVA
+        ipvaIsInstallment: z.boolean().default(false), // IPVA parcelado
+        ipvaInstallments: z.number().int().optional(), // Número de parcelas
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const [result] = await db.insert(vehicles).values(input);
+      // Converter datas de string para Date se fornecidas
+      const vehicleData = {
+        ...input,
+        rcoExpiry: input.rcoExpiry ? new Date(input.rcoExpiry) : undefined,
+        imetroExpiry: input.imetroExpiry ? new Date(input.imetroExpiry) : undefined,
+        tachographExpiry: input.tachographExpiry ? new Date(input.tachographExpiry) : undefined,
+        ipvaExpiry: input.ipvaExpiry ? new Date(input.ipvaExpiry) : undefined,
+      };
+      
+      const [result] = await db.insert(vehicles).values(vehicleData);
       
       // Log de auditoria
       await logAudit({
@@ -78,6 +96,7 @@ export const vehicleRouter = router({
     .input(
       z.object({
         id: z.number(),
+        fleetNumber: z.string().min(5).optional(),
         plate: z.string().min(7).max(10).optional(),
         model: z.string().min(1).optional(),
         brand: z.string().min(1).optional(),
@@ -91,17 +110,37 @@ export const vehicleRouter = router({
         currentKm: z.string().optional(),
         gpsDevice: z.string().optional(),
         notes: z.string().optional(),
+        // Documentação
+        rcoExpiry: z.string().optional(),
+        rcoHasThirdParty: z.boolean().optional(),
+        imetroExpiry: z.string().optional(),
+        tachographExpiry: z.string().optional(),
+        ipvaExpiry: z.string().optional(),
+        ipvaIsInstallment: z.boolean().optional(),
+        ipvaInstallments: z.number().int().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       const { id, ...data } = input;
+      
+      // Converter datas de string para Date se fornecidas
+      const updateData = {
+        ...data,
+        rcoExpiry: data.rcoExpiry ? new Date(data.rcoExpiry) : undefined,
+        imetroExpiry: data.imetroExpiry ? new Date(data.imetroExpiry) : undefined,
+        tachographExpiry: data.tachographExpiry ? new Date(data.tachographExpiry) : undefined,
+        ipvaExpiry: data.ipvaExpiry ? new Date(data.ipvaExpiry) : undefined,
+      };
+      
+      // Remover undefined values
+      Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
       
       // Buscar valores antigos
       const [oldVehicle] = await db.select().from(vehicles).where(eq(vehicles.id, id)).limit(1);
 
       await db
         .update(vehicles)
-        .set(data)
+        .set(updateData)
         .where(eq(vehicles.id, id));
       
       // Log de auditoria
