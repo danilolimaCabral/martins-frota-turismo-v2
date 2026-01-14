@@ -34,6 +34,7 @@ import AdminAgenda from "./pages/AdminAgenda";
 import AdminRoteirizacao from "./pages/AdminRoteirizacao";
 import AdminRoteirizacaoOtimizacao from "./pages/AdminRoteirizacaoOtimizacao";
 import AdminRotasOtimizadasHistorico from "./pages/AdminRotasOtimizadasHistorico";
+import AdminEficienciaMotorista from "./pages/AdminEficienciaMotorista";
 import AdminPonto from "./pages/AdminPonto";
 import AdminRelatorios from "./pages/AdminRelatorios";
 import AdminFerias from "./pages/AdminFerias";
@@ -198,6 +199,9 @@ function Router() {
         </Route>
         <Route path="/admin/rotas-otimizadas-historico">
           <AdminRotasOtimizadasHistorico />
+        </Route>
+        <Route path="/admin/eficiencia-motorista">
+          <AdminEficienciaMotorista />
         </Route>
         <Route path="/admin/roteirizacao-com-escala">
           <ProtectedRoute>

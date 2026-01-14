@@ -116,7 +116,7 @@ export default function Admin() {
   const allMenuItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin", module: null }, // Sempre visível
     { icon: Bus, label: "Veículos", path: "/admin/veiculos", module: "frota" },
-    { icon: Users, label: "Motoristas", path: "/admin/motoristas", module: "frota" },
+
     { icon: Users, label: "Funcionários", path: "/admin/funcionarios", module: "rh" },
     { icon: DollarSign, label: "Folha de Pagamento", path: "/admin/folha", module: "rh" },
     { icon: DollarSign, label: "Lançamentos RH", path: "/admin/lancamentos-rh", module: "rh" },
@@ -127,6 +127,7 @@ export default function Admin() {
     { icon: Route, label: "Roteirização Profissional", path: "/admin/roteirizacao-profissional", module: "roteirizacao" },
     { icon: TrendingUp, label: "Rastreamento Real-time", path: "/admin/rastreamento-realtime", module: "roteirizacao" },
     { icon: TrendingDown, label: "Histórico de Rotas", path: "/admin/rotas-otimizadas-historico", module: "roteirizacao" },
+    { icon: Users, label: "Eficiência Motoristas", path: "/admin/eficiencia-motorista", module: "roteirizacao" },
     { icon: FileBarChart, label: "Relatório Roteirização", path: "/admin/relatorio-roteirizacao", module: "roteirizacao" },
     { icon: Fuel, label: "Controle Abastecimento", path: "/admin/controle-abastecimento-real", module: "frota" },
     { icon: Droplet, label: "Dashboard CTA Smart", path: "/admin/cta-smart-dashboard", module: "frota" },
