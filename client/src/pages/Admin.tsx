@@ -126,6 +126,7 @@ export default function Admin() {
     { icon: TrendingUp, label: "Rastreamento Real-time", path: "/admin/rastreamento-realtime", module: "roteirizacao" },
     { icon: FileBarChart, label: "Relatório Roteirização", path: "/admin/relatorio-roteirizacao", module: "roteirizacao" },
     { icon: Fuel, label: "Controle Abastecimento", path: "/admin/controle-abastecimento-real", module: "frota" },
+    { icon: Droplet, label: "Dashboard CTA Smart", path: "/admin/cta-smart-dashboard", module: "frota" },
     { icon: Bus, label: "Capacidade Veículos", path: "/admin/capacidade-veiculos", module: "frota" },
     { icon: Clock, label: "Controle de Ponto", path: "/admin/ponto", module: "rh" },
     { icon: Calendar, label: "Férias", path: "/admin/ferias", module: "rh" },
