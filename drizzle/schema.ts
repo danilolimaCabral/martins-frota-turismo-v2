@@ -2002,3 +2002,63 @@ export const rideCoupons = mysqlTable("ride_coupons", {
 });
 export type RideCoupon = typeof rideCoupons.$inferSelect;
 export type InsertRideCoupon = typeof rideCoupons.$inferInsert;
+
+// ==================== COMPARTILHAMENTO DE ROTAS ====================
+
+// Tabela de compartilhamentos de rotas
+export const routeShares = mysqlTable("route_shares", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  routeId: int("route_id").notNull().references(() => optimizedRoutes.id, { onDelete: "cascade" }),
+  
+  // Informações de compartilhamento
+  shareToken: varchar("share_token", { length: 255 }).notNull().unique(), // Token único para link
+  platform: mysqlEnum("platform", ["whatsapp", "sms", "email", "qrcode", "direct_link"]).notNull(),
+  
+  // QR Code
+  qrCodeUrl: text("qr_code_url"), // URL da imagem QR code armazenada
+  qrCodeData: text("qr_code_data"), // Dados codificados no QR code
+  
+  // Destinatário
+  sharedWithDriverId: int("shared_with_driver_id").references(() => users.id),
+  sharedWithEmail: varchar("shared_with_email", { length: 320 }),
+  sharedWithPhone: varchar("shared_with_phone", { length: 20 }),
+  
+  // Métricas
+  viewCount: int("view_count").default(0), // Quantas vezes foi visualizado
+  clickCount: int("click_count").default(0), // Quantas vezes o link foi clicado
+  driverResponseTime: int("driver_response_time"), // Tempo em minutos até resposta do motorista
+  driverAccepted: boolean("driver_accepted").default(false), // Se o motorista aceitou
+  
+  // Status
+  isActive: boolean("is_active").default(true).notNull(),
+  expiresAt: timestamp("expires_at"), // Quando o link expira
+  
+  // Auditoria
+  sharedBy: int("shared_by").notNull().references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RouteShare = typeof routeShares.$inferSelect;
+export type InsertRouteShare = typeof routeShares.$inferInsert;
+
+// Tabela de eventos de compartilhamento (para analytics detalhado)
+export const routeShareEvents = mysqlTable("route_share_events", {
+  id: int("id").autoincrement().primaryKey(),
+  
+  shareId: int("share_id").notNull().references(() => routeShares.id, { onDelete: "cascade" }),
+  
+  // Tipo de evento
+  eventType: mysqlEnum("event_type", ["shared", "viewed", "clicked", "opened_waze", "opened_maps", "driver_accepted", "driver_rejected"]).notNull(),
+  
+  // Contexto
+  userAgent: text("user_agent"), // Browser/app que acessou
+  ipAddress: varchar("ip_address", { length: 45 }), // IPv4 ou IPv6
+  
+  // Auditoria
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type RouteShareEvent = typeof routeShareEvents.$inferSelect;
+export type InsertRouteShareEvent = typeof routeShareEvents.$inferInsert;
