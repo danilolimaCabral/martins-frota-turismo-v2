@@ -123,10 +123,20 @@ export default function AdminCTASmartDashboardV2() {
       kpisQuery.refetch();
       estatisticasCombustivelQuery.refetch();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setSyncStatus("error");
-      setSyncMessage(error.message || "Erro ao sincronizar");
-      setTimeout(() => setSyncStatus("idle"), 3000);
+      // Extrair mensagem de erro do tRPC
+      let errorMessage = "Erro ao sincronizar";
+      if (error?.data?.code === "INTERNAL_SERVER_ERROR") {
+        // Erro de servidor - pode ser rate limit da API
+        errorMessage = "Limite de requisições atingido. Aguarde 60 segundos antes de sincronizar novamente.";
+      } else if (error?.message) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+      setSyncMessage(errorMessage);
+      setTimeout(() => setSyncStatus("idle"), 5000);
     },
   });
 
