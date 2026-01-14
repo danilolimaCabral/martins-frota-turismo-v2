@@ -47,6 +47,7 @@ import { AdminAtendimento } from "./pages/AdminAtendimento";
 import { AdminMenu } from "./components/AdminMenu";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
+import AdminOrcamentoContrato from "./pages/AdminOrcamentoContrato";
 
 import AdminBackupRestore from "./pages/AdminBackupRestore";
 import { AdminCNAB } from "./pages/AdminCNAB";
@@ -180,6 +181,11 @@ function Router() {
         <Route path="/admin/roteirizacao">
           <ProtectedRoute>
             <AdminRoteirizacao />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/orcamento-contrato">
+          <ProtectedRoute>
+            <AdminOrcamentoContrato />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/relatorios">
