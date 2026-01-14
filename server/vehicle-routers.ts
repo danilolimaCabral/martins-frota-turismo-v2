@@ -121,10 +121,10 @@ export const vehicleRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const { id, ...data } = input;
+      const { id, ...data } = input as any;
       
       // Converter datas de string para Date se fornecidas
-      const updateData = {
+      const updateData: Record<string, any> = {
         ...data,
         rcoExpiry: data.rcoExpiry ? new Date(data.rcoExpiry) : undefined,
         imetroExpiry: data.imetroExpiry ? new Date(data.imetroExpiry) : undefined,
@@ -133,14 +133,19 @@ export const vehicleRouter = router({
       };
       
       // Remover undefined values
-      Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
+      Object.keys(updateData).forEach(key => {
+        if (updateData[key] === undefined) {
+          delete updateData[key];
+        }
+      });
       
       // Buscar valores antigos
-      const [oldVehicle] = await db.select().from(vehicles).where(eq(vehicles.id, id)).limit(1);
+      const oldVehicles = await db.select().from(vehicles).where(eq(vehicles.id, id)).limit(1);
+      const oldVehicle = oldVehicles[0];
 
       await db
         .update(vehicles)
-        .set(updateData)
+        .set(updateData as any)
         .where(eq(vehicles.id, id));
       
       // Log de auditoria
@@ -152,8 +157,8 @@ export const vehicleRouter = router({
         entity: "vehicles",
         entityId: id,
         description: `Atualizou veículo: ${oldVehicle?.plate || id}`,
-        oldValues: oldVehicle,
-        newValues: { ...oldVehicle, ...data },
+        oldValues: oldVehicle as any,
+        newValues: { ...oldVehicle, ...data } as any,
         ipAddress: ctx.req.ip || "unknown",
         userAgent: ctx.req.headers["user-agent"] || "unknown",
       });

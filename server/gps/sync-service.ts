@@ -301,7 +301,7 @@ export class GPSSyncService {
       const result = await query;
 
       return result.map((alert) => ({
-        id: alert.id,
+        id: String(alert.id),
         vehicleId: alert.vehicleId,
         type: alert.type,
         severity: alert.severity,

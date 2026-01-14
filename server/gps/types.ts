@@ -42,7 +42,7 @@ export interface VehicleLocation {
 }
 
 export interface GPSAlert {
-  id: string;
+  id: string | number;
   vehicleId: string;
   type: 'speeding' | 'harsh_braking' | 'harsh_acceleration' | 'low_fuel' | 'engine_fault' | 'geofence_violation' | 'offline' | 'custom';
   severity: 'low' | 'medium' | 'high' | 'critical';
