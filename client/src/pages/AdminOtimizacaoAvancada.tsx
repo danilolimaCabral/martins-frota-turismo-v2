@@ -49,6 +49,17 @@ const AdminOtimizacaoAvancada: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+      {/* Botão Voltar */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Voltar</span>
+        </button>
+      </div>
+
         <p className="text-xl">Carregando dados de otimização...</p>
       </div>
     );

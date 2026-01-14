@@ -200,6 +200,17 @@ export function AdminAbastecimento() {
 
   return (
     <div className="space-y-6 p-6">
+      {/* Botão Voltar */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Voltar</span>
+        </button>
+      </div>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

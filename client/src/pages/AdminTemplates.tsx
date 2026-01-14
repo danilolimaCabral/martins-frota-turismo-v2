@@ -130,6 +130,17 @@ export default function AdminTemplates() {
 
   return (
     <div className="container py-8">
+      {/* Botão Voltar */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Voltar</span>
+        </button>
+      </div>
+
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">Templates de Check-list</h1>

@@ -100,6 +100,17 @@ const AdminNPSModule: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 md:p-10">
+      {/* Botão Voltar */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Voltar</span>
+        </button>
+      </div>
+
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-4xl font-extrabold text-gray-900 drop-shadow-sm">Admin NPS</h1>
         <Button onClick={handleRefreshData} disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">

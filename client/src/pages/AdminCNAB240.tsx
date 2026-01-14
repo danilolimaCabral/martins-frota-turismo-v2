@@ -114,6 +114,17 @@ export default function AdminCNAB240() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+      {/* Botão Voltar */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Voltar</span>
+        </button>
+      </div>
+
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">

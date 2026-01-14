@@ -160,6 +160,17 @@ export function AdminDashboard() {
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Botão Voltar */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Voltar</span>
+        </button>
+      </div>
+
       {/* Sidebar Vertical */}
       <div className="w-24 bg-gradient-to-b from-slate-800 to-slate-900 border-r border-white/10 flex flex-col items-center py-6 gap-4 shadow-2xl">
         {/* Logo e Nome da Empresa */}

@@ -199,6 +199,17 @@ export default function AdminVeiculos() {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
+      {/* Botão Voltar */}
+      <div className="mb-6 flex items-center gap-2">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span>Voltar</span>
+        </button>
+      </div>
+
       {/* Galeria de Frota */}
       <div className="bg-gradient-to-r from-blue-50 to-orange-50 p-6 rounded-lg border border-blue-200">
         <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
