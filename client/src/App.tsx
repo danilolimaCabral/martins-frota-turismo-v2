@@ -56,6 +56,8 @@ import AdminRoteirizacao39Pontos from "./pages/AdminRoteirizacao39Pontos";
 import AdminRoteirizacao39PontosAvancado from "./pages/AdminRoteirizacao39PontosAvancado";
 import MotoristaRotaCompartilhada from "./pages/MotoristaRotaCompartilhada";
 import AdminAtribuicaoRotas from "./pages/AdminAtribuicaoRotas";
+import AdminDashboardRastreamento from "./pages/AdminDashboardRastreamento";
+import AdminRelatorioPerformanceMotoristas from "./pages/AdminRelatorioPerformanceMotoristas";
 import AdminDashboardHistoricoRotas from "./pages/AdminDashboardHistoricoRotas";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
@@ -524,6 +526,16 @@ function Router() {
         <Route path="/admin/atribuicao-rotas">
           <ProtectedRoute>
             <AdminAtribuicaoRotas />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/rastreamento">
+          <ProtectedRoute>
+            <AdminDashboardRastreamento />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/performance-motoristas">
+          <ProtectedRoute>
+            <AdminRelatorioPerformanceMotoristas />
           </ProtectedRoute>
         </Route>
       {/* Final fallback route */}
