@@ -51,7 +51,8 @@ import { AdminMenu } from "./components/AdminMenu";
 import { AdminRoteirizadorAvancado } from "./pages/AdminRoteirizadorAvancado";
 import TesteRoteirizacao39Pontos from "./pages/TesteRoteirizacao39Pontos";
 import AdminRoteirizacaoCompleta from "./pages/AdminRoteirizacaoCompleta";
-import AdminRoteirizacaoDragDrop from "./pages/AdminRoteirizacaoDragDrop";
+import AdminRoteirizacaoDragDrop from "@/pages/AdminRoteirizacaoDragDrop";
+import AdminRoteirizacao39Pontos from "@/pages/AdminRoteirizacao39Pontos";
 import AdminDashboardHistoricoRotas from "./pages/AdminDashboardHistoricoRotas";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
@@ -249,6 +250,11 @@ function Router() {
         <Route path="/admin/roteirizacao-drag-drop">
           <ProtectedRoute>
             <AdminRoteirizacaoDragDrop />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/roteirizacao-39-pontos">
+          <ProtectedRoute>
+            <AdminRoteirizacao39Pontos />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/historico-rotas">
