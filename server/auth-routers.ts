@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { publicProcedure, router } from "./_core/trpc";
+import { COOKIE_NAME } from "../shared/const";
 import {
   authenticateUser,
   authenticateUserByUsername,
@@ -119,9 +120,18 @@ export const authRouter = router({
     }),
 
   /**
-   * Logout (apenas limpa o token no cliente)
+   * Logout (limpa o cookie de sessão)
    */
-  logout: publicProcedure.mutation(async () => {
+  logout: publicProcedure.mutation(async ({ ctx }) => {
+    if (ctx.res && typeof ctx.res.clearCookie === 'function') {
+      ctx.res.clearCookie(COOKIE_NAME, {
+        maxAge: -1,
+        secure: true,
+        sameSite: 'none',
+        httpOnly: true,
+        path: '/',
+      });
+    }
     return { success: true };
   }),
 });
