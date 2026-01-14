@@ -48,6 +48,7 @@ import { AdminMenu } from "./components/AdminMenu";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
 import AdminOrcamentoContrato from "./pages/AdminOrcamentoContrato";
+import AdminConformidadeFreota from "./pages/AdminConformidadeFreota";
 import AdminCTASmartSync from "./pages/AdminCTASmartSync";
 
 import AdminBackupRestore from "./pages/AdminBackupRestore";
@@ -185,9 +186,14 @@ function Router() {
           </ProtectedRoute>
         </Route>
         <Route path="/admin/orcamento-contrato">
-          <ProtectedRoute>
+          <DashboardLayout>
             <AdminOrcamentoContrato />
-          </ProtectedRoute>
+          </DashboardLayout>
+        </Route>
+        <Route path="/admin/conformidade-frota">
+          <DashboardLayout>
+            <AdminConformidadeFreota />
+          </DashboardLayout>
         </Route>
         <Route path="/admin/cta-smart-sync">
           <ProtectedRoute>
