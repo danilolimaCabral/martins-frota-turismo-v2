@@ -8,7 +8,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MapPin, Plus, Upload, Route, Play, Trash2, Eye, Users, Clock, Navigation } from "lucide-react";
+import {
+  MapPin,
+  Plus,
+  Upload,
+  Route,
+  Play,
+  Trash2,
+  Eye,
+  Users,
+  Clock,
+  Navigation,
+  ArrowLeft,
+} from "lucide-react";
 import { MapView } from "@/components/Map";
 
 const STATUS_COLORS: Record<string, string> = {
