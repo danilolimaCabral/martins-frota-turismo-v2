@@ -48,6 +48,7 @@ import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
 import { AdminMenu } from "./components/AdminMenu";
+import { AdminRoteirizadorAvancado } from "./pages/AdminRoteirizadorAvancado";
 import TesteRoteirizacao39Pontos from "./pages/TesteRoteirizacao39Pontos";
 import AdminRoteirizacaoCompleta from "./pages/AdminRoteirizacaoCompleta";
 import AdminRoteirizacaoDragDrop from "./pages/AdminRoteirizacaoDragDrop";
@@ -198,6 +199,11 @@ function Router() {
         </Route>
         <Route path="/admin/roteirizacao">
           <AdminRoteirizacao />
+        </Route>
+        <Route path="/admin/roteirizador-avancado">
+          <ProtectedRoute>
+            <AdminRoteirizadorAvancado />
+          </ProtectedRoute>
         </Route>
         <Route path="/admin/roteirizacao-otimizacao">
           <AdminRoteirizacaoOtimizacao />

@@ -70,7 +70,7 @@ export const optimizedRoutesRouter = {
 
   // Obter detalhes de uma rota
   getById: protectedProcedure
-    .input<number>(z.number())
+    .input(z.number())
     .query(async ({ input }) => {
       const route = await db
         .select()
@@ -119,8 +119,8 @@ export const optimizedRoutesRouter = {
 
   // Obter histórico de versões
   getVersionHistory: protectedProcedure
-    .input<number>(z.number())
-    .query(async ({ input }) => {
+    .input(z.number())
+    .query(async ({ input }: { input: number }) => {
       const versions = await db
         .select()
         .from(routeVersionHistory)
@@ -175,7 +175,7 @@ export const optimizedRoutesRouter = {
 
   // Obter estatísticas de uma rota
   getAnalytics: protectedProcedure
-    .input<number>(z.number())
+    .input(z.number())
     .query(async ({ input }) => {
       const analytics = await db
         .select()
@@ -188,7 +188,7 @@ export const optimizedRoutesRouter = {
 
   // Deletar rota
   delete: protectedProcedure
-    .input<number>(z.number())
+    .input(z.number())
     .mutation(async ({ input }) => {
       await db.delete(optimizedRoutes).where(eq(optimizedRoutes.id, input));
 
