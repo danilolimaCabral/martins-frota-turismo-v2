@@ -80,7 +80,7 @@ export function AdminAbastecimento() {
   const { data: statsData } = trpc.fueling.getStats.useQuery({});
 
   // Mutation para sincronizar com CTA Smart
-  const syncMutation = trpc.ctaSmart.sincronizarAbastecimentos.useMutation({
+  const syncMutation = trpc.ctaSmart.sincronizar.useMutation({
     onSuccess: (data) => {
       setSyncStatus(data);
       setIsSyncing(false);

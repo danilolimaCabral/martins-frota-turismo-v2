@@ -11,7 +11,7 @@ export default function AdminCTASmartSync() {
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncResult, setLastSyncResult] = useState<any>(null);
 
-  const syncMutation = trpc.ctaSmart.sincronizarAbastecimentos.useMutation({
+  const syncMutation = trpc.ctaSmart.sincronizar.useMutation({
     onSuccess: (data) => {
       setLastSyncResult(data);
       if (data.sucesso) {
