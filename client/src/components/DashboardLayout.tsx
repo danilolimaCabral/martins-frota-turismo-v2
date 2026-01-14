@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
+import { useAuth } from "@/hooks/useAuth";
 import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -244,19 +245,37 @@ function DashboardLayoutContent({
 
       <SidebarInset>
         {isMobile && (
-          <div className="flex border-b h-16 items-center justify-between bg-gradient-to-r from-slate-900 to-slate-800 px-3 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <SidebarTrigger className="h-9 w-9 rounded-lg bg-slate-700 hover:bg-slate-600 text-white flex-shrink-0" />
-              <div className="flex items-center gap-2 min-w-0 flex-1">
-                <img src="/logo-martins-novo.png" alt="Martins" className="h-8 w-8 object-contain flex-shrink-0" />
-                <span className="text-sm font-semibold text-white truncate">
-                  {activeMenuItem?.label ?? "Dashboard"}
-                </span>
-              </div>
+          <div className="flex border-b h-14 items-center justify-between bg-gradient-to-r from-orange-500 to-orange-600 px-3 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40 gap-2">
+            <SidebarTrigger className="h-8 w-8 rounded-lg bg-orange-600 hover:bg-orange-700 text-white flex-shrink-0" />
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <img src="/logo-martins-novo.png" alt="Martins" className="h-7 w-7 object-contain flex-shrink-0" />
+              <span className="text-sm font-bold text-white truncate">
+                Martins
+              </span>
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="h-8 w-8 rounded-lg bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center flex-shrink-0">
+                  <Avatar className="h-6 w-6 border-0">
+                    <AvatarFallback className="text-xs font-bold bg-orange-700 text-white">
+                      {user?.name?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem
+                  onClick={logout}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         )}
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1 p-3 md:p-4">{children}</main>
       </SidebarInset>
     </>
   );
