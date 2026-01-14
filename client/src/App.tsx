@@ -48,6 +48,7 @@ import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
 import { AdminMenu } from "./components/AdminMenu";
+import TesteRoteirizacao39Pontos from "./pages/TesteRoteirizacao39Pontos";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
 import AdminOrcamentoContrato from "./pages/AdminOrcamentoContrato";
@@ -222,6 +223,11 @@ function Router() {
         <Route path="/admin/roteirizacao-com-mapa">
           <ProtectedRoute>
             <AdminRoteirizacaoComMapa />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/teste-roteirizacao-39-pontos">
+          <ProtectedRoute>
+            <TesteRoteirizacao39Pontos />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/rastreamento-realtime">
