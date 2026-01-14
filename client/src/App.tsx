@@ -83,6 +83,7 @@ import AdminRelatoriosRH from "./pages/AdminRelatoriosRH";
 import AdminRoteirizacaoComEscala from "./pages/AdminRoteirizacaoComEscala";
 import AdminRoteirizacaoComEscalaV2 from "./pages/AdminRoteirizacaoComEscalaV2";
 import AdminRoteirizacaoProfissionalV2 from "./pages/AdminRoteirizacaoProfissionalV2";
+import AdminRoteirizacaoComMapa from "./pages/AdminRoteirizacaoComMapa";
 import AdminRastreamentoRealtime from "./pages/AdminRastreamentoRealtime";
 import AdminRelatorioRoteirizacao from "./pages/AdminRelatorioRoteirizacao";
 import AdminControleAbastecimento from "./pages/AdminControleAbastecimento";
@@ -216,6 +217,11 @@ function Router() {
         <Route path="/admin/roteirizacao-profissional">
           <ProtectedRoute>
             <AdminRoteirizacaoProfissionalV2 />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/admin/roteirizacao-com-mapa">
+          <ProtectedRoute>
+            <AdminRoteirizacaoComMapa />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/rastreamento-realtime">

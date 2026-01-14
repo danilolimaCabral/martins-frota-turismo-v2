@@ -106,6 +106,7 @@ const menuModules: MenuModule[] = [
       { label: "Viagens", path: "/admin/viagens", icon: Truck },
       { label: "Agenda", path: "/admin/agenda", icon: Calendar },
       { label: "Roteirização", path: "/admin/roteirizacao", icon: MapPin },
+      { label: "Roteirização com Mapa", path: "/admin/roteirizacao-com-mapa", icon: MapPin },
       { label: "Calendário Avançado", path: "/admin/calendarioavancado", icon: Calendar },
     ],
   },
