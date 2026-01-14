@@ -428,10 +428,10 @@ export default function AdminRoteirizacao() {
                 )}
 
                 {/* Mapa */}
-                {rotaDetalhes?.pontos_embarque && (
+                {rotaSelecionada && (
                   <div>
                     <h4 className="font-medium mb-2">Visualização no Mapa</h4>
-                    <div className="h-64 rounded-lg overflow-hidden border">
+                    <div className="h-96 rounded-lg overflow-hidden border">
                       <MapView onMapReady={handleMapReady} />
                     </div>
                   </div>
