@@ -55,6 +55,7 @@ import AdminRoteirizacaoDragDrop from "@/pages/AdminRoteirizacaoDragDrop";
 import AdminRoteirizacao39Pontos from "./pages/AdminRoteirizacao39Pontos";
 import AdminRoteirizacao39PontosAvancado from "./pages/AdminRoteirizacao39PontosAvancado";
 import MotoristaRotaCompartilhada from "./pages/MotoristaRotaCompartilhada";
+import AdminAtribuicaoRotas from "./pages/AdminAtribuicaoRotas";
 import AdminDashboardHistoricoRotas from "./pages/AdminDashboardHistoricoRotas";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import AdminAnaliseRotatividade from "./pages/AdminAnaliseRotatividade";
@@ -519,6 +520,11 @@ function Router() {
         </Route>
         <Route path="/motorista/rota/:token">
           <MotoristaRotaCompartilhada />
+        </Route>
+        <Route path="/admin/atribuicao-rotas">
+          <ProtectedRoute>
+            <AdminAtribuicaoRotas />
+          </ProtectedRoute>
         </Route>
       {/* Final fallback route */}
       <Route component={NotFound} />
