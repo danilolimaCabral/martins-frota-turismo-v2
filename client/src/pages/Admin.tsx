@@ -28,6 +28,7 @@ import {
   FileBarChart,
   Shield,
   Droplet,
+  ArrowLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
@@ -329,10 +330,22 @@ export default function Admin() {
       {/* Main Content */}
       <main className="flex-1 w-full lg:ml-0">
         {/* Dashboard Header */}
-        <div className="mb-6">
-          <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-1">
-            Dashboard
-          </h2>
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setLocation("/")}
+              className="hover:bg-slate-100"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-slate-900">
+                Dashboard
+              </h2>
+            </div>
+          </div>
           <p className="text-slate-600">
             Bem-vindo, {user.name}! Aqui está um resumo do sistema.
           </p>
