@@ -204,7 +204,7 @@ function Router() {
         </Route>
         <Route path="/admin/roteirizacao-profissional">
           <ProtectedRoute>
-            <AdminRoteirizacaoProfissional />
+            <AdminRoteirizacaoProfissionalV2 />
           </ProtectedRoute>
         </Route>
         <Route path="/admin/rastreamento-realtime">
