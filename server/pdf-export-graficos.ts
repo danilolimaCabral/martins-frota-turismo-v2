@@ -1,4 +1,4 @@
-import { PDFDocument, PDFPage, rgb, PDFImage } from 'pdf-lib';
+import { PDFDocument, PDFPage, rgb } from 'pdf-lib';
 
 interface DadosGrafico {
   titulo: string;
@@ -36,7 +36,7 @@ export async function gerarPDFComGraficos(dados: DadosGrafico): Promise<Buffer> 
     x: 50,
     y: yPosition,
     size: 24,
-    color: rgb(1, 0.42, 0.21) // Laranja Martins
+    color: rgb(1, 0.42, 0.21)
   });
 
   yPosition -= 30;
@@ -72,7 +72,7 @@ export async function gerarPDFComGraficos(dados: DadosGrafico): Promise<Buffer> 
     color: rgb(0.4, 0.4, 0.4)
   });
 
-  // Estatísticas principais (grande)
+  // Estatísticas principais
   yPosition -= 50;
   currentPage.drawText('RESUMO EXECUTIVO', {
     x: 50,
@@ -209,7 +209,11 @@ export async function gerarPDFComGraficos(dados: DadosGrafico): Promise<Buffer> 
   yPosition -= 30;
 
   // Análise por algoritmo
-  const algoritmosSet = new Set(dados.rotas.map(r => r.algoritmo))];
+  const algoritmosSet = new Set<string>();
+  for (let i = 0; i < dados.rotas.length; i++) {
+    algoritmosSet.add(dados.rotas[i].algoritmo);
+  }
+  const algoritmos = Array.from(algoritmosSet);
   
   currentPage.drawText('Desempenho por Algoritmo:', {
     x: 50,
@@ -221,7 +225,7 @@ export async function gerarPDFComGraficos(dados: DadosGrafico): Promise<Buffer> 
   yPosition -= 20;
 
   for (let i = 0; i < algoritmos.length; i++) {
-    const alg = algoritmos[i]; {
+    const alg = algoritmos[i];
     const rotasAlgo = dados.rotas.filter(r => r.algoritmo === alg);
     const mediaEconomia = rotasAlgo.reduce((sum, r) => sum + r.economia, 0) / rotasAlgo.length;
     const mediaPercentual = rotasAlgo.reduce((sum, r) => sum + r.percentualEconomia, 0) / rotasAlgo.length;
@@ -254,11 +258,12 @@ export async function gerarPDFComGraficos(dados: DadosGrafico): Promise<Buffer> 
     `1. Economia Total: ${dados.totalEconomia.toFixed(1)} km em ${dados.totalRotas} rotas`,
     `2. Combustível Economizado: ${dados.totalCombustivel.toFixed(1)} litros`,
     `3. Economia Média por Rota: ${(dados.totalEconomia / dados.totalRotas).toFixed(2)} km`,
-    `4. Algoritmo Mais Eficiente: ${algoritmos[0]} com ${dados.mediaEconomiaPercentual.toFixed(1)}% de economia`,
+    `4. Algoritmo Mais Eficiente: ${algoritmos.length > 0 ? algoritmos[0] : 'N/A'} com ${dados.mediaEconomiaPercentual.toFixed(1)}% de economia`,
     `5. Impacto Ambiental: Redução de ${(dados.totalCombustivel * 2.3).toFixed(1)} kg de CO₂`
   ];
 
-  for (const rec of recomendacoes) {
+  for (let i = 0; i < recomendacoes.length; i++) {
+    const rec = recomendacoes[i];
     if (yPosition < 50) {
       currentPage = pdfDoc.addPage([595, 842]);
       yPosition = height - 40;
@@ -346,7 +351,8 @@ export function gerarCSVComGraficos(dados: DadosGrafico): string {
   linhas.push('DETALHES DAS ROTAS');
   linhas.push('Data,Rota,Algoritmo,Distância Original (km),Distância Otimizada (km),Economia (km),Percentual (%),Combustível Economizado (L)');
 
-  for (const rota of dados.rotas) {
+  for (let i = 0; i < dados.rotas.length; i++) {
+    const rota = dados.rotas[i];
     linhas.push(
       `${rota.data},"${rota.nome}","${rota.algoritmo}",${rota.distanciaOriginal.toFixed(2)},${rota.distanciaOtimizada.toFixed(2)},${rota.economia.toFixed(2)},${rota.percentualEconomia.toFixed(1)},${rota.combustivelEconomizado.toFixed(2)}`
     );
