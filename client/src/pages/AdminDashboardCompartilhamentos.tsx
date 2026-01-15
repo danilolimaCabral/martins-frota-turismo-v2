@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, BarChart3, Share2, Eye, Mouse, Clock, TrendingUp } from "lucide-react";
 import { trpc } from "@/lib/trpc";
-import { DashboardLayout } from "@/components/DashboardLayout";
+import DashboardLayout from "@/components/DashboardLayout";
 
 interface ShareStats {
   totalShares: number;

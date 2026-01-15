@@ -102,6 +102,8 @@ import AdminControleAbastecimento from "./pages/AdminControleAbastecimento";
 import AdminControleAbastecimentoReal from "./pages/AdminControleAbastecimentoReal";
 import AdminCapacidadeVeiculos from "./pages/AdminCapacidadeVeiculos";
 import AdminCTASmartDashboardV2 from "./pages/AdminCTASmartDashboardV2";
+import AdminDashboardCompartilhamentos from "./pages/AdminDashboardCompartilhamentos";
+import CompartilharRotaPublica from "./pages/CompartilharRotaPublica";
 import ChatbotMV from "./components/ChatbotMV";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AppMVPassageiro } from "./pages/AppMVPassageiro";
@@ -543,6 +545,14 @@ function Router() {
           <ProtectedRoute>
             <AdminRoteirizacaoSalvarWaze />
           </ProtectedRoute>
+        </Route>
+        <Route path="/admin/dashboard-compartilhamentos">
+          <ProtectedRoute>
+            <AdminDashboardCompartilhamentos />
+          </ProtectedRoute>
+        </Route>
+        <Route path="/compartilhar-rota/:shareToken">
+          <CompartilharRotaPublica />
         </Route>
       {/* Final fallback route */}
       <Route component={NotFound} />

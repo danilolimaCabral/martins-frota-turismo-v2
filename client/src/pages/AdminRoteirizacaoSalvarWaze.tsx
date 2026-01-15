@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Navigation, Save, Share2, Trash2, ArrowLeft, Copy, QrCode } from "lucide-react";
+import { MapPin, Navigation, Save, Share2, Trash2, ArrowLeft, Copy, QrCode, Download, X } from "lucide-react";
 import { MapView } from "@/components/Map";
+import { trpc } from "@/lib/trpc";
+import { useState } from "react";
 
 interface Ponto {
   id: number;
@@ -66,6 +67,44 @@ export default function AdminRoteirizacaoSalvarWaze() {
   const [rotasSalvas, setRotasSalvas] = useState<RotaSalva[]>(rotasSalvasMock);
   const [rotaSelecionada, setRotaSelecionada] = useState<RotaSalva | null>(null);
   const [copiadoLink, setCopiadoLink] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
+  const [gerando, setGerando] = useState(false);
+  const [shareToken, setShareToken] = useState<string | null>(null);
+
+  const generateQRCode = async (rota: RotaSalva) => {
+    setGerando(true);
+    try {
+      const result = await trpc.routeSharing.generateQRCode.mutate({
+        routeId: rota.id,
+        platform: "qrcode",
+      });
+      setQrCodeUrl(result.qrCodeUrl);
+      setShareToken(result.shareToken);
+    } catch (error) {
+      console.error("Erro ao gerar QR Code:", error);
+      alert("Erro ao gerar QR Code. Tente novamente.");
+    } finally {
+      setGerando(false);
+    }
+  };
+
+  const downloadQRCode = async () => {
+    if (!qrCodeUrl) return;
+    try {
+      const response = await fetch(qrCodeUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `qrcode-${shareToken}.png`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Erro ao baixar QR Code:", error);
+    }
+  };
 
   const handleSalvarRota = () => {
     if (!nomRota.trim()) {
@@ -272,6 +311,16 @@ export default function AdminRoteirizacaoSalvarWaze() {
                     </Button>
 
                     <Button
+                      onClick={() => generateQRCode(rotaSelecionada)}
+                      className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white gap-2"
+                      size="sm"
+                      disabled={gerando}
+                    >
+                      <QrCode className="h-4 w-4" />
+                      {gerando ? "Gerando..." : "Gerar QR Code"}
+                    </Button>
+
+                    <Button
                       onClick={() => handleCopiarLink(rotaSelecionada)}
                       variant="outline"
                       className="w-full gap-2 border-slate-300 text-slate-700 hover:bg-slate-100"
@@ -300,6 +349,62 @@ export default function AdminRoteirizacaoSalvarWaze() {
           </div>
         </div>
       </div>
+      {qrCodeUrl && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <Card className="bg-white shadow-2xl max-w-sm w-full mx-4">
+            <CardHeader className="border-b border-slate-200 flex flex-row items-center justify-between">
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <QrCode className="h-5 w-5 text-purple-600" />
+                QR Code Gerado
+              </CardTitle>
+              <button
+                onClick={() => {
+                  setQrCodeUrl(null);
+                  setShareToken(null);
+                }}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </CardHeader>
+            <CardContent className="pt-6 space-y-4">
+              <div className="flex justify-center">
+                <img
+                  src={qrCodeUrl}
+                  alt="QR Code"
+                  className="w-64 h-64 border-4 border-slate-200 rounded-lg"
+                />
+              </div>
+              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <p className="text-xs text-slate-600 mb-1">Token de Compartilhamento</p>
+                <p className="text-xs font-mono text-slate-900 break-all">{shareToken}</p>
+              </div>
+              <div className="space-y-2">
+                <Button
+                  onClick={downloadQRCode}
+                  className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Baixar QR Code
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (shareToken) {
+                      navigator.clipboard.writeText(`${window.location.origin}/compartilhar-rota/${shareToken}`);
+                      alert("Link copiado!");
+                    }
+                  }}
+                  variant="outline"
+                  className="w-full gap-2 border-slate-300 text-slate-700 hover:bg-slate-100"
+                >
+                  <Copy className="h-4 w-4" />
+                  Copiar Link
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

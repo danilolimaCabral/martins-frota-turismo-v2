@@ -111,7 +111,7 @@ class NotificacaoManager {
       timestamp: new Date().toISOString(),
     });
 
-    this.wss.clients.forEach((client) => {
+    this.wss.clients.forEach((client: any) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(mensagem);
       }
@@ -159,11 +159,63 @@ class NotificacaoManager {
       timestamp: new Date().toISOString(),
     });
 
-    this.wss.clients.forEach((client) => {
+    this.wss.clients.forEach((client: any) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(mensagem);
       }
     });
+  }
+
+  // Notificar administrador sobre aceitação de rota compartilhada
+  notificarAceitacaoRota(adminId: number, motorista: any, rota: any, tempoResposta: number) {
+    const mensagem = JSON.stringify({
+      tipo: "rota_aceita_motorista",
+      titulo: "Rota Aceita!",
+      mensagem: `${motorista.nome} aceitou a rota ${rota.nome}`,
+      motorista: {
+        nome: motorista.nome,
+        telefone: motorista.telefone,
+      },
+      rota: {
+        id: rota.id,
+        nome: rota.nome,
+        distancia: rota.distancia,
+      },
+      tempoResposta: `${tempoResposta} minutos`,
+      timestamp: new Date().toISOString(),
+    });
+
+    this.wss.clients.forEach((client: any) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(mensagem);
+      }
+    });
+    console.log("Notificacao de aceitacao enviada para administradores");
+  }
+
+  // Notificar administrador sobre rejeição de rota
+  notificarRejeicaoRota(motorista: any, rota: any) {
+    const mensagem = JSON.stringify({
+      tipo: "rota_rejeitada_motorista",
+      titulo: "Rota Rejeitada",
+      mensagem: `${motorista.nome} rejeitou a rota ${rota.nome}`,
+      motorista: {
+        nome: motorista.nome,
+        telefone: motorista.telefone,
+      },
+      rota: {
+        id: rota.id,
+        nome: rota.nome,
+      },
+      timestamp: new Date().toISOString(),
+    });
+
+    this.wss.clients.forEach((client: any) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(mensagem);
+      }
+    });
+    console.log("Notificacao de rejeicao enviada para administradores");
   }
 
   // Obter número de clientes conectados
