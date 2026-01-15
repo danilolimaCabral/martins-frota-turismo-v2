@@ -57,7 +57,13 @@ export const roteirizacaoRouter = router({
       const rows = await db.execute(sql`
         SELECT * FROM rotas ORDER BY created_at DESC
       `);
-      return (rows as unknown as any[][])[0] || [];
+      const rotas = (rows as unknown as any[][])[0] || [];
+      // Garantir que JSON fields são strings válidas
+      return rotas.map((rota: any) => ({
+        ...rota,
+        pontos_embarque: typeof rota.pontos_embarque === 'string' ? rota.pontos_embarque : JSON.stringify(rota.pontos_embarque || []),
+        rota_otimizada: typeof rota.rota_otimizada === 'string' ? rota.rota_otimizada : JSON.stringify(rota.rota_otimizada || []),
+      }));
     }),
 
   // Obter rota por ID
@@ -76,10 +82,16 @@ export const roteirizacaoRouter = router({
       `);
       const enderecos = (enderecosResult as unknown as any[][])[0] || [];
       
-      return { ...rota, enderecos };
+      // Garantir que JSON fields são strings válidas
+      return {
+        ...rota,
+        pontos_embarque: typeof rota.pontos_embarque === 'string' ? rota.pontos_embarque : JSON.stringify(rota.pontos_embarque || []),
+        rota_otimizada: typeof rota.rota_otimizada === 'string' ? rota.rota_otimizada : JSON.stringify(rota.rota_otimizada || []),
+        enderecos,
+      };
     }),
 
-  // Adicionar endereços (upload de planilha)
+  // Adicionar endereços (upload de planilha ou manual)
   addEnderecos: protectedProcedure
     .input(z.object({
       rotaId: z.number(),
@@ -104,6 +116,40 @@ export const roteirizacaoRouter = router({
       }
       
       return { count: input.enderecos.length };
+    }),
+
+  // Criar rota com endereços manuais em uma única operação
+  createComEnderecos: protectedProcedure
+    .input(z.object({
+      nome: z.string().min(1),
+      descricao: z.string().optional(),
+      distanciaMaximaUsuario: z.number().default(1.0),
+      tempoMaximoRota: z.number().default(120),
+      enderecos: z.array(z.object({
+        nomeUsuario: z.string().optional(),
+        endereco: z.string().min(1),
+        latitude: z.number().optional(),
+        longitude: z.number().optional(),
+      })).min(1),
+    }))
+    .mutation(async ({ input }) => {
+      // Criar rota
+      const [result] = await db.execute(sql`
+        INSERT INTO rotas (nome, descricao, distancia_maxima_usuario, tempo_maximo_rota)
+        VALUES (${input.nome}, ${input.descricao || null}, ${input.distanciaMaximaUsuario}, ${input.tempoMaximoRota})
+      `);
+      const rotaId = (result as any).insertId;
+      
+      // Inserir endereços
+      for (let i = 0; i < input.enderecos.length; i++) {
+        const end = input.enderecos[i];
+        await db.execute(sql`
+          INSERT INTO enderecos_rota (rota_id, nome_usuario, endereco, latitude, longitude, ordem)
+          VALUES (${rotaId}, ${end.nomeUsuario || null}, ${end.endereco}, ${end.latitude || null}, ${end.longitude || null}, ${i + 1})
+        `);
+      }
+      
+      return { id: rotaId, enderecosAdicionados: input.enderecos.length };
     }),
 
   // Otimizar rota (calcular pontos de embarque)
