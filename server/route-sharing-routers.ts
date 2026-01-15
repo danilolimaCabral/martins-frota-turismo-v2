@@ -12,6 +12,7 @@ import { eq, desc, and } from "drizzle-orm";
 import QRCode from "qrcode";
 import { v4 as uuidv4 } from "uuid";
 import { storagePut } from "./storage";
+import type { RouteShareInput, RouteShare, ShareStatistics, TRPCContext } from "../shared/types";
 
 export const routeSharingRouter = router({
   // Gerar QR Code para uma rota
@@ -25,7 +26,7 @@ export const routeSharingRouter = router({
         sharedWithPhone: z.string().optional(),
       })
     )
-    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
+    .mutation(async ({ input, ctx }: { input: RouteShareInput; ctx: TRPCContext }) => {
       try {
         // Verificar se rota existe
         const route = await db
@@ -58,6 +59,7 @@ export const routeSharingRouter = router({
         const { url: qrCodeUrl } = await storagePut(qrCodeKey, buffer, "image/png");
 
         // Salvar compartilhamento no banco
+        if (!ctx.user) throw new Error("Usuário não autenticado");
         const result = await db.insert(routeShares).values({
           routeId: input.routeId,
           shareToken,
