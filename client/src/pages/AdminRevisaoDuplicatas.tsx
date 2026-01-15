@@ -1,9 +1,10 @@
+import { useLocation } from "wouter";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, AlertCircle, Merge2, Split, Eye } from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle, Merge2, Split, Eye , ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 interface Duplicate {
@@ -116,6 +117,17 @@ export default function AdminRevisaoDuplicatas() {
 
   return (
     <div className="min-h-screen bg-background p-6">
+      {/* Botão Voltar */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setLocation("/admin")}
+        className="mb-4"
+      >
+        <ArrowLeft size={20} />
+        <span>Voltar</span>
+      </Button>
+
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
