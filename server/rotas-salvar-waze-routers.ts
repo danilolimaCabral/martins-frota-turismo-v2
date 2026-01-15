@@ -28,7 +28,7 @@ export const rotasSalvarWazeRouter = router({
         motorista_id: z.number().optional(),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
       try {
         const resultado = await db.insert(rotasOtimizadas).values({
           nome: input.nome,
@@ -59,7 +59,7 @@ export const rotasSalvarWazeRouter = router({
     }),
 
   // Obter todas as rotas salvas
-  obterRotasSalvas: protectedProcedure.query(async ({ ctx }) => {
+  obterRotasSalvas: protectedProcedure.query(async ({ ctx: any }) => {
     try {
       const rotas = await db
         .select()
@@ -90,7 +90,7 @@ export const rotasSalvarWazeRouter = router({
         ),
       })
     )
-    .query(({ input }) => {
+    .query(({ input: any }) => {
       try {
         if (input.pontos.length === 0) {
           throw new Error("Nenhum ponto fornecido");
@@ -110,7 +110,7 @@ export const rotasSalvarWazeRouter = router({
 
         // Adicionar waypoints se existirem
         if (waypoints.length > 0) {
-          waypoints.forEach((ponto) => {
+          waypoints.forEach((ponto: any) => {
             urlWaze += `&rt=${ponto.latitude},${ponto.longitude}`;
           });
         }
@@ -142,7 +142,7 @@ export const rotasSalvarWazeRouter = router({
         ),
       })
     )
-    .query(({ input }) => {
+    .query(async ({ input }: { input: any }) => {
       try {
         if (input.pontos.length === 0) {
           throw new Error("Nenhum ponto fornecido");
@@ -162,7 +162,7 @@ export const rotasSalvarWazeRouter = router({
 
         // Adicionar waypoints se existirem
         if (waypoints.length > 0) {
-          const waypointsStr = waypoints.map((p) => `${p.latitude},${p.longitude}`).join("|");
+          const waypointsStr = waypoints.map((p: any) => `${p.latitude},${p.longitude}`).join("|");
           urlGoogleMaps += `&waypoints=${waypointsStr}`;
         }
 
@@ -189,7 +189,7 @@ export const rotasSalvarWazeRouter = router({
         plataforma: z.enum(["waze", "google_maps", "link_direto"]),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
       try {
         // Obter rota
         const rota = await db
@@ -243,7 +243,7 @@ export const rotasSalvarWazeRouter = router({
     }),
 
   // Obter histórico de rotas
-  obterHistoricoRotas: protectedProcedure.query(async ({ ctx }) => {
+  obterHistoricoRotas: protectedProcedure.query(async ({ ctx: any }) => {
     try {
       const historico = await db
         .select()
@@ -261,7 +261,7 @@ export const rotasSalvarWazeRouter = router({
   // Deletar rota
   deletarRota: protectedProcedure
     .input(z.object({ rota_id: z.number() }))
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
       try {
         await db.delete(rotasOtimizadas).where(eq(rotasOtimizadas.id, input.rota_id));
 

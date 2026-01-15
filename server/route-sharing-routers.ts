@@ -25,7 +25,7 @@ export const routeSharingRouter = router({
         sharedWithPhone: z.string().optional(),
       })
     )
-    .mutation(async ({ input, ctx }: any) => {
+    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
       try {
         // Verificar se rota existe
         const route = await db
@@ -46,13 +46,12 @@ export const routeSharingRouter = router({
         const qrCodeDataUrl = await QRCode.toDataURL(shareUrl, {
           errorCorrectionLevel: "H",
           type: "image/png",
-          quality: 0.95,
           margin: 1,
           width: 300,
-        });
+        } as any);
 
         // Converter data URL para buffer e fazer upload para S3
-        const base64Data = qrCodeDataUrl.split(",")[1];
+        const base64Data = (qrCodeDataUrl as unknown as string).split(",")[1];
         const buffer = Buffer.from(base64Data, "base64");
         
         const qrCodeKey = `route-qr-codes/${shareToken}.png`;

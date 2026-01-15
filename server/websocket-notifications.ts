@@ -33,13 +33,13 @@ class NotificacaoManager {
         this.removerCliente(ws);
       });
 
-      ws.on("error", (erro) => {
+      ws.on("error", (erro: Error) => {
         console.error("❌ Erro no WebSocket:", erro);
       });
     });
   }
 
-  private processarMensagem(ws: WebSocket, mensagem: any) {
+  private processarMensagem(ws: WebSocket, mensagem: Record<string, any>) {
     if (mensagem.tipo === "registrar") {
       const motoristaId = mensagem.motoristaId;
       this.clientes.set(motoristaId, { motoristaId, ws });
@@ -49,7 +49,7 @@ class NotificacaoManager {
   }
 
   private removerCliente(ws: WebSocket) {
-    for (const [motoristaId, cliente] of this.clientes.entries()) {
+    for (const [motoristaId, cliente] of Array.from(this.clientes.entries())) {
       if (cliente.ws === ws) {
         this.clientes.delete(motoristaId);
         console.log(`❌ Motorista ${motoristaId} removido`);

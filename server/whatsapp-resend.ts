@@ -35,7 +35,7 @@ export class WhatsAppQRCodeResender {
         );
 
       for (const share of unresponded) {
-        if (share.resendAttempts >= this.config.maxRetries) {
+        if ((share.resendAttempts ?? 0) >= this.config.maxRetries) {
           console.log(`Maximo de tentativas atingido para compartilhamento ${share.id}`);
           continue;
         }
