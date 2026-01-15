@@ -1,0 +1,291 @@
+{
+  "timestamp": "2026-01-15T12:59:40.587Z",
+  "totalRouters": 47,
+  "totalProcedures": 281,
+  "proceduresNeedingValidation": 228,
+  "proceduresNeedingAuth": 246,
+  "routers": [
+    {
+      "file": "weather-routers.ts",
+      "procedures": 1,
+      "needsValidation": false,
+      "needsAuth": false
+    },
+    {
+      "file": "vehicle-routers.ts",
+      "procedures": 2,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "trip-routers.ts",
+      "procedures": 8,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "templates-routers.ts",
+      "procedures": 10,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "route-sharing-routers.ts",
+      "procedures": 10,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "roteirizador-routers.ts",
+      "procedures": 7,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "roteirizacao-routers.ts",
+      "procedures": 8,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "rotas-salvar-waze-routers.ts",
+      "procedures": 7,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "rotas-otimizadas-routers.ts",
+      "procedures": 6,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "rotas-compartilhamento-routers.ts",
+      "procedures": 7,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "review-routers.ts",
+      "procedures": 8,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "report-routers.ts",
+      "procedures": 6,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "relatorios-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "relatorio-financeiro-routers.ts",
+      "procedures": 6,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "profile-routers.ts",
+      "procedures": 3,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "ponto-routers.ts",
+      "procedures": 6,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "orcamento-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "optimized-routes-routers.ts",
+      "procedures": 8,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "notificacoes-routers.ts",
+      "procedures": 3,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "manutencao-routers.ts",
+      "procedures": 9,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "local-auth-routers.ts",
+      "procedures": 7,
+      "needsValidation": true,
+      "needsAuth": false
+    },
+    {
+      "file": "lancamentos-rh-routers.ts",
+      "procedures": 7,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "import-routers.ts",
+      "procedures": 4,
+      "needsValidation": false,
+      "needsAuth": true
+    },
+    {
+      "file": "gps-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "funcionario-routers.ts",
+      "procedures": 0,
+      "needsValidation": false,
+      "needsAuth": false
+    },
+    {
+      "file": "fueling-routers.ts",
+      "procedures": 9,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "folha-routers.ts",
+      "procedures": 11,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "folha-pagamento-routers.ts",
+      "procedures": 4,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "fluxo-caixa-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "financeiro-routers.ts",
+      "procedures": 1,
+      "needsValidation": false,
+      "needsAuth": true
+    },
+    {
+      "file": "ferias-routers.ts",
+      "procedures": 7,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "expense-routers.ts",
+      "procedures": 9,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "driver-routers.ts",
+      "procedures": 6,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "dre-routers.ts",
+      "procedures": 4,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "dashboard-routers.ts",
+      "procedures": 3,
+      "needsValidation": true,
+      "needsAuth": false
+    },
+    {
+      "file": "dashboard-executivo-routers.ts",
+      "procedures": 5,
+      "needsValidation": false,
+      "needsAuth": true
+    },
+    {
+      "file": "cta-smart-routers.ts",
+      "procedures": 4,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "contato-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "cnab-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "cnab-historico-routers.ts",
+      "procedures": 6,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "checklist-routers.ts",
+      "procedures": 7,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "chatbot-routers.ts",
+      "procedures": 2,
+      "needsValidation": true,
+      "needsAuth": false
+    },
+    {
+      "file": "blog-routers.ts",
+      "procedures": 10,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "auth-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": false
+    },
+    {
+      "file": "audit-routers.ts",
+      "procedures": 5,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "alertas-routers.ts",
+      "procedures": 10,
+      "needsValidation": true,
+      "needsAuth": true
+    },
+    {
+      "file": "agenda-routers.ts",
+      "procedures": 10,
+      "needsValidation": true,
+      "needsAuth": true
+    }
+  ]
+}
