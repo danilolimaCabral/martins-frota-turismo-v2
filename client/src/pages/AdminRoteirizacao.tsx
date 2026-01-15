@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DraggableEnderecoList } from "@/components/DraggableEnderecoList";
+import { CSVImporter } from "@/components/CSVImporter";
 import {
   MapPin,
   Plus,
@@ -123,6 +125,14 @@ export default function AdminRoteirizacao() {
 
   const handleRemoverEnderecoManual = (idx: number) => {
     setEnderecosManual(enderecosManual.filter((_, i) => i !== idx));
+  };
+
+  const handleReordenarEnderecos = (enderecos: Array<{ nomeUsuario: string; endereco: string }>) => {
+    setEnderecosManual(enderecos);
+  };
+
+  const handleImportarCSV = (enderecos: Array<{ nomeUsuario: string; endereco: string }>) => {
+    setEnderecosManual([...enderecosManual, ...enderecos]);
   };
 
   const handleCriarRotaComEnderecos = (e: React.FormEvent<HTMLFormElement>) => {
@@ -288,30 +298,15 @@ export default function AdminRoteirizacao() {
                     Adicionar Endereço
                   </Button>
 
-                  {/* Lista de Endereços */}
-                  {enderecosManual.length > 0 && (
-                    <div className="mt-4 space-y-2">
-                      <p className="text-sm font-medium">Endereços adicionados ({enderecosManual.length}):</p>
-                      <div className="max-h-48 overflow-y-auto space-y-2">
-                        {enderecosManual.map((end, idx) => (
-                          <div key={idx} className="flex items-center justify-between bg-muted p-2 rounded">
-                            <div className="flex-1">
-                              <p className="text-sm font-medium">{end.nomeUsuario || `Endereço ${idx + 1}`}</p>
-                              <p className="text-xs text-muted-foreground">{end.endereco}</p>
-                            </div>
-                            <Button
-                              type="button"
-                              onClick={() => handleRemoverEnderecoManual(idx)}
-                              variant="ghost"
-                              size="sm"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  {/* Importar via CSV */}
+                  <CSVImporter onImport={handleImportarCSV} />
+
+                  {/* Lista de Endereços com Drag-and-Drop */}
+                  <DraggableEnderecoList
+                    enderecos={enderecosManual}
+                    onEnderecoRemove={handleRemoverEnderecoManual}
+                    onEnderecoReorder={handleReordenarEnderecos}
+                  />
                 </div>
 
                 <div className="flex gap-2 justify-end">
