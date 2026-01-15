@@ -554,3 +554,56 @@
 - [ ] Gráfico de barras (despesas mensais)
 - [ ] Gráfico de linhas (tendência de lucro)
 - [ ] Integrar dados reais
+
+
+## 🔧 CORREÇÕES UX - BOTÃO VOLTAR (NOVA SOLICITAÇÃO)
+- [ ] Adicionar botão voltar na página AdminRoteirizacao.tsx
+- [ ] Verificar e adicionar botão voltar em TODAS as páginas Admin que não têm
+- [ ] Garantir consistência de navegação em todo o sistema
+- [ ] Testar navegação em todos os módulos
+
+
+## 🆕 MÓDULO DE MEDIÇÃO DE VIAGENS EXTRAS (NOVA SOLICITAÇÃO)
+
+### Schema do Banco de Dados
+- [ ] Criar tabela medicao_configuracao_valores (valores por tipo de veículo e destino)
+- [ ] Criar tabela medicao_viagens (marcações diárias de viagens)
+- [ ] Criar tabela medicao_periodos (períodos mensais de medição)
+- [ ] Executar migrations
+
+### Router tRPC
+- [ ] Criar medicao-routers.ts com endpoints:
+  - [ ] Configurar valores (admin only)
+  - [ ] Listar configurações de valores
+  - [ ] Marcar viagens (funcionário + admin)
+  - [ ] Listar viagens por período
+  - [ ] Gerar relatório mensal
+  - [ ] Exportar para Excel
+
+### Interface Administrativa
+- [ ] Criar AdminMedicao.tsx com:
+  - [ ] Calendário mensal interativo
+  - [ ] Marcação de viagens por dia/turno/veículo/destino
+  - [ ] Modal de configuração de valores (admin only)
+  - [ ] Visualização de resumo mensal
+  - [ ] Botão de exportar relatório
+- [ ] Adicionar rota no App.tsx
+- [ ] Adicionar link no menu Admin
+
+### Sistema de Permissões
+- [ ] Funcionário: pode marcar viagens, NÃO vê valores
+- [ ] Admin: pode marcar viagens, configurar valores, ver relatórios completos
+- [ ] Implementar middleware de permissões no router
+
+### Testes e Validação
+- [ ] Testar marcação de viagens
+- [ ] Testar configuração de valores
+- [ ] Testar geração de relatório
+- [ ] Validar permissões
+- [ ] Testar exportação para Excel
+
+
+## 🐛 CORREÇÃO URGENTE - Tabela Vehicles (Página Motoristas)
+- [x] Verificar se tabela vehicles existe no banco de dados
+- [x] Criar tabela vehicles com todos os campos necessários se não existir
+- [x] Testar página de motoristas (/admin/motoristas) após correção
