@@ -3,8 +3,13 @@ import fs from "fs";
 import { type Server } from "http";
 import { nanoid } from "nanoid";
 import path from "path";
+import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
+
+// Obter __dirname de forma compatível com ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
@@ -26,7 +31,7 @@ export async function setupVite(app: Express, server: Server) {
 
     try {
       const clientTemplate = path.resolve(
-        import.meta.dirname,
+        __dirname,
         "../..",
         "client",
         "index.html"
@@ -48,10 +53,15 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath =
-    process.env.NODE_ENV === "development"
-      ? path.resolve(import.meta.dirname, "../..", "dist", "public")
-      : path.resolve(import.meta.dirname, "public");
+  // Em produção no Railway, os arquivos estão em dist/public relativo ao diretório de trabalho
+  const distPath = process.env.NODE_ENV === "production"
+    ? path.resolve(process.cwd(), "dist", "public")
+    : path.resolve(__dirname, "../..", "dist", "public");
+
+  console.log(`[Static] Serving files from: ${distPath}`);
+  console.log(`[Static] NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(`[Static] CWD: ${process.cwd()}`);
+
   if (!fs.existsSync(distPath)) {
     console.error(
       `Could not find the build directory: ${distPath}, make sure to build the client first`
