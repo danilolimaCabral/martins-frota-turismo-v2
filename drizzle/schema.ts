@@ -2034,6 +2034,11 @@ export const routeShares = mysqlTable("route_shares", {
   isActive: boolean("is_active").default(true).notNull(),
   expiresAt: timestamp("expires_at"), // Quando o link expira
   
+  // Reenvio automático
+  resendAttempts: int("resend_attempts").default(0), // Número de tentativas de reenvio
+  lastResendAt: timestamp("last_resend_at"), // Última tentativa de reenvio
+  maxResendAttempts: int("max_resend_attempts").default(3), // Máximo de tentativas
+  
   // Auditoria
   sharedBy: int("shared_by").notNull().references(() => users.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
