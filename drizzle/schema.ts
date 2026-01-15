@@ -2067,3 +2067,52 @@ export const routeShareEvents = mysqlTable("route_share_events", {
 
 export type RouteShareEvent = typeof routeShareEvents.$inferSelect;
 export type InsertRouteShareEvent = typeof routeShareEvents.$inferInsert;
+
+// Configurações de Veículos
+
+// Configurações de Veículos
+export const vehicleTypes = mysqlTable("vehicle_types", {
+  id: int("id").primaryKey().autoincrement(),
+  name: text("name").notNull(), // Van 15, Van 19, Micro, Ônibus, Ônibus Executivo
+  capacity: int("capacity").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Configurações de Cidades
+export const cityConfigs = mysqlTable("city_configs", {
+  id: int("id").primaryKey().autoincrement(),
+  name: text("name").notNull(), // Araucária, Curitiba, etc
+  state: varchar("state", { length: 2 }).notNull().default("PR"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Preços por Rota (Veículo + Cidade)
+export const routePrices = mysqlTable("route_prices", {
+  id: int("id").primaryKey().autoincrement(),
+  vehicleTypeId: int("vehicle_type_id").notNull().references(() => vehicleTypes.id),
+  cityId: int("city_id").notNull().references(() => cityConfigs.id),
+  pricePerTrip: decimal("price_per_trip", { precision: 10, scale: 2 }).notNull(),
+  pricePerKm: decimal("price_per_km", { precision: 10, scale: 2 }),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+// Histórico de Importações
+export const importHistory = mysqlTable("import_history", {
+  id: int("id").primaryKey().autoincrement(),
+  fileName: text("file_name").notNull(),
+  fileType: text("file_type").notNull(), // banco, viagens
+  totalRecords: int("total_records").notNull(),
+  successfulRecords: int("successful_records").notNull(),
+  failedRecords: int("failed_records").notNull(),
+  errors: json("errors"), // JSON com detalhes de erros
+  importedAt: timestamp("imported_at").defaultNow(),
+  importedBy: varchar("imported_by", { length: 255 }),
+});
+
+export type VehicleType = typeof vehicleTypes.$inferSelect;
+export type CityConfig = typeof cityConfigs.$inferSelect;
+export type RoutePrice = typeof routePrices.$inferSelect;
+export type ImportHistory = typeof importHistory.$inferSelect;
