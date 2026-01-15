@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Edit, Trash2, User , ArrowLeft } from "lucide-react";
+import { Plus, Edit, Trash2, User, ArrowLeft, AlertTriangle, Users, UserCheck, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminMotoristas() {
@@ -43,7 +43,8 @@ export default function AdminMotoristas() {
   });
 
   const utils = trpc.useUtils();
-  const { data: drivers, isLoading } = trpc.driver.list.useQuery();
+  const { data: response, isLoading } = trpc.driver.list.useQuery();
+  const drivers = response?.data || [];
 
   const createMutation = trpc.driver.create.useMutation({
     onSuccess: () => {
@@ -359,6 +360,67 @@ export default function AdminMotoristas() {
         </Dialog>
       </div>
 
+      {/* Dashboard de Estatísticas */}
+      {!isLoading && drivers.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total de Motoristas</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{drivers.length}</div>
+              <p className="text-xs text-muted-foreground">Cadastrados no sistema</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Motoristas Ativos</CardTitle>
+              <UserCheck className="h-4 w-4 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">
+                {drivers.filter(d => d.status === 'ativo').length}
+              </div>
+              <p className="text-xs text-muted-foreground">Disponíveis para viagens</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Em Férias</CardTitle>
+              <Calendar className="h-4 w-4 text-yellow-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-yellow-600">
+                {drivers.filter(d => d.status === 'ferias').length}
+              </div>
+              <p className="text-xs text-muted-foreground">Temporariamente indisponíveis</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">CNH Vencendo</CardTitle>
+              <AlertTriangle className="h-4 w-4 text-red-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">
+                {drivers.filter(d => {
+                  if (!d.cnhExpiry) return false;
+                  const today = new Date();
+                  const expiry = new Date(d.cnhExpiry);
+                  const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                  return diffDays <= 30 && diffDays >= 0;
+                }).length}
+              </div>
+              <p className="text-xs text-muted-foreground">Próximos 30 dias</p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {isLoading ? (
         <div className="text-center py-12">Carregando motoristas...</div>
       ) : (
@@ -383,7 +445,30 @@ export default function AdminMotoristas() {
                   {driver.phone && <p><strong>Telefone:</strong> {driver.phone}</p>}
                   {driver.email && <p><strong>E-mail:</strong> {driver.email}</p>}
                   {driver.cnhExpiry && (
-                    <p><strong>Vencimento CNH:</strong> {new Date(driver.cnhExpiry).toLocaleDateString('pt-BR')}</p>
+                    <div>
+                      <p><strong>Vencimento CNH:</strong> {new Date(driver.cnhExpiry).toLocaleDateString('pt-BR')}</p>
+                      {(() => {
+                        const today = new Date();
+                        const expiry = new Date(driver.cnhExpiry);
+                        const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                        if (diffDays < 0) {
+                          return (
+                            <div className="flex items-center gap-1 text-red-600 text-xs mt-1">
+                              <AlertTriangle className="h-3 w-3" />
+                              <span>CNH VENCIDA!</span>
+                            </div>
+                          );
+                        } else if (diffDays <= 30) {
+                          return (
+                            <div className="flex items-center gap-1 text-orange-600 text-xs mt-1">
+                              <AlertTriangle className="h-3 w-3" />
+                              <span>Vence em {diffDays} dias</span>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
                   )}
                 </div>
                 
@@ -411,7 +496,7 @@ export default function AdminMotoristas() {
         </div>
       )}
 
-      {!isLoading && drivers?.length === 0 && (
+      {!isLoading && drivers.length === 0 && (
         <Card className="p-12 text-center">
           <User className="h-12 w-12 mx-auto text-gray-400 mb-4" />
           <h3 className="text-lg font-semibold mb-2">Nenhum motorista cadastrado</h3>
