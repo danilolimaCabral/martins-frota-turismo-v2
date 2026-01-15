@@ -6,32 +6,60 @@ import type { GoogleMapsInput, GoogleMapsResponse, WazeShareInput, WazeShareResp
 import { GoogleMapsInputSchema, WazeShareInputSchema } from "./validation-schemas";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 
+// ============================================================================
+// SCHEMAS ESPECÍFICOS PARA ROTAS
+// ============================================================================
+
+const RotaPontoSchema = z.object({
+  id: z.number().int(),
+  nome: z.string(),
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+  sequencia: z.number().int().positive(),
+});
+
+const SalvarRotaInputSchema = z.object({
+  nome: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
+  descricao: z.string().optional(),
+  pontos: z.array(RotaPontoSchema).min(2, "Mínimo 2 pontos necessários"),
+  distancia_total: z.number().positive(),
+  tempo_estimado: z.number().positive(),
+  economia_percentual: z.number().min(0).max(100),
+  combustivel_economizado: z.number().min(0),
+  algoritmo_usado: z.string(),
+  motorista_id: z.number().int().positive().optional(),
+});
+
+const CompartilharRotaInputSchema = z.object({
+  rota_id: z.number().int().positive(),
+  motorista_id: z.number().int().positive(),
+  plataforma: z.enum(["waze", "google_maps", "link_direto"]),
+});
+
+const DeletarRotaInputSchema = z.object({
+  rota_id: z.number().int().positive(),
+});
+
+// ============================================================================
+// TIPOS DERIVADOS
+// ============================================================================
+
+type SalvarRotaInput = z.infer<typeof SalvarRotaInputSchema>;
+type CompartilharRotaInput = z.infer<typeof CompartilharRotaInputSchema>;
+type DeletarRotaInput = z.infer<typeof DeletarRotaInputSchema>;
+
+// ============================================================================
+// ROUTER
+// ============================================================================
+
 export const rotasSalvarWazeRouter = router({
   // Salvar rota otimizada
   salvarRota: protectedProcedure
-    .input(
-      z.object({
-        nome: z.string(),
-        descricao: z.string().optional(),
-        pontos: z.array(
-          z.object({
-            id: z.number(),
-            nome: z.string(),
-            latitude: z.number(),
-            longitude: z.number(),
-            sequencia: z.number(),
-          })
-        ),
-        distancia_total: z.number(),
-        tempo_estimado: z.number(),
-        economia_percentual: z.number(),
-        combustivel_economizado: z.number(),
-        algoritmo_usado: z.string(),
-        motorista_id: z.number().optional(),
-      })
-    )
-    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
+    .input(SalvarRotaInputSchema)
+    .mutation(async ({ input, ctx }: { input: SalvarRotaInput; ctx: TRPCContext }): Promise<{ sucesso: boolean; mensagem: string; rota_id?: number }> => {
       try {
+        if (!ctx.user) throw new Error("Usuário não autenticado");
+
         const resultado = await db.insert(rotasOtimizadas).values({
           nome: input.nome,
           descricao: input.descricao,
@@ -47,7 +75,7 @@ export const rotasSalvarWazeRouter = router({
           data_criacao: new Date(),
         });
 
-        console.log(`✅ Rota "${input.nome}" salva com sucesso`);
+        console.warn(`✅ Rota "${input.nome}" salva com sucesso`);
 
         return {
           sucesso: true,
@@ -61,8 +89,10 @@ export const rotasSalvarWazeRouter = router({
     }),
 
   // Obter todas as rotas salvas
-  obterRotasSalvas: protectedProcedure.query(async ({ ctx: any }) => {
+  obterRotasSalvas: protectedProcedure.query(async ({ ctx }: { ctx: TRPCContext }): Promise<Array<any>> => {
     try {
+      if (!ctx.user) throw new Error("Usuário não autenticado");
+
       const rotas = await db
         .select()
         .from(rotasOtimizadas)
@@ -81,49 +111,15 @@ export const rotasSalvarWazeRouter = router({
 
   // Gerar link para Waze
   gerarLinkWaze: publicProcedure
-    .input(
-      z.object({
-        pontos: z.array(
-          z.object({
-            latitude: z.number(),
-            longitude: z.number(),
-            nome: z.string().optional(),
-          })
-        ),
-      })
-    )
-    .query(({ input: any }) => {
+    .input(WazeShareInputSchema)
+    .query(({ input }: { input: WazeShareInput }): WazeShareResponse => {
       try {
-        if (input.pontos.length === 0) {
-          throw new Error("Nenhum ponto fornecido");
-        }
-
-        // Primeiro ponto é o ponto de partida
-        const inicio = input.pontos[0];
-
-        // Último ponto é o destino
-        const destino = input.pontos[input.pontos.length - 1];
-
-        // Pontos intermediários (waypoints)
-        const waypoints = input.pontos.slice(1, -1);
-
-        // Construir URL do Waze
-        let urlWaze = `https://waze.com/ul?navigate=yes&ll=${destino.latitude},${destino.longitude}`;
-
-        // Adicionar waypoints se existirem
-        if (waypoints.length > 0) {
-          waypoints.forEach((ponto: any) => {
-            urlWaze += `&rt=${ponto.latitude},${ponto.longitude}`;
-          });
-        }
-
-        console.log(`✅ Link Waze gerado com ${input.pontos.length} pontos`);
-
         return {
           sucesso: true,
-          link_waze: urlWaze,
-          pontos_totais: input.pontos.length,
-          destino: `${destino.latitude}, ${destino.longitude}`,
+          url_waze: `https://waze.com/ul?navigate=yes&ll=${input.latitude},${input.longitude}&zoom=${input.zoom || 15}`,
+          latitude: input.latitude,
+          longitude: input.longitude,
+          nome: input.nome,
         };
       } catch (erro) {
         console.error("❌ Erro ao gerar link Waze:", erro);
@@ -133,42 +129,25 @@ export const rotasSalvarWazeRouter = router({
 
   // Gerar link para Google Maps
   gerarLinkGoogleMaps: publicProcedure
-    .input(
-      z.object({
-        pontos: z.array(
-          z.object({
-            latitude: z.number(),
-            longitude: z.number(),
-            nome: z.string().optional(),
-          })
-        ),
-      })
-    )
-    .query(async ({ input }: { input: any }) => {
+    .input(GoogleMapsInputSchema)
+    .query(async ({ input }: { input: GoogleMapsInput }): Promise<GoogleMapsResponse> => {
       try {
         if (input.pontos.length === 0) {
           throw new Error("Nenhum ponto fornecido");
         }
 
-        // Primeiro ponto é o ponto de partida
         const inicio = input.pontos[0];
-
-        // Último ponto é o destino
         const destino = input.pontos[input.pontos.length - 1];
-
-        // Pontos intermediários (waypoints)
         const waypoints = input.pontos.slice(1, -1);
 
-        // Construir URL do Google Maps
         let urlGoogleMaps = `https://www.google.com/maps/dir/?api=1&origin=${inicio.latitude},${inicio.longitude}&destination=${destino.latitude},${destino.longitude}`;
 
-        // Adicionar waypoints se existirem
         if (waypoints.length > 0) {
-          const waypointsStr = waypoints.map((p: any) => `${p.latitude},${p.longitude}`).join("|");
+          const waypointsStr = waypoints.map((p) => `${p.latitude},${p.longitude}`).join("|");
           urlGoogleMaps += `&waypoints=${waypointsStr}`;
         }
 
-        console.log(`✅ Link Google Maps gerado com ${input.pontos.length} pontos`);
+        console.warn(`✅ Link Google Maps gerado com ${input.pontos.length} pontos`);
 
         return {
           sucesso: true,
@@ -184,16 +163,11 @@ export const rotasSalvarWazeRouter = router({
 
   // Compartilhar rota com motorista
   compartilharRotaMotorista: protectedProcedure
-    .input(
-      z.object({
-        rota_id: z.number(),
-        motorista_id: z.number(),
-        plataforma: z.enum(["waze", "google_maps", "link_direto"]),
-      })
-    )
-    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
+    .input(CompartilharRotaInputSchema)
+    .mutation(async ({ input, ctx }: { input: CompartilharRotaInput; ctx: TRPCContext }): Promise<{ sucesso: boolean; mensagem: string; link: string }> => {
       try {
-        // Obter rota
+        if (!ctx.user) throw new Error("Usuário não autenticado");
+
         const rota = await db
           .select()
           .from(rotasOtimizadas)
@@ -207,7 +181,6 @@ export const rotasSalvarWazeRouter = router({
         const rotaData = rota[0];
         const pontos = JSON.parse(rotaData.pontos_embarque || "[]");
 
-        // Gerar link baseado na plataforma
         let link = "";
         if (input.plataforma === "waze") {
           const destino = pontos[pontos.length - 1];
@@ -220,7 +193,6 @@ export const rotasSalvarWazeRouter = router({
           link = `/motorista/rota/${rotaData.id}`;
         }
 
-        // Registrar compartilhamento no histórico
         await db.insert(rotasHistorico).values({
           rota_id: input.rota_id,
           motorista_id: input.motorista_id,
@@ -231,7 +203,7 @@ export const rotasSalvarWazeRouter = router({
           data_acao: new Date(),
         });
 
-        console.log(`✅ Rota compartilhada com motorista ${input.motorista_id} via ${input.plataforma}`);
+        console.warn(`✅ Rota compartilhada com motorista ${input.motorista_id} via ${input.plataforma}`);
 
         return {
           sucesso: true,
@@ -245,8 +217,10 @@ export const rotasSalvarWazeRouter = router({
     }),
 
   // Obter histórico de rotas
-  obterHistoricoRotas: protectedProcedure.query(async ({ ctx: any }) => {
+  obterHistoricoRotas: protectedProcedure.query(async ({ ctx }: { ctx: TRPCContext }): Promise<Array<any>> => {
     try {
+      if (!ctx.user) throw new Error("Usuário não autenticado");
+
       const historico = await db
         .select()
         .from(rotasHistorico)
@@ -262,12 +236,14 @@ export const rotasSalvarWazeRouter = router({
 
   // Deletar rota
   deletarRota: protectedProcedure
-    .input(z.object({ rota_id: z.number() }))
-    .mutation(async ({ input, ctx }: { input: any; ctx: any }) => {
+    .input(DeletarRotaInputSchema)
+    .mutation(async ({ input, ctx }: { input: DeletarRotaInput; ctx: TRPCContext }): Promise<{ sucesso: boolean; mensagem: string }> => {
       try {
+        if (!ctx.user) throw new Error("Usuário não autenticado");
+
         await db.delete(rotasOtimizadas).where(eq(rotasOtimizadas.id, input.rota_id));
 
-        console.log(`✅ Rota ${input.rota_id} deletada com sucesso`);
+        console.warn(`✅ Rota ${input.rota_id} deletada com sucesso`);
 
         return {
           sucesso: true,
