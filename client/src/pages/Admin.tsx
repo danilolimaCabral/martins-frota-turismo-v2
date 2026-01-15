@@ -215,12 +215,12 @@ export default function Admin() {
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
             <img 
-              src="/logo-martins-clean.png" 
+              src="/logo-martins-admin.png" 
               alt="Martins Viagens" 
               className="h-10 w-auto object-contain"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.src = "/logo-martins.webp";
+                target.src = "/logo-martins-clean.png";
               }}
             />
             <div>
@@ -258,12 +258,12 @@ export default function Admin() {
         <div className="p-6 border-b border-blue-500/50 hidden lg:block">
           <div className="flex items-center gap-3">
             <img 
-              src="/logo-martins-clean.png" 
+              src="/logo-martins-admin.png" 
               alt="Martins Viagens" 
-              className="h-12 w-auto object-contain bg-white rounded-lg p-1"
+              className="h-12 w-auto object-contain"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.src = "/logo-martins.webp";
+                target.src = "/logo-martins-clean.png";
               }}
             />
             <div>
