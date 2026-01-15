@@ -2116,3 +2116,55 @@ export type VehicleType = typeof vehicleTypes.$inferSelect;
 export type CityConfig = typeof cityConfigs.$inferSelect;
 export type RoutePrice = typeof routePrices.$inferSelect;
 export type ImportHistory = typeof importHistory.$inferSelect;
+
+
+// ==================== MEDIÇÃO DE VIAGENS EXTRAS ====================
+
+// Períodos de Medição (mês/ano)
+export const medicaoPeriodos = mysqlTable("medicao_periodos", {
+  id: int("id").primaryKey().autoincrement(),
+  ano: int("ano").notNull(),
+  mes: int("mes").notNull(), // 1-12
+  dataInicio: date("data_inicio").notNull(),
+  dataFim: date("data_fim").notNull(),
+  status: varchar("status", { length: 20 }).notNull().default("aberto"), // aberto, fechado
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  createdBy: varchar("created_by", { length: 255 }),
+});
+
+// Configuração de Valores (Tipo Veículo + Cidade + Turno)
+export const medicaoConfiguracaoValores = mysqlTable("medicao_configuracao_valores", {
+  id: int("id").primaryKey().autoincrement(),
+  vehicleTypeId: int("vehicle_type_id").notNull().references(() => vehicleTypes.id),
+  cityId: int("city_id").notNull().references(() => cityConfigs.id),
+  turno: varchar("turno", { length: 20 }).notNull(), // 1turno, 2turno, 3turno, adm
+  valorViagem: decimal("valor_viagem", { precision: 10, scale: 2 }).notNull(),
+  ativo: boolean("ativo").notNull().default(true),
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+// Marcações de Viagens (Diárias)
+export const medicaoViagens = mysqlTable("medicao_viagens", {
+  id: int("id").primaryKey().autoincrement(),
+  periodoId: int("periodo_id").notNull().references(() => medicaoPeriodos.id),
+  data: date("data").notNull(),
+  diaSemana: varchar("dia_semana", { length: 10 }).notNull(), // SEG, TER, QUA, etc
+  turno: varchar("turno", { length: 20 }).notNull(), // 1turno, 2turno, 3turno, adm
+  vehicleTypeId: int("vehicle_type_id").notNull().references(() => vehicleTypes.id),
+  cityId: int("city_id").notNull().references(() => cityConfigs.id),
+  tipoViagem: varchar("tipo_viagem", { length: 20 }).notNull(), // entrada, saida
+  quantidade: int("quantidade").notNull().default(0), // Número de veículos
+  valorUnitario: decimal("valor_unitario", { precision: 10, scale: 2 }),
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }),
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  createdBy: varchar("created_by", { length: 255 }),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+export type MedicaoPeriodo = typeof medicaoPeriodos.$inferSelect;
+export type MedicaoConfiguracaoValor = typeof medicaoConfiguracaoValores.$inferSelect;
+export type MedicaoViagem = typeof medicaoViagens.$inferSelect;

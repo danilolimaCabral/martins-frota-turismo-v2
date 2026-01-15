@@ -42,6 +42,7 @@ import { dashboardExecutivoRouter } from "./dashboard-executivo-routers";
 import { folhaPagamentoRouter } from "./folha-pagamento-routers";
 import { ctaSmartRouter } from "./cta-smart-routers-v5";
 import { routeSharingRouter } from "./route-sharing-routers";
+import { medicaoRouter } from "./medicao-routers";
 
 export const appRouter = router({
   // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -88,6 +89,7 @@ export const appRouter = router({
   folhaPagamento: folhaPagamentoRouter,
   ctaSmart: ctaSmartRouter,
   routeSharing: routeSharingRouter,
+  medicao: medicaoRouter,
 });
 
 // TODO: add feature routers here, e.g.

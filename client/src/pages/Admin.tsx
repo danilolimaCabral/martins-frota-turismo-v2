@@ -124,6 +124,7 @@ export default function Admin() {
     { icon: DollarSign, label: "Financeiro", path: "/admin/financeiro", module: "financeiro" },
     { icon: Calendar, label: "Agenda", path: "/admin/agenda", module: "agenda" },
     { icon: MapPin, label: "Roteirização", path: "/admin/roteirizacao", module: "roteirizacao" },
+    { icon: Calendar, label: "Medição Viagens Extras", path: "/admin/medicao", module: "financeiro" },
     { icon: Route, label: "Roteirização Profissional", path: "/admin/roteirizacao-profissional", module: "roteirizacao" },
     { icon: TrendingUp, label: "Rastreamento Real-time", path: "/admin/rastreamento-realtime", module: "roteirizacao" },
     { icon: TrendingDown, label: "Histórico de Rotas", path: "/admin/rotas-otimizadas-historico", module: "roteirizacao" },

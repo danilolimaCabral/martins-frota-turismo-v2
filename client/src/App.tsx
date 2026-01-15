@@ -32,6 +32,7 @@ import AdminFinanceiro from "./pages/AdminFinanceiro";
 import AdminImportar from "./pages/AdminImportar";
 import AdminAgenda from "./pages/AdminAgenda";
 import AdminRoteirizacao from "./pages/AdminRoteirizacao";
+import AdminMedicao from "./pages/AdminMedicao";
 import AdminRoteirizacaoOtimizacao from "./pages/AdminRoteirizacaoOtimizacao";
 import AdminRotasOtimizadasHistorico from "./pages/AdminRotasOtimizadasHistorico";
 import AdminEficienciaMotorista from "./pages/AdminEficienciaMotorista";
@@ -210,6 +211,9 @@ function Router() {
         </Route>
         <Route path="/admin/roteirizacao">
           <AdminRoteirizacao />
+        </Route>
+        <Route path="/admin/medicao">
+          <AdminMedicao />
         </Route>
         <Route path="/admin/roteirizador-avancado">
           <ProtectedRoute>
