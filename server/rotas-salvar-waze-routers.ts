@@ -1,8 +1,10 @@
-import { router, publicProcedure, protectedProcedure } from "./trpc";
 import { z } from "zod";
 import { db } from "./db";
 import { rotasOtimizadas, rotasHistorico } from "../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
+import type { GoogleMapsInput, GoogleMapsResponse, WazeShareInput, WazeShareResponse, TRPCContext } from "../shared/types";
+import { GoogleMapsInputSchema, WazeShareInputSchema } from "./validation-schemas";
+import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 
 export const rotasSalvarWazeRouter = router({
   // Salvar rota otimizada

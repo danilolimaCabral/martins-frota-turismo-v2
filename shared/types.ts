@@ -184,3 +184,77 @@ export type Platform = "whatsapp" | "sms" | "email" | "qrcode" | "direct_link";
 export type EventType = "shared" | "viewed" | "clicked" | "accepted" | "rejected";
 export type DriverStatus = "active" | "inactive" | "suspended";
 export type NotificationType = "info" | "success" | "warning" | "error";
+
+// ============================================================================
+// GOOGLE MAPS E ROTAS
+// ============================================================================
+
+export interface GoogleMapsPoint {
+  latitude: number;
+  longitude: number;
+  name?: string;
+  address?: string;
+}
+
+export interface GoogleMapsInput {
+  pontos: GoogleMapsPoint[];
+  modo?: "driving" | "walking" | "bicycling" | "transit";
+  idioma?: string;
+  unidade?: "metric" | "imperial";
+}
+
+export interface GoogleMapsResponse {
+  sucesso: boolean;
+  link_google_maps: string;
+  link_waze?: string;
+  pontos_totais: number;
+  destino: string;
+  waypoints?: number;
+  distancia_estimada?: number;
+  tempo_estimado?: string;
+  erro?: string;
+}
+
+export interface WazeShareInput {
+  latitude: number;
+  longitude: number;
+  nome?: string;
+  zoom?: number;
+}
+
+export interface WazeShareResponse {
+  sucesso: boolean;
+  url_waze: string;
+  latitude: number;
+  longitude: number;
+  nome?: string;
+  erro?: string;
+}
+
+export interface RotaOtimizada {
+  id: number;
+  nome: string;
+  descricao?: string;
+  pontos: GoogleMapsPoint[];
+  distancia_total: number;
+  tempo_estimado: string;
+  custo_combustivel: number;
+  economia_percentual: number;
+  economia_valor: number;
+  criada_em: Date;
+  atualizada_em: Date;
+}
+
+export interface RotaCompartilhada {
+  id: number;
+  rota_id: number;
+  token_compartilhamento: string;
+  plataforma: Platform;
+  url_compartilhamento: string;
+  qr_code_url?: string;
+  compartilhada_por: number;
+  compartilhada_com?: string;
+  data_compartilhamento: Date;
+  data_expiracao: Date;
+  ativa: boolean;
+}
