@@ -2168,3 +2168,103 @@ export const medicaoViagens = mysqlTable("medicao_viagens", {
 export type MedicaoPeriodo = typeof medicaoPeriodos.$inferSelect;
 export type MedicaoConfiguracaoValor = typeof medicaoConfiguracaoValores.$inferSelect;
 export type MedicaoViagem = typeof medicaoViagens.$inferSelect;
+
+
+// ==================== CTA SMART - ABASTECIMENTOS ====================
+
+export const abastecimentosCta = mysqlTable("abastecimentos_cta", {
+  id: varchar("id", { length: 50 }).primaryKey(), // ID da API CTA Smart
+  sequencial: int("sequencial"),
+  dataInicio: date("data_inicio"),
+  horaInicio: time("hora_inicio"),
+  dataFim: date("data_fim"),
+  horaFim: time("hora_fim"),
+  volume: decimal("volume", { precision: 10, scale: 3 }), // Litros
+  odometro: int("odometro"), // KM
+  odometroFinal: int("odometro_final"), // KM final
+  placa: varchar("placa", { length: 20 }),
+  combustivel: varchar("combustivel", { length: 50 }),
+  valorUnitario: decimal("valor_unitario", { precision: 10, scale: 4 }),
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }),
+  motorista: varchar("motorista", { length: 200 }),
+  posto: varchar("posto", { length: 200 }),
+  observacoes: text("observacoes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+export type AbastecimentoCta = typeof abastecimentosCta.$inferSelect;
+export type InsertAbastecimentoCta = typeof abastecimentosCta.$inferInsert;
+
+
+// ==================== PROPOSTAS DE FRETAMENTO ====================
+
+export const propostas = mysqlTable("propostas", {
+  id: int("id").primaryKey().autoincrement(),
+  numeroOrcamento: varchar("numero_orcamento", { length: 50 }).notNull().unique(),
+  status: mysqlEnum("status", ["rascunho", "enviada", "aceita", "rejeitada", "expirada"]).default("rascunho"),
+  
+  // Cliente
+  nomeEmpresa: varchar("nome_empresa", { length: 255 }).notNull(),
+  cnpj: varchar("cnpj", { length: 18 }),
+  contatoPrincipal: varchar("contato_principal", { length: 255 }),
+  emailCliente: varchar("email_cliente", { length: 320 }),
+  telefoneCliente: varchar("telefone_cliente", { length: 20 }),
+  enderecoCliente: text("endereco_cliente"),
+  
+  // Serviço
+  tipoFretamento: varchar("tipo_fretamento", { length: 100 }),
+  descricaoServico: text("descricao_servico"),
+  dataInicio: date("data_inicio"),
+  dataTermino: date("data_termino"),
+  frequencia: varchar("frequencia", { length: 50 }), // diária, semanal, mensal
+  horariosColeta: text("horarios_coleta"),
+  pontosColeta: text("pontos_coleta"),
+  destinos: text("destinos"),
+  
+  // Frota
+  quantidadeVeiculos: int("quantidade_veiculos"),
+  tipoVeiculo: varchar("tipo_veiculo", { length: 100 }), // Van, Micro-ônibus, Ônibus
+  capacidadePassageiros: int("capacidade_passageiros"),
+  especificacoes: text("especificacoes"),
+  
+  // Valores
+  valorDia: decimal("valor_dia", { precision: 10, scale: 2 }),
+  quantidadeDias: int("quantidade_dias"),
+  desconto: decimal("desconto", { precision: 10, scale: 2 }).default(0),
+  valorTotal: decimal("valor_total", { precision: 10, scale: 2 }),
+  formaPagamento: varchar("forma_pagamento", { length: 100 }),
+  condicoesEspeciais: text("condicoes_especiais"),
+  
+  // Observações
+  observacoes: text("observacoes"),
+  
+  // Rastreamento
+  propostoPor: varchar("proposto_por", { length: 255 }),
+  dataProposta: date("data_proposta"),
+  dataValidade: date("data_validade"),
+  
+  // Assinatura Digital
+  assinadoPor: varchar("assinado_por", { length: 255 }),
+  dataAssinatura: timestamp("data_assinatura"),
+  tokenAssinatura: varchar("token_assinatura", { length: 255 }),
+  
+  // Metadados
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  createdBy: varchar("created_by", { length: 255 }),
+});
+
+export const propostaHistorico = mysqlTable("proposta_historico", {
+  id: int("id").primaryKey().autoincrement(),
+  propostaId: int("proposta_id").notNull().references(() => propostas.id),
+  acao: varchar("acao", { length: 100 }), // criada, editada, enviada, aceita, rejeitada
+  descricao: text("descricao"),
+  alteradoPor: varchar("alterado_por", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type Proposta = typeof propostas.$inferSelect;
+export type InsertProposta = typeof propostas.$inferInsert;
+export type PropostaHistorico = typeof propostaHistorico.$inferSelect;
+export type InsertPropostaHistorico = typeof propostaHistorico.$inferInsert;

@@ -48,6 +48,7 @@ import AdminDashboardFolha from "./pages/AdminDashboardFolha";
 import { AdminManutencao } from "./pages/AdminManutencao";
 import { AdminChecklist } from "./pages/AdminChecklist";
 import { AdminAtendimento } from "./pages/AdminAtendimento";
+import AdminPropostas from "./pages/AdminPropostas";
 import { AdminMenu } from "./components/AdminMenu";
 import { AdminRoteirizadorAvancado } from "./pages/AdminRoteirizadorAvancado";
 import TesteRoteirizacao39Pontos from "./pages/TesteRoteirizacao39Pontos";
@@ -214,6 +215,11 @@ function Router() {
         </Route>
         <Route path="/admin/medicao">
           <AdminMedicao />
+        </Route>
+        <Route path="/admin/propostas">
+          <ProtectedRoute>
+            <AdminPropostas />
+          </ProtectedRoute>
         </Route>
         <Route path="/admin/roteirizador-avancado">
           <ProtectedRoute>

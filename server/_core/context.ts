@@ -1,5 +1,7 @@
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import { verifyToken } from "../auth";
+import type { User } from "../../drizzle/schema";
+import { sdk } from "./sdk";
+import { verifyToken, getUserById } from "../auth";
 import { db } from "../db";
 import { localUsers } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -58,6 +60,15 @@ export async function createContext(
           permissions: localUser.permissions || "{}",
         };
       }
+    }
+  }
+
+  // Se não encontrou via JWT local, tenta Manus OAuth
+  if (!user) {
+    try {
+      user = await sdk.authenticateRequest(opts.req);
+    } catch (error) {
+      // Ignora erro do Manus OAuth
     }
   }
 

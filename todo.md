@@ -498,6 +498,17 @@
   - [x] AdminHistoricoRotas
   - [x] AdminIntegracaoInterna
   - [x] AdminIntegracoes
+
+## 📄 MÓDULO DE PROPOSTAS - GERAÇÃO DE PROPOSTAS
+- [x] Criar schema do banco para propostas
+- [x] Implementar router tRPC com operações CRUD
+- [x] Criar página administrativa com formulário editável
+- [x] Adicionar cálculo automático de valores
+- [x] Integrar link no menu admin
+- [x] Testar criação de propostas
+- [ ] Implementar geração de PDF com logo e cores (PRÓXIMA FASE)
+- [ ] Configurar envio de email com template HTML (PRÓXIMA FASE)
+- [ ] Implementar assinatura digital e histórico (PRÓXIMA FASE)
   - [x] AdminMetodosPagamento
   - [x] AdminNPS
   - [x] AdminNotificacoes
@@ -615,3 +626,41 @@
 - [x] Criar dashboard com estatísticas (viagens, km rodados)
 - [x] Adicionar alertas de CNH vencendo
 - [x] Testar todas as funcionalidades
+
+
+## 🔌 TESTE DE INTEGRAÇÃO API CTA SMART
+- [x] Verificar credenciais (token) configuradas no sistema
+- [x] Testar endpoint de sincronização de abastecimentos
+- [x] Verificar se dados estão sendo puxados corretamente
+- [x] Documentar problemas encontrados (se houver)
+- [x] Criar relatório de testes
+
+**Resultado**: API funcionando perfeitamente (Status 200, dados retornados), mas tabela `abastecimentos_cta` não existe no banco. Necessário criar schema no Drizzle e executar migração.
+
+
+## 🔧 CORREÇÃO URGENTE - Sincronização CTA Smart
+- [ ] Adicionar schema da tabela abastecimentos_cta no Drizzle
+- [ ] Executar migração do banco de dados (pnpm db:push)
+- [ ] Testar sincronização CTA Smart na interface
+- [ ] Verificar persistência de dados no banco
+- [ ] Implementar auto-refresh a cada 5 minutos
+
+
+## 📄 NOVO MÓDULO - GERAÇÃO DE PROPOSTAS DE FRETAMENTO
+- [ ] Criar schema do banco para propostas (proposta, itens, histórico)
+- [ ] Criar router tRPC com operações CRUD (criar, listar, editar, deletar, enviar)
+- [ ] Criar formulário de criação com todos os campos editáveis
+- [ ] Implementar preview em tempo real
+- [ ] Implementar geração de PDF com design profissional
+- [ ] Adicionar funcionalidade de envio por email
+- [ ] Implementar assinatura digital
+- [ ] Testar todas as funcionalidades
+
+
+## 📄 MÓDULO DE PROPOSTAS - RECURSOS AVANÇADOS
+- [ ] Implementar geração de PDF com logo e cores da marca
+- [ ] Configurar envio de email com template HTML profissional
+- [ ] Implementar assinatura digital e histórico de alterações
+- [ ] Testar geração de PDF
+- [ ] Testar envio de email
+- [ ] Testar assinatura digital

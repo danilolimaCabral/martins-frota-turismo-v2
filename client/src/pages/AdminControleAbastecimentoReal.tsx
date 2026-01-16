@@ -83,10 +83,7 @@ export default function AdminControleAbastecimentoReal() {
 
   const handleSincronizar = () => {
     setSyncStatus("loading");
-    // Calcular dataInicio baseado nos dias
-    const dataFim = new Date().toISOString().split('T')[0];
-    const dataInicio = new Date(Date.now() - dias * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    sincronizarMutation.mutate({ token, dataInicio, dataFim });
+    sincronizarMutation.mutate({ token, dias });
   };
 
   const exportarCSV = () => {

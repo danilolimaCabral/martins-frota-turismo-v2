@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -33,6 +34,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function AdminRoteirizacao() {
+  const [, setLocation] = useLocation();
   const [modalNovaRota, setModalNovaRota] = useState(false);
   const [rotaSelecionada, setRotaSelecionada] = useState<any>(null);
   const [modalEnderecos, setModalEnderecosOpen] = useState(false);
@@ -230,6 +232,17 @@ export default function AdminRoteirizacao() {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
+      {/* Botão Voltar */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setLocation("/admin")}
+        className="mb-4"
+      >
+        <ArrowLeft size={20} />
+        <span>Voltar</span>
+      </Button>
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
